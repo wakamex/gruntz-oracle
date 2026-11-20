@@ -1,0 +1,155 @@
+[
+  {
+    "unit": "brickzcellflags",
+    "symbol": "?SetCell@CLevelPlane@@QAEXHHH@Z",
+    "size": 29,
+    "before_sha256": "7f316b77ef38621d267832e75f3781e838e3d1958cdb0c59178604d7c2180c47",
+    "after_sha256": "1b9652ea4eefaab95f0db335892940c9e9db65d5a04c19277aec00a67b64a89e",
+    "report": {
+      "symbol": "?SetCell@CLevelPlane@@QAEXHHH@Z",
+      "unit": "brickzcellflags",
+      "verdict": "differ",
+      "cases": 5000,
+      "agree": 4999,
+      "differ": 1,
+      "first_difference": {
+        "seed": 841,
+        "categories": [
+          "writes"
+        ],
+        "before": {
+          "outcome": [
+            "return"
+          ],
+          "calls": [],
+          "writes": {
+            "268436060": 9965604,
+            "268436064": 3252289536
+          },
+          "registers": {
+            "eax": 67109016,
+            "edx": 152,
+            "esp": 1744896016,
+            "ebx": 153,
+            "esi": 4,
+            "edi": 4,
+            "ebp": 4
+          },
+          "x87": [],
+          "x87_depth": 0
+        },
+        "after": {
+          "outcome": [
+            "return"
+          ],
+          "calls": [],
+          "writes": {
+            "268436060": 9997068,
+            "268436064": 3660251136
+          },
+          "registers": {
+            "eax": 67109016,
+            "edx": 152,
+            "esp": 1744896016,
+            "ebx": 153,
+            "esi": 4,
+            "edi": 4,
+            "ebp": 4
+          },
+          "x87": [],
+          "x87_depth": 0
+        }
+      },
+      "outcomes": {
+        "before": {
+          "fault": 1307,
+          "return": 3693
+        },
+        "after": {
+          "fault": 1307,
+          "return": 3693
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          53,
+          54,
+          55,
+          152,
+          153,
+          154,
+          255,
+          256,
+          257,
+          2360,
+          2361,
+          2362,
+          4008636141,
+          4008636142,
+          4008636143,
+          4294967294,
+          4294967295
+        ]
+      },
+      "objects": [
+        "7f316b77ef38621d267832e75f3781e838e3d1958cdb0c59178604d7c2180c47",
+        "1b9652ea4eefaab95f0db335892940c9e9db65d5a04c19277aec00a67b64a89e"
+      ]
+    },
+    "seconds": 60.882176190963946
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?InsertFirst@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "size": 44,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?InsertFirst@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 5000,
+      "agree": 5000,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 1894,
+          "return": 3106
+        },
+        "after": {
+          "fault": 1894,
+          "return": 3106
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 42.91754872899037
+  }
+]

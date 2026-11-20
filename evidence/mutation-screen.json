@@ -1,0 +1,708 @@
+{
+  "summary": {
+    "cases_per_pair": 128,
+    "mutations": 5,
+    "detected": 4,
+    "preserving_rewrites": 3,
+    "false_differences": 0,
+    "missed": 1,
+    "detection_rate": 0.8,
+    "false_difference_rate": 0.0
+  },
+  "results": [
+    {
+      "name": "constant",
+      "unit": "namerecord",
+      "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+        "unit": "namerecord",
+        "verdict": "differ",
+        "cases": 128,
+        "agree": 1,
+        "differ": 127,
+        "first_difference": {
+          "seed": 0,
+          "categories": [
+            "writes"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {
+              "1879048196": 0,
+              "1879048200": 1,
+              "1879048204": 0,
+              "1879048208": 0,
+              "1879048212": 0,
+              "1879048216": 0,
+              "1879048220": 0,
+              "1879048224": 0,
+              "1879048228": 0,
+              "1879048232": 0,
+              "1879048236": 0,
+              "1879048240": 0,
+              "1879048244": 65536,
+              "1879048248": 0,
+              "1879048252": 0,
+              "1879048256": 0,
+              "1879048260": 0,
+              "1879048264": 0,
+              "1879048268": 0,
+              "1879048272": 0,
+              "1879048276": 0,
+              "1879048280": 0,
+              "1879048284": 0,
+              "1879048288": 0,
+              "1879048292": 0,
+              "1879048296": 0,
+              "1879048300": 0,
+              "1879048304": 0,
+              "1879048308": 0,
+              "1879048312": 0,
+              "1879048316": 0,
+              "1879048320": 0,
+              "1879048324": 0,
+              "1879048328": 0,
+              "1879048332": 0,
+              "1879048336": 0,
+              "1879048340": 0,
+              "1879048344": 0,
+              "1879048348": 0,
+              "1879048352": 0,
+              "1879048356": 0,
+              "1879048360": 0,
+              "1879048364": 0,
+              "1879048368": 0,
+              "1879048372": 0,
+              "1879048376": 0,
+              "1879048380": 0,
+              "1879048384": 0,
+              "1879048388": 0,
+              "1879048392": 0,
+              "1879048396": 0,
+              "1879048400": 0,
+              "1879048404": 0
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 1879048192,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {
+              "1879048196": 0,
+              "1879048200": 2,
+              "1879048204": 0,
+              "1879048208": 0,
+              "1879048212": 0,
+              "1879048216": 0,
+              "1879048220": 0,
+              "1879048224": 0,
+              "1879048228": 0,
+              "1879048232": 0,
+              "1879048236": 0,
+              "1879048240": 0,
+              "1879048244": 65536,
+              "1879048248": 0,
+              "1879048252": 0,
+              "1879048256": 0,
+              "1879048260": 0,
+              "1879048264": 0,
+              "1879048268": 0,
+              "1879048272": 0,
+              "1879048276": 0,
+              "1879048280": 0,
+              "1879048284": 0,
+              "1879048288": 0,
+              "1879048292": 0,
+              "1879048296": 0,
+              "1879048300": 0,
+              "1879048304": 0,
+              "1879048308": 0,
+              "1879048312": 0,
+              "1879048316": 0,
+              "1879048320": 0,
+              "1879048324": 0,
+              "1879048328": 0,
+              "1879048332": 0,
+              "1879048336": 0,
+              "1879048340": 0,
+              "1879048344": 0,
+              "1879048348": 0,
+              "1879048352": 0,
+              "1879048356": 0,
+              "1879048360": 0,
+              "1879048364": 0,
+              "1879048368": 0,
+              "1879048372": 0,
+              "1879048376": 0,
+              "1879048380": 0,
+              "1879048384": 0,
+              "1879048388": 0,
+              "1879048392": 0,
+              "1879048396": 0,
+              "1879048400": 0,
+              "1879048404": 0
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 1879048192,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "48a656d897dae9cc5715f1f87837c18a3343cd3753da9b126ab16835636e59d4"
+        ]
+      },
+      "seconds": 8.17481946805492
+    },
+    {
+      "name": "comparison",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "differ",
+        "cases": 128,
+        "agree": 19,
+        "differ": 109,
+        "first_difference": {
+          "seed": 1,
+          "categories": [
+            "calls",
+            "registers",
+            "writes"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [
+              {
+                "callee": "?BuildGameDate@@YAHPAUCGameInfoTime@@@Z",
+                "ecx": 4294967295,
+                "stack": [
+                  1879048376
+                ]
+              }
+            ],
+            "writes": {
+              "1879048380": 4294967295,
+              "1879048384": 15,
+              "1879048404": 65
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 0,
+              "esp": 1744896016,
+              "ebx": 0,
+              "esi": 0,
+              "edi": 17,
+              "ebp": 17
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {},
+            "registers": {
+              "eax": 0,
+              "edx": 0,
+              "esp": 1744896016,
+              "ebx": 0,
+              "esi": 0,
+              "edi": 17,
+              "ebp": 17
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "cfb9274b458d47bb6b2c356726071750f68e241235ce329034f0fe574e665fb6"
+        ]
+      },
+      "seconds": 7.504812692990527
+    },
+    {
+      "name": "dropped-store",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "differ",
+        "cases": 128,
+        "agree": 2,
+        "differ": 126,
+        "first_difference": {
+          "seed": 0,
+          "categories": [
+            "registers"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {},
+            "registers": {
+              "eax": 0,
+              "edx": 3,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {},
+            "registers": {
+              "eax": 0,
+              "edx": 0,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "73edd3feb1046d656c315b7a8b023f09563e73ab968644288ee15241f8fb7e2e"
+        ]
+      },
+      "seconds": 7.589903078973293
+    },
+    {
+      "name": "independent-stores",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "agree",
+        "cases": 128,
+        "agree": 128,
+        "differ": 0,
+        "first_difference": null,
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "c5fc3e179757194ae1d185c5dbe02bb42f2bf3a4d67d23b823d5524d782e3337"
+        ]
+      },
+      "seconds": 7.4492939609335735
+    },
+    {
+      "name": "renamed-local",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "agree",
+        "cases": 128,
+        "agree": 128,
+        "differ": 0,
+        "first_difference": null,
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "dd064496efced1647b137e9c19e2d20d27980e337c73ebf4436e267cd039b207"
+        ]
+      },
+      "seconds": 7.432238013949245
+    },
+    {
+      "name": "named-temporary",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "agree",
+        "cases": 128,
+        "agree": 128,
+        "differ": 0,
+        "first_difference": null,
+        "outcomes": {
+          "before": {
+            "return": 128
+          },
+          "after": {
+            "return": 128
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "d5decaa29dac5be0a68d53e01e7dbe2eb3332111c71d803733a523e9c9361655"
+        ]
+      },
+      "seconds": 7.6032494369428605
+    },
+    {
+      "name": "swapped-arguments",
+      "unit": "chainforward",
+      "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+        "unit": "chainforward",
+        "verdict": "differ",
+        "cases": 128,
+        "agree": 90,
+        "differ": 38,
+        "first_difference": {
+          "seed": 3,
+          "categories": [
+            "calls",
+            "registers"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [
+              {
+                "callee": "?SaveScreenshot@@YAHPAVCDDSurface@@PAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+                "ecx": 1879113728,
+                "stack": [
+                  1880043520,
+                  1879113728,
+                  1879117824,
+                  3480712822,
+                  1879732224,
+                  1879130112,
+                  1879289856
+                ]
+              }
+            ],
+            "writes": {},
+            "registers": {
+              "eax": 1879437312,
+              "edx": 3480712822,
+              "esp": 1744896004,
+              "ebx": 4294967295,
+              "esi": 1880092672,
+              "edi": 1879302144,
+              "ebp": 1879638016
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [
+              {
+                "callee": "?SaveScreenshot@@YAHPAVCDDSurface@@PAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+                "ecx": 1879113728,
+                "stack": [
+                  1880043520,
+                  1879113728,
+                  1879117824,
+                  1879732224,
+                  3480712822,
+                  1879130112,
+                  1879289856
+                ]
+              }
+            ],
+            "writes": {},
+            "registers": {
+              "eax": 1879437312,
+              "edx": 1879732224,
+              "esp": 1744896004,
+              "ebx": 4294967295,
+              "esi": 1880092672,
+              "edi": 1879302144,
+              "ebp": 1879638016
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "fault": 88,
+            "return": 40
+          },
+          "after": {
+            "fault": 88,
+            "return": 40
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            4294967295
+          ]
+        },
+        "objects": [
+          "737f651f0afd88442ebabfdc412642798959478b0adc75b49591b76afb081b88",
+          "149c9185659f35cb893c18364b7a727dba37e258451e36f3f77f8f11a13bf762"
+        ]
+      },
+      "seconds": 7.222724125953391
+    },
+    {
+      "name": "loop-bound",
+      "unit": "brickz",
+      "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+        "unit": "brickz",
+        "verdict": "agree",
+        "cases": 128,
+        "agree": 128,
+        "differ": 0,
+        "first_difference": null,
+        "outcomes": {
+          "before": {
+            "fault": 36,
+            "return": 92
+          },
+          "after": {
+            "fault": 36,
+            "return": 92
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            2360,
+            2361,
+            2362,
+            4294967295
+          ]
+        },
+        "objects": [
+          "f1a1894543c5c213ff95c4b42075529f2c433f4990fee105d34bafb96c07dfbd",
+          "7e8d196b60fd593aa0f476be276e6e7f2579aff00ba3cfb92cfb9eb7f0f000e2"
+        ]
+      },
+      "seconds": 7.19857512996532
+    }
+  ],
+  "engine_sha256": {
+    "src/gruntz_oracle/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/gruntz_oracle/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/gruntz_oracle/cli.py": "37386b082f09f908ee88f2569140483424ddc1802c7fdcb8a23c059cf4863185",
+    "src/gruntz_oracle/coff.py": "83672097ebed1bc18a880c2beb9eec008d4cbace9a35c812793be77696eb60b8",
+    "src/gruntz_oracle/engine.py": "eb108d857d9413a16c44c0639a05c0c689001c8560466ab006aff7e310d63533",
+    "src/gruntz_oracle/signature.py": "ec89a69bada625857e3cab80557b340f2692dc0c9496278827192a7f56d379e8"
+  }
+}

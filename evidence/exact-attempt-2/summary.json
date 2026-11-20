@@ -1,0 +1,31 @@
+{
+  "status": "stopped_after_second_failed_false_difference_gate",
+  "attempt": 2,
+  "requested_units": [
+    "brickzcellflags",
+    "rezlist",
+    "namerecord",
+    "chainforward",
+    "brickz"
+  ],
+  "requested_functions": 14,
+  "completed_units": [
+    "brickzcellflags",
+    "rezlist"
+  ],
+  "completed_functions": 2,
+  "cases_per_function": 5000,
+  "false_differences": 1,
+  "errors": 0,
+  "engine_sha256": {
+    "src/gruntz_oracle/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/gruntz_oracle/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/gruntz_oracle/cli.py": "37386b082f09f908ee88f2569140483424ddc1802c7fdcb8a23c059cf4863185",
+    "src/gruntz_oracle/coff.py": "3946cfe9b2e60fd71b7e5d03390c136cf018bd8998bbce28c86bd83909e5b61c",
+    "src/gruntz_oracle/engine.py": "76029730c32bf81df3ed391ed0892075ae882847c77edf2a5018418f2b562f7d",
+    "src/gruntz_oracle/signature.py": "57f1243e3a766d8969bd66166be98fe8cfd8231864f183b0d091aea7f1f1da3e"
+  },
+  "report_sha256": "a1fadae7a5f9ffc81011688a6552fd82fc9c26c01b0de5fdbc7256419a22e20d",
+  "incomplete_running_function": "?InsertLast@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+  "stop_reason": "SetCell seed 841 compares differing untouched code bytes around an identical unaligned store; no comparison was loosened and no further repair was attempted."
+}

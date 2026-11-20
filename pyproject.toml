@@ -1,0 +1,19 @@
+[project]
+name = "gruntz-oracle"
+version = "0.1.0"
+description = "Compare generated-input behaviour of two MSVC i386 object functions."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["unicorn>=2.1.4", "capstone>=5.0.6"]
+
+[project.scripts]
+gruntz-oracle = "gruntz_oracle.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["ruff>=0.14"]

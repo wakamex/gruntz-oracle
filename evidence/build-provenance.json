@@ -1,0 +1,187 @@
+{
+  "build": {
+    "target_head": "8c3a113ca03e9ebf086b91f1663924c0f82f1a57",
+    "toolchain_definition_sha256": "185d67e603694d0960bfaaa8474ea20afece816f4c94af53a4e2dfc0153ba784",
+    "toolchain_definition": "{ pkgs }:\npkgs.runCommand \"gruntz-toolchain-vc50\" {\n  src = pkgs.fetchurl {\n    name = \"gruntz-toolchain-vc50.tar.xz\";\n    url = \"https://github.com/sushi-shi/gruntz-decomp/releases/download/toolchain-vc50-sp3-r3/gruntz-toolchain-vc50.tar.xz\";\n    sha256 = \"sha256-sZgl957g2+6wlrAPxIa1OcaDqlcG8PXsXVOKWc5KeZ8=\";\n  };\n  nativeBuildInputs = [ pkgs.gnutar pkgs.xz ];\n} ''\n  mkdir -p \"$out\"\n  tar xf \"$src\" -C \"$out\" --strip-components=1\n''\n",
+    "units_manifest_sha256": "d92aff0d3b5bba1a929f4135c50c3e09f2d5c3a915e4b897b481ffa59879474c",
+    "compile_workers": 4
+  },
+  "mutations": [
+    {
+      "name": "constant",
+      "unit": "namerecord",
+      "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+      "preserving": false,
+      "old": "m_body.m_version = 1;",
+      "new": "m_body.m_version = 2;",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "48a656d897dae9cc5715f1f87837c18a3343cd3753da9b126ab16835636e59d4",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "comparison",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": false,
+      "old": "if (b->m_score > score)",
+      "new": "if (b->m_score < score)",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "cfb9274b458d47bb6b2c356726071750f68e241235ce329034f0fe574e665fb6",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "dropped-store",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": false,
+      "old": "    b->m_score = score;\n",
+      "new": "",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "73edd3feb1046d656c315b7a8b023f09563e73ab968644288ee15241f8fb7e2e",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "independent-stores",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "old": "    b->m_score = score;\n    b->m_timeMs = timeMs;",
+      "new": "    b->m_timeMs = timeMs;\n    b->m_score = score;",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "c5fc3e179757194ae1d185c5dbe02bb42f2bf3a4d67d23b823d5524d782e3337",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "renamed-local",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "old": "b",
+      "new": "record",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "dd064496efced1647b137e9c19e2d20d27980e337c73ebf4436e267cd039b207",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "named-temporary",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": true,
+      "old": "    b->m_score = score;",
+      "new": "    i32 newScore = score;\n    b->m_score = newScore;",
+      "original_sha256": "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+      "mutation_sha256": "d5decaa29dac5be0a68d53e01e7dbe2eb3332111c71d803733a523e9c9361655",
+      "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "swapped-arguments",
+      "unit": "chainforward",
+      "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+      "preserving": false,
+      "old": "SaveScreenshot(leaf, reg, owner, width, height, name, saveFlag)",
+      "new": "SaveScreenshot(leaf, reg, owner, height, width, name, saveFlag)",
+      "original_sha256": "737f651f0afd88442ebabfdc412642798959478b0adc75b49591b76afb081b88",
+      "mutation_sha256": "149c9185659f35cb893c18364b7a727dba37e258451e36f3f77f8f11a13bf762",
+      "source_sha256": "71ba3a3e280d35a3f25ad9505ded9f99f007f195db3b09775b45e574b3292ccf",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    },
+    {
+      "name": "loop-bound",
+      "unit": "brickz",
+      "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+      "preserving": false,
+      "old": "for (i32 x = x0; x < x1; x++)",
+      "new": "for (i32 x = x0; x <= x1; x++)",
+      "original_sha256": "f1a1894543c5c213ff95c4b42075529f2c433f4990fee105d34bafb96c07dfbd",
+      "mutation_sha256": "7e8d196b60fd593aa0f476be276e6e7f2579aff00ba3cfb92cfb9eb7f0f000e2",
+      "source_sha256": "ff48400a4576e7a912cf7cae9c2afeaf2874667b575329d8dc84253c432bb3a5",
+      "flags": [
+        "/nologo",
+        "/c",
+        "/O2",
+        "/MT",
+        "/GX",
+        "/GR"
+      ],
+      "shortcuts": [
+        "objdiff_scores"
+      ]
+    }
+  ]
+}

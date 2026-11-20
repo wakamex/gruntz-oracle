@@ -1,0 +1,728 @@
+[
+  {
+    "unit": "brickzcellflags",
+    "symbol": "?SetCell@CLevelPlane@@QAEXHHH@Z",
+    "size": 29,
+    "before_sha256": "7f316b77ef38621d267832e75f3781e838e3d1958cdb0c59178604d7c2180c47",
+    "after_sha256": "1b9652ea4eefaab95f0db335892940c9e9db65d5a04c19277aec00a67b64a89e",
+    "report": {
+      "symbol": "?SetCell@CLevelPlane@@QAEXHHH@Z",
+      "unit": "brickzcellflags",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 63,
+          "return": 193
+        },
+        "after": {
+          "fault": 63,
+          "return": 193
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          53,
+          54,
+          55,
+          152,
+          153,
+          154,
+          255,
+          256,
+          257,
+          2360,
+          2361,
+          2362,
+          4008636141,
+          4008636142,
+          4008636143,
+          4294967294,
+          4294967295
+        ]
+      },
+      "objects": [
+        "7f316b77ef38621d267832e75f3781e838e3d1958cdb0c59178604d7c2180c47",
+        "1b9652ea4eefaab95f0db335892940c9e9db65d5a04c19277aec00a67b64a89e"
+      ]
+    },
+    "seconds": 14.626223035040312
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?InsertFirst@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "size": 44,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?InsertFirst@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 86,
+          "return": 170
+        },
+        "after": {
+          "fault": 86,
+          "return": 170
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 15.87404488993343
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?InsertLast@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "size": 44,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?InsertLast@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 84,
+          "return": 172
+        },
+        "after": {
+          "fault": 84,
+          "return": 172
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 15.526447573094629
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?InsertAfter@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+    "size": 72,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?InsertAfter@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 95,
+          "return": 161
+        },
+        "after": {
+          "fault": 95,
+          "return": 161
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 15.247061189031228
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?InsertBefore@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+    "size": 72,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?InsertBefore@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 86,
+          "return": 170
+        },
+        "after": {
+          "fault": 86,
+          "return": 170
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 15.281653912970796
+  },
+  {
+    "unit": "rezlist",
+    "symbol": "?Delete@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "size": 56,
+    "before_sha256": "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+    "after_sha256": "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe",
+    "report": {
+      "symbol": "?Delete@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+      "unit": "rezlist",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 137,
+          "return": 119
+        },
+        "after": {
+          "fault": 137,
+          "return": 119
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "36b876d77992389d6dc02625604de8ac0934fc3ec24c45e598bff9b2a95821e4",
+        "4d46746be58e16cc497f6b53bf370ecb18994ebc43fe4a8e7c3ad580525badbe"
+      ]
+    },
+    "seconds": 15.613808652036823
+  },
+  {
+    "unit": "namerecord",
+    "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+    "size": 184,
+    "before_sha256": "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+    "after_sha256": "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868",
+    "report": {
+      "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+      "unit": "namerecord",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "return": 256
+        },
+        "after": {
+          "return": 256
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          63,
+          64,
+          65,
+          4294967295
+        ]
+      },
+      "objects": [
+        "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+        "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868"
+      ]
+    },
+    "seconds": 16.01428357907571
+  },
+  {
+    "unit": "namerecord",
+    "symbol": "?CopyBody@CGameInfo@@QAEHPAD@Z",
+    "size": 68,
+    "before_sha256": "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+    "after_sha256": "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868",
+    "report": {
+      "symbol": "?CopyBody@CGameInfo@@QAEHPAD@Z",
+      "unit": "namerecord",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "return": 256
+        },
+        "after": {
+          "return": 256
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          63,
+          64,
+          65,
+          4294967295
+        ]
+      },
+      "objects": [
+        "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+        "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868"
+      ]
+    },
+    "seconds": 15.219673417974263
+  },
+  {
+    "unit": "namerecord",
+    "symbol": "?ClearTime@CGameInfo@@QAEXXZ",
+    "size": 20,
+    "before_sha256": "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+    "after_sha256": "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868",
+    "report": {
+      "symbol": "?ClearTime@CGameInfo@@QAEXXZ",
+      "unit": "namerecord",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "return": 256
+        },
+        "after": {
+          "return": 256
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          63,
+          64,
+          65,
+          4294967295
+        ]
+      },
+      "objects": [
+        "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+        "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868"
+      ]
+    },
+    "seconds": 15.964142994955182
+  },
+  {
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "size": 112,
+    "before_sha256": "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+    "after_sha256": "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868",
+    "report": {
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "unit": "namerecord",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "return": 256
+        },
+        "after": {
+          "return": 256
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          63,
+          64,
+          65,
+          4294967295
+        ]
+      },
+      "objects": [
+        "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+        "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868"
+      ]
+    },
+    "seconds": 15.198519784025848
+  },
+  {
+    "unit": "namerecord",
+    "symbol": "?CopyIfLarger@CGameInfo@@QAEHPAUCGameInfoTime@@H@Z",
+    "size": 100,
+    "before_sha256": "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+    "after_sha256": "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868",
+    "report": {
+      "symbol": "?CopyIfLarger@CGameInfo@@QAEHPAUCGameInfoTime@@H@Z",
+      "unit": "namerecord",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "return": 256
+        },
+        "after": {
+          "return": 256
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          63,
+          64,
+          65,
+          4294967295
+        ]
+      },
+      "objects": [
+        "2ffd6bc5405ff751d86c657e8861c32bc5738244a4e4e673cfabb7b33109f957",
+        "6d01961965247bd7fdcd5407f7d739a00e4f69b64730f42c0c48d245c0cb3868"
+      ]
+    },
+    "seconds": 16.881821687915362
+  },
+  {
+    "unit": "chainforward",
+    "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+    "size": 62,
+    "before_sha256": "e8d38ddef6b4cedf3a2f1b1bac2da78dfe96e9804f36b3ae2e2aa6844a929911",
+    "after_sha256": "918078a8d088c1460e631b84381c5bd629a9345a2cb08fe0371d9249b8577add",
+    "report": {
+      "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+      "unit": "chainforward",
+      "verdict": "differ",
+      "cases": 256,
+      "agree": 255,
+      "differ": 1,
+      "first_difference": {
+        "seed": 246,
+        "categories": [
+          "calls"
+        ],
+        "before": {
+          "outcome": [
+            "return"
+          ],
+          "calls": [
+            {
+              "callee": "?SaveScreenshot@@YAHPAVCDDSurface@@PAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+              "ecx": 1879113728,
+              "stack": [
+                1879072768,
+                1879113728,
+                1879117824,
+                1879908352,
+                1879871488,
+                1879130112,
+                516846732
+              ]
+            }
+          ],
+          "writes": {},
+          "registers": {
+            "eax": 7,
+            "edx": 1879908352,
+            "esp": 1744896004,
+            "ebx": 255,
+            "esi": 1879814144,
+            "edi": 1879232512,
+            "ebp": 1879527424
+          },
+          "x87": [],
+          "x87_depth": 0
+        },
+        "after": {
+          "outcome": [
+            "return"
+          ],
+          "calls": [
+            {
+              "callee": "?SaveScreenshot@@YAHPAVCDDSurface@@PAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+              "ecx": 1879113728,
+              "stack": [
+                1680679010,
+                1879113728,
+                1879117824,
+                1879908352,
+                1879871488,
+                1879130112,
+                516846732
+              ]
+            }
+          ],
+          "writes": {},
+          "registers": {
+            "eax": 7,
+            "edx": 1879908352,
+            "esp": 1744896004,
+            "ebx": 255,
+            "esi": 1879814144,
+            "edi": 1879232512,
+            "ebp": 1879527424
+          },
+          "x87": [],
+          "x87_depth": 0
+        }
+      },
+      "outcomes": {
+        "before": {
+          "fault": 174,
+          "return": 82
+        },
+        "after": {
+          "fault": 174,
+          "return": 82
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "e8d38ddef6b4cedf3a2f1b1bac2da78dfe96e9804f36b3ae2e2aa6844a929911",
+        "918078a8d088c1460e631b84381c5bd629a9345a2cb08fe0371d9249b8577add"
+      ]
+    },
+    "seconds": 13.858857601997443
+  },
+  {
+    "unit": "chainforward",
+    "symbol": "?SaveOverlayBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+    "size": 62,
+    "before_sha256": "e8d38ddef6b4cedf3a2f1b1bac2da78dfe96e9804f36b3ae2e2aa6844a929911",
+    "after_sha256": "918078a8d088c1460e631b84381c5bd629a9345a2cb08fe0371d9249b8577add",
+    "report": {
+      "symbol": "?SaveOverlayBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+      "unit": "chainforward",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 176,
+          "return": 80
+        },
+        "after": {
+          "fault": 176,
+          "return": 80
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          4294967295
+        ]
+      },
+      "objects": [
+        "e8d38ddef6b4cedf3a2f1b1bac2da78dfe96e9804f36b3ae2e2aa6844a929911",
+        "918078a8d088c1460e631b84381c5bd629a9345a2cb08fe0371d9249b8577add"
+      ]
+    },
+    "seconds": 13.841725794016384
+  },
+  {
+    "unit": "brickz",
+    "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+    "size": 380,
+    "before_sha256": "7a9f3a8224583f8b958b1c663fd42655fa20ac326bf38386c3796e6295b5a0d7",
+    "after_sha256": "032a5613cc44e5d2fc9acd869fcda1d3d6e08e6ee1f1f02854817e39c02b9657",
+    "report": {
+      "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+      "unit": "brickz",
+      "verdict": "agree",
+      "cases": 256,
+      "agree": 256,
+      "differ": 0,
+      "first_difference": null,
+      "outcomes": {
+        "before": {
+          "fault": 76,
+          "return": 180
+        },
+        "after": {
+          "fault": 76,
+          "return": 180
+        }
+      },
+      "execution_limits": {
+        "instructions": 20000,
+        "pages": 128
+      },
+      "input_guidance": {
+        "comparison_constants": [
+          0,
+          1,
+          2,
+          3,
+          2360,
+          2361,
+          2362,
+          4294967295
+        ]
+      },
+      "objects": [
+        "7a9f3a8224583f8b958b1c663fd42655fa20ac326bf38386c3796e6295b5a0d7",
+        "032a5613cc44e5d2fc9acd869fcda1d3d6e08e6ee1f1f02854817e39c02b9657"
+      ]
+    },
+    "seconds": 14.375612057978287
+  }
+]

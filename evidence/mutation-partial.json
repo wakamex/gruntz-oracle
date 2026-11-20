@@ -1,0 +1,320 @@
+{
+  "summary": {
+    "status": "stopped_with_exact_gate",
+    "cases_per_pair": 5000,
+    "requested_mutations": 5,
+    "requested_preserving_rewrites": 3,
+    "completed_mutations": 2,
+    "detected_completed_mutations": 2,
+    "completed_preserving_rewrites": 0,
+    "engine_sha256": {
+      "src/gruntz_oracle/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/gruntz_oracle/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "src/gruntz_oracle/cli.py": "37386b082f09f908ee88f2569140483424ddc1802c7fdcb8a23c059cf4863185",
+      "src/gruntz_oracle/coff.py": "3946cfe9b2e60fd71b7e5d03390c136cf018bd8998bbce28c86bd83909e5b61c",
+      "src/gruntz_oracle/engine.py": "76029730c32bf81df3ed391ed0892075ae882847c77edf2a5018418f2b562f7d",
+      "src/gruntz_oracle/signature.py": "57f1243e3a766d8969bd66166be98fe8cfd8231864f183b0d091aea7f1f1da3e"
+    },
+    "incomplete_running_mutation": "dropped-store"
+  },
+  "results": [
+    {
+      "name": "constant",
+      "unit": "namerecord",
+      "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+        "unit": "namerecord",
+        "verdict": "differ",
+        "cases": 5000,
+        "agree": 13,
+        "differ": 4987,
+        "first_difference": {
+          "seed": 0,
+          "categories": [
+            "writes"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {
+              "1879764996": 0,
+              "1879765000": 1,
+              "1879765004": 0,
+              "1879765008": 0,
+              "1879765012": 4294967295,
+              "1879765016": 2,
+              "1879765020": 0,
+              "1879765024": 0,
+              "1879765028": 0,
+              "1879765032": 0,
+              "1879765036": 0,
+              "1879765040": 0,
+              "1879765044": 0,
+              "1879765048": 0,
+              "1879765052": 0,
+              "1879765056": 0,
+              "1879765060": 0,
+              "1879765064": 0,
+              "1879765068": 0,
+              "1879765072": 0,
+              "1879765076": 0,
+              "1879765080": 0,
+              "1879765084": 0,
+              "1879765088": 0,
+              "1879765092": 0,
+              "1879765096": 0,
+              "1879765100": 0,
+              "1879765104": 0,
+              "1879765108": 0,
+              "1879765112": 0,
+              "1879765116": 0,
+              "1879765120": 0,
+              "1879765124": 0,
+              "1879765128": 0,
+              "1879765132": 0,
+              "1879765136": 0,
+              "1879765140": 0,
+              "1879765144": 0,
+              "1879765148": 0,
+              "1879765152": 0,
+              "1879765156": 0,
+              "1879765160": 0,
+              "1879765164": 0,
+              "1879765168": 0,
+              "1879765172": 0,
+              "1879765176": 0,
+              "1879765180": 0,
+              "1879765184": 0,
+              "1879765188": 0,
+              "1879765192": 0,
+              "1879765196": 0,
+              "1879765200": 0,
+              "1879765204": 0
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 1879764992,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {
+              "1879764996": 0,
+              "1879765000": 2,
+              "1879765004": 0,
+              "1879765008": 0,
+              "1879765012": 4294967295,
+              "1879765016": 2,
+              "1879765020": 0,
+              "1879765024": 0,
+              "1879765028": 0,
+              "1879765032": 0,
+              "1879765036": 0,
+              "1879765040": 0,
+              "1879765044": 0,
+              "1879765048": 0,
+              "1879765052": 0,
+              "1879765056": 0,
+              "1879765060": 0,
+              "1879765064": 0,
+              "1879765068": 0,
+              "1879765072": 0,
+              "1879765076": 0,
+              "1879765080": 0,
+              "1879765084": 0,
+              "1879765088": 0,
+              "1879765092": 0,
+              "1879765096": 0,
+              "1879765100": 0,
+              "1879765104": 0,
+              "1879765108": 0,
+              "1879765112": 0,
+              "1879765116": 0,
+              "1879765120": 0,
+              "1879765124": 0,
+              "1879765128": 0,
+              "1879765132": 0,
+              "1879765136": 0,
+              "1879765140": 0,
+              "1879765144": 0,
+              "1879765148": 0,
+              "1879765152": 0,
+              "1879765156": 0,
+              "1879765160": 0,
+              "1879765164": 0,
+              "1879765168": 0,
+              "1879765172": 0,
+              "1879765176": 0,
+              "1879765180": 0,
+              "1879765184": 0,
+              "1879765188": 0,
+              "1879765192": 0,
+              "1879765196": 0,
+              "1879765200": 0,
+              "1879765204": 0
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 1879764992,
+              "esp": 1744896016,
+              "ebx": 3,
+              "esi": 0,
+              "edi": 3,
+              "ebp": 4294967295
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "return": 5000
+          },
+          "after": {
+            "return": 5000
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "48a656d897dae9cc5715f1f87837c18a3343cd3753da9b126ab16835636e59d4"
+        ]
+      },
+      "seconds": 77.57967589993495
+    },
+    {
+      "name": "comparison",
+      "unit": "namerecord",
+      "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+      "preserving": false,
+      "report": {
+        "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+        "unit": "namerecord",
+        "verdict": "differ",
+        "cases": 5000,
+        "agree": 584,
+        "differ": 4416,
+        "first_difference": {
+          "seed": 1,
+          "categories": [
+            "calls",
+            "registers",
+            "writes"
+          ],
+          "before": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [
+              {
+                "callee": "?BuildGameDate@@YAHPAUCGameInfoTime@@@Z",
+                "ecx": 4294967295,
+                "stack": [
+                  1879838904
+                ]
+              }
+            ],
+            "writes": {
+              "1879838908": 4294967295,
+              "1879838912": 15,
+              "1879838932": 65
+            },
+            "registers": {
+              "eax": 1,
+              "edx": 65,
+              "esp": 1744896016,
+              "ebx": 0,
+              "esi": 0,
+              "edi": 17,
+              "ebp": 17
+            },
+            "x87": [],
+            "x87_depth": 0
+          },
+          "after": {
+            "outcome": [
+              "return"
+            ],
+            "calls": [],
+            "writes": {},
+            "registers": {
+              "eax": 0,
+              "edx": 65,
+              "esp": 1744896016,
+              "ebx": 0,
+              "esi": 0,
+              "edi": 17,
+              "ebp": 17
+            },
+            "x87": [],
+            "x87_depth": 0
+          }
+        },
+        "outcomes": {
+          "before": {
+            "return": 5000
+          },
+          "after": {
+            "return": 5000
+          }
+        },
+        "execution_limits": {
+          "instructions": 20000,
+          "pages": 128
+        },
+        "input_guidance": {
+          "comparison_constants": [
+            0,
+            1,
+            2,
+            3,
+            15,
+            16,
+            17,
+            63,
+            64,
+            65,
+            4294967295
+          ]
+        },
+        "objects": [
+          "e50a628dc00f2deb7c29705b2963b40db49be0bb037579f80bf1f603f7be4b20",
+          "cfb9274b458d47bb6b2c356726071750f68e241235ce329034f0fe574e665fb6"
+        ]
+      },
+      "seconds": 37.888158933026716
+    }
+  ]
+}

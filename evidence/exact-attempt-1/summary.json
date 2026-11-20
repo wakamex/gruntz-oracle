@@ -1,0 +1,24 @@
+{
+  "units": [
+    "brickzcellflags",
+    "rezlist",
+    "namerecord",
+    "chainforward",
+    "brickz"
+  ],
+  "functions": 14,
+  "cases_per_function": 256,
+  "report_sha256": "a1fadae7a5f9ffc81011688a6552fd82fc9c26c01b0de5fdbc7256419a22e20d",
+  "attempt": 1,
+  "engine_sha256": {
+    "src/gruntz_oracle/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/gruntz_oracle/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/gruntz_oracle/cli.py": "37386b082f09f908ee88f2569140483424ddc1802c7fdcb8a23c059cf4863185",
+    "src/gruntz_oracle/coff.py": "83672097ebed1bc18a880c2beb9eec008d4cbace9a35c812793be77696eb60b8",
+    "src/gruntz_oracle/engine.py": "eb108d857d9413a16c44c0639a05c0c689001c8560466ab006aff7e310d63533",
+    "src/gruntz_oracle/signature.py": "ec89a69bada625857e3cab80557b340f2692dc0c9496278827192a7f56d379e8"
+  },
+  "errors": 0,
+  "false_differences": 1,
+  "false_difference_rate": 0.07142857142857142
+}
