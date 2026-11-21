@@ -17,6 +17,8 @@ from unicorn import (
     UC_HOOK_MEM_WRITE,
     UC_MEM_FETCH_UNMAPPED,
     UC_MODE_32,
+    UC_PROT_EXEC,
+    UC_PROT_READ,
     Uc,
     UcError,
 )
@@ -114,6 +116,12 @@ class Runner:
                 self.uc.mem_write(page, page_bytes(self.seed, page, self.constants))
             self.mapped.add(page)
 
+    def protect(self, base, size):
+        """Code and read-only data cannot be written, as in the original process: a store there faults."""
+        for page in range(base & -PAGE, (base + size - 1 & -PAGE) + PAGE, PAGE):
+            self.uc.mem_protect(page, PAGE, UC_PROT_READ | UC_PROT_EXEC)
+        self.protected.append((base & -PAGE, (base + size - 1 & -PAGE) + PAGE))
+
     def read(self, address, size):
         if not self.ensure_memory(address, size):
             raise CaseStopped
@@ -173,7 +181,9 @@ class Runner:
     def write_hook(self, uc, access, address, size, value, _):
         if STACK <= address and address + size <= ENTRY_SP + 4:
             return
-        self.writes.update(range(address & -4, (address + size - 1 & -4) + 4, 4))
+        if any(start <= address < end for start, end in self.protected):
+            return  # the store faults before it writes; the fault is the outcome compared
+        self.writes.update(range(address, address + size))
 
     def operand(self, ins, op):
         if op.type == X86_OP_IMM:
@@ -329,6 +339,7 @@ class Runner:
         self.generated = 0
         self.calls = []
         self.writes = set()
+        self.protected = []
         self.steps = 0
         self.outcome = None
         for base, data, frag in self.loaded:
@@ -338,6 +349,7 @@ class Runner:
                 self.map_page(page, generated=not (frag.code or frag.readonly))
             if frag.code or frag.readonly:
                 self.uc.mem_write(base, data)
+                self.protect(base, len(data))
             else:
                 for offset in frag.relocated:
                     self.uc.mem_write(base + offset, data[offset : offset + 4])
@@ -400,7 +412,7 @@ class Runner:
             "outcome": self.outcome,
             "calls": self.calls,
             "writes": {
-                str(at): struct.unpack("<I", self.uc.mem_read(at, 4))[0]
+                str(at): self.uc.mem_read(at, 1)[0]
                 for at in sorted(self.writes)
                 if at & -PAGE in self.mapped
             },
