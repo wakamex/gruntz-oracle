@@ -6,6 +6,26 @@ from pathlib import Path
 
 from mutations import run_check, sha
 
+from gruntz_oracle.coff import Object
+
+FUNCLETS = ('__ehreg$', '__ehunwind$')
+
+
+def reachable(obj, symbol):
+    """The functions an object defines that its function can reach through direct calls and jumps."""
+    defined = {f.name: f for f in obj.fragments if f.code}
+    seen, todo = set(), [symbol]
+    while todo:
+        name = todo.pop()
+        if name in seen or name not in defined:
+            continue
+        seen.add(name)
+        frag = defined[name]
+        for offset, index, kind in obj.sections[frag.section].relocs:
+            if kind == 20 and frag.offset <= offset < frag.offset + len(frag.data):
+                todo.append(obj.symbols[index].name)
+    return seen - {symbol}
+
 UNITS = ['brickzcellflags', 'rezlist', 'namerecord', 'chainforward', 'brickz']
 
 
@@ -29,12 +49,17 @@ def main():
                      for path in sorted((oracle_root / 'src').rglob('*.py'))}
     args.output.mkdir(parents=True, exist_ok=True)
     for name in args.units:
-        exact = [f for f in units[name].get('functions', [])
-                 if float(f.get('fuzzy_match_percent') or 0) == 100]
-        if not exact:
-            raise ValueError(f'{name} has no exact functions')
+        scores = {f['name']: float(f.get('fuzzy_match_percent') or 0) for f in units[name].get('functions', [])}
         before = comparison / 'target' / f'{name}.c.obj'
         after = comparison / 'base' / f'{name}.obj'
+        ours = Object(after)
+        # A pair is a test of false differences only when every function the oracle follows is exact as
+        # well: a callee that differs from retail makes the two runs differ for a real reason.
+        exact = [f for f in units[name].get('functions', [])
+                 if scores[f['name']] == 100 and not f['name'].startswith(FUNCLETS)
+                 and all(scores.get(callee, 100) == 100 for callee in reachable(ours, f['name']))]
+        if not exact:
+            continue
         for function in exact:
             row = {'unit': name, 'symbol': function['name'], 'size': int(function['size']),
                    'before_sha256': sha(before), 'after_sha256': sha(after)}

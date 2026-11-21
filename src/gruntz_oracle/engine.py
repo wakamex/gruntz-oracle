@@ -34,6 +34,8 @@ STOP = 0x61000000
 GDT = 0x62000000
 TIB = GDT + 0x800
 MASK = 0xFFFFFFFF
+# Instructions that end a backward scan for a call's pushed arguments: control transfers and stack moves.
+STOPS = {"call", "ret", "jmp", "pop", "pushal", "popal", "leave", "enter"}
 REGISTERS = {
     name: getattr(x86, "UC_X86_REG_" + name.upper())
     for name in ("eax", "ebx", "ecx", "edx", "esi", "edi", "ebp", "esp", "eip")
@@ -81,9 +83,9 @@ class Limits:
 
 
 class Runner:
-    def __init__(self, link, obj, symbol, constants, limits):
+    def __init__(self, link, obj, symbol, constants, limits, loaded):
         self.link = link
-        self.loaded, self.entries = link.load(obj)
+        self.loaded, self.entries = loaded
         if symbol not in self.entries:
             raise ValueError(f"{obj.path}: missing function {symbol}")
         self.entry = self.entries[symbol]
@@ -102,6 +104,7 @@ class Runner:
                 self.ranges.append((base, base + len(data)))
                 for ins in self.md.disasm(data, base):
                     self.instructions[ins.address] = ins
+        self.previous = {i.address + i.size: i for i in self.instructions.values()}
 
     def reg(self, name):
         return self.uc.reg_read(REGISTERS[name])
@@ -209,6 +212,11 @@ class Runner:
         raise ValueError("unsupported call operand")
 
     def call_site_words(self, ins):
+        """The stack words a call without a readable signature passes, and how many bytes the callee pops.
+        A caller that removes the arguments itself follows the call with `add esp, N` (cdecl); otherwise
+        the callee pops what the caller pushed (stdcall, thiscall). The pushes are counted back from the
+        call over instructions that neither move esp nor transfer control, since MSVC sets ecx or loads
+        an operand between an argument's push and the call."""
         after = self.instructions.get(ins.address + ins.size)
         if (
             after
@@ -218,22 +226,17 @@ class Runner:
             and after.operands[1].type == X86_OP_IMM
         ):
             return after.operands[1].imm // 4, 0
-        # Consecutive pushes immediately before a call identify its stack arguments.
-        cursor = ins.address
-        count = 0
+        cursor, count = ins.address, 0
         while True:
-            previous = next(
-                (i for a, i in self.instructions.items() if a + i.size == cursor), None
-            )
-            if previous is None or previous.mnemonic != "push":
+            previous = self.previous.get(cursor)
+            if previous is None or previous.mnemonic in STOPS or previous.group(1) or previous.group(3):
                 break
-            count += 1
+            if previous.mnemonic == "push":
+                count += 1
+            elif "esp" in previous.op_str.split(",")[0]:
+                break
             cursor = previous.address
-        if count:
-            raise ValueError(
-                f"unknown calling convention at {ins.address:#x}; {count} pushed words"
-            )
-        raise ValueError(f"unknown boundary signature at {ins.address:#x}")
+        return count, 4 * count
 
     def arguments(self, values, sig):
         widths = dict(sig.pointees) if sig else {}
@@ -244,9 +247,10 @@ class Runner:
                 continue
             size = widths.get(index)
             if size is None:
-                raise ValueError(
-                    "stack pointer boundary argument has unknown pointee extent"
-                )
+                # A pointer into the caller's frame whose pointee size is unknown: its address differs
+                # between correct builds, so compare the word it points at, the part both must agree on.
+                normalized.append({"stack": self.u32(value)})
+                continue
             aliases = [
                 (other, pointer - value)
                 for other, pointer in enumerate(values)
@@ -270,15 +274,13 @@ class Runner:
         sp = self.reg("esp")
         args_sp = sp + 4 if tail else sp
         arguments = [self.u32(args_sp + 4 * i) for i in range(words)]
-        if STACK <= self.reg("ecx") < ENTRY_SP + 4:
-            raise ValueError("stack this pointer has unknown object extent")
-        self.calls.append(
-            {
-                "callee": self.link.names.get(destination, destination),
-                "ecx": self.reg("ecx"),
-                "stack": self.arguments(arguments, sig),
-            }
-        )
+        call = {"callee": self.link.names.get(destination, destination), "stack": self.arguments(arguments, sig)}
+        if sig is None or sig.thiscall:
+            ecx = self.reg("ecx")
+            # this in the caller's frame: compare the object's first word (its vtable for a class with
+            # one), since the frame address itself differs between correct builds
+            call["ecx"] = {"stack": self.u32(ecx)} if STACK <= ecx < ENTRY_SP + 4 else ecx
+        self.calls.append(call)
         result = word(self.seed, 0xF0000000 + 4 * (len(self.calls) - 1), self.constants)
         self.setreg("eax", result)
         if sig and sig.floating:
@@ -418,9 +420,12 @@ class Runner:
             },
         }
         if self.outcome == ["return"]:
+            # edx is scratch under Microsoft's conventions unless the result fills edx:eax; with no
+            # readable signature it is compared, so an unknown result type cannot hide a difference
+            own = signature(self.symbol)
+            kept = ("eax", "edx") if own is None or own.wide else ("eax",)
             record["registers"] = {
-                r: self.reg(r)
-                for r in ("eax", "edx", "esp", "ebx", "esi", "edi", "ebp")
+                r: self.reg(r) for r in (*kept, "esp", "ebx", "esi", "edi", "ebp")
             }
             tags = self.uc.reg_read(x86.UC_X86_REG_FPTAG)
             top = (self.uc.reg_read(x86.UC_X86_REG_FPSW) >> 11) & 7
@@ -465,7 +470,21 @@ def check(
                                     )
                                 )
     limits = limits or Limits()
-    runners = [Runner(link, obj, symbol, sorted(constants), limits) for obj in objects]
+    loads = [link.load(obj) for obj in objects]
+    shared = []
+    for index, (loaded, entries) in enumerate(loads):
+        # A function or datum only one object defines (an inline copy one build emitted, or a body the
+        # retail object keeps elsewhere) runs from that copy in both, so the two builds see the same callee.
+        other_loaded, other_entries = loads[1 - index]
+        names = {frag.name for _, _, frag in loaded}
+        shared.append((
+            [*loaded, *(item for item in other_loaded if item[2].name not in names)],
+            {**other_entries, **entries},
+        ))
+    runners = [
+        Runner(link, obj, symbol, sorted(constants), limits, shared[index])
+        for index, obj in enumerate(objects)
+    ]
     differ = 0
     first = None
     outcomes = [Counter(), Counter()]

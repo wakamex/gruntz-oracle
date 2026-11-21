@@ -13,6 +13,8 @@ class Signature:
     floating: bool = False
     pointers: tuple[int, ...] = ()
     pointees: tuple[tuple[int, int], ...] = ()
+    wide: bool = False  # the result fills edx:eax, so edx is part of it
+    thiscall: bool = False  # ecx carries this; for any other convention ecx is scratch at the call
 
 
 C_SIGNATURES = {
@@ -110,11 +112,14 @@ def signature(name):
         elif arg.startswith(("class ", "struct ", "union ")):
             return None
         words += 2 if not pointer and ("double" in arg or "__int64" in arg) else 1
-    floating = bool(re.search(r"\b(float|double)\s*$", declaration[: match.start()]))
+    floating = bool(re.search(r"\b(float|double)\s*$", returns))
+    wide = bool(re.search(r"\b__int64\s*$", returns))
     return Signature(
         words,
         4 * words if match[1] in ("stdcall", "thiscall") else 0,
         floating,
         tuple(pointers),
         tuple(pointees),
+        wide,
+        match[1] == "thiscall",
     )
