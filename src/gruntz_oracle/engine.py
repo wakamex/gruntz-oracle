@@ -686,7 +686,7 @@ def check(
     first = None
     outcomes = [Counter(), Counter()]
     targets = differing(runners)
-    reaching = exercised = 0
+    reaching = exercised = inconclusive = 0
     missed = Counter()
     for case in range(seed, seed + cases):
         records = [runner.run(case) for runner in runners]
@@ -703,6 +703,11 @@ def check(
             else:
                 kind = outcome[0] if outcome[0] != "limit" else f"limit-{outcome[1]}"
             missed[kind] += 1
+        if any(record["outcome"][0] == "limit" for record in records):
+            # a run cut off by a limit stopped at a point that depends on how the build orders its work, so
+            # the two are not compared: the case shows neither agreement nor a difference
+            inconclusive += 1
+            continue
         if records[0] != records[1]:
             differ += 1
             if first is None:
@@ -732,6 +737,7 @@ def check(
         "cases_reaching_difference": reaching,
         "cases_exercising_difference": exercised,
         "cases_missing_difference": dict(missed),
+        "cases_inconclusive": inconclusive,
         "cases": cases,
         "agree": cases - differ,
         "differ": differ,

@@ -73,6 +73,14 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(result["verdict"], "under-exercised")
         self.assertEqual(result["cases_exercising_difference"], 0)
 
+    def test_runs_cut_off_by_a_limit_are_not_compared(self):
+        # the same work in another order: stores cut off at a fixed instruction count differ, results would not
+        before = self.obj("1:\nmovl $1, 0x70000000\nmovl $2, 0x70000004\njmp 1b")
+        after = self.obj("1:\nmovl $2, 0x70000004\nmovl $1, 0x70000000\njmp 1b")
+        result = self.compare(before, after, limits=Limits(instructions=101))
+        self.assertEqual(result["verdict"], "under-exercised")
+        self.assertEqual(result["cases_inconclusive"], 4)
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
