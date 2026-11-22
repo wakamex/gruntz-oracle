@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from mutations import run_check, sha
+from mutations import layouts, run_check, sha
 
 from gruntz_oracle.coff import Object
 
@@ -37,6 +37,7 @@ def main():
     parser.add_argument('--cases', type=int, default=5000)
     parser.add_argument('--attempt', type=int, required=True, help='false-difference gate attempt number')
     parser.add_argument('--units', nargs='+', default=UNITS)
+    parser.add_argument('--concord', type=Path, help='concord checkout, for the units\' record layouts')
     args = parser.parse_args()
     root = args.gruntz.resolve()
     comparison = root / 'build/objdiff/compare-new'
@@ -64,8 +65,8 @@ def main():
             row = {'unit': name, 'symbol': function['name'], 'size': int(function['size']),
                    'before_sha256': sha(before), 'after_sha256': sha(after)}
             try:
-                row['report'], row['seconds'] = run_check(args.oracle, root, before, after,
-                                                         function['name'], name, args.cases)
+                row['report'], row['seconds'] = run_check(args.oracle, root, before, after, function['name'], name,
+                                                         args.cases, layouts(args.concord, root, name))
             except RuntimeError as exc:
                 row['error'] = str(exc)
             rows.append(row)

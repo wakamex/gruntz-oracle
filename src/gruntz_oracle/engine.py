@@ -4,7 +4,7 @@ import bisect
 import hashlib
 import struct
 import zlib
-from collections import Counter
+from collections import Counter, deque
 from dataclasses import asdict, dataclass
 from difflib import SequenceMatcher
 from functools import lru_cache
@@ -286,11 +286,13 @@ class Runner:
                 self.map_page(page, generated=True)
                 for at, word_bytes in self.lazy[page]:
                     self.uc.mem_write(at, word_bytes)
+                self.apply(page, page + PAGE)
                 continue
             if self.generated >= self.limits.pages:
                 self.stop(["limit", "pages"])
                 return False
             self.map_page(page, generated=True)
+            self.apply(page, page + PAGE)
             self.generated += 1
         return True
 
@@ -302,6 +304,17 @@ class Runner:
             return  # the store faults before it writes; the fault is the outcome compared
         self.writes.update(range(address, address + size))
 
+    def address_of(self, ins, op):
+        mem = op.mem
+        address = mem.disp
+        if mem.base:
+            address += self.uc.reg_read(getattr(x86, "UC_X86_REG_" + ins.reg_name(mem.base).upper()))
+        if mem.index:
+            address += mem.scale * self.uc.reg_read(getattr(x86, "UC_X86_REG_" + ins.reg_name(mem.index).upper()))
+        if mem.segment and ins.reg_name(mem.segment) == "fs":
+            address += TIB
+        return address & MASK
+
     def operand(self, ins, op):
         if op.type == X86_OP_IMM:
             return op.imm & MASK
@@ -310,20 +323,77 @@ class Runner:
                 getattr(x86, "UC_X86_REG_" + ins.reg_name(op.reg).upper())
             )
         if op.type == X86_OP_MEM:
-            mem = op.mem
-            address = mem.disp
-            if mem.base:
-                address += self.uc.reg_read(
-                    getattr(x86, "UC_X86_REG_" + ins.reg_name(mem.base).upper())
-                )
-            if mem.index:
-                address += mem.scale * self.uc.reg_read(
-                    getattr(x86, "UC_X86_REG_" + ins.reg_name(mem.index).upper())
-                )
-            if mem.segment and ins.reg_name(mem.segment) == "fs":
-                address += TIB
-            return self.u32(address & MASK)
+            return self.u32(self.address_of(ins, op))
         raise ValueError("unsupported call operand")
+
+    def input(self, key, value):
+        """An input word generated for `key` (a memory address, or the key of a register or call result),
+        with the case's overrides applied."""
+        if self.overrides:
+            data = bytearray(struct.pack("<I", value))
+            for k in range(4):
+                if key + k in self.overrides:
+                    data[k] = self.overrides[key + k]
+            value = struct.unpack("<I", data)[0]
+        self.sources[key] = value
+        return value
+
+    def apply(self, start, end):
+        """Write the case's overrides that fall in [start, end) over generated memory."""
+        for at, byte in self.overrides.items():
+            if start <= at < end:
+                self.uc.mem_write(at, bytes((byte,)))
+
+    def compared(self, ins):
+        """Log a cmp or test: each operand's value, size and the input it came from, if one can be named."""
+        sides = []
+        for op in ins.operands:
+            size = op.size or 4
+            if op.type == X86_OP_IMM:
+                sides.append((None, op.imm & ((1 << 8 * size) - 1), size, "imm"))
+            elif op.type == X86_OP_REG:
+                value = self.uc.reg_read(getattr(x86, "UC_X86_REG_" + ins.reg_name(op.reg).upper()))
+                value &= (1 << 8 * size) - 1
+                sides.append((None, value, size, "reg"))
+            elif op.type == X86_OP_MEM:
+                at = self.address_of(ins, op)
+                if at < PAGE or not all((page & -PAGE) in self.mapped for page in (at, at + size - 1)):
+                    return
+                value = int.from_bytes(self.uc.mem_read(at, size), "little")
+                # memory the function read before writing it, outside code and constants, is an input
+                generated = not (STACK <= at < ENTRY_SP + 4) and not any(lo <= at < hi for lo, hi in self.protected)
+                fresh = not any(at + k in self.writes for k in range(size))
+                sides.append((at if generated and fresh else None, value, size, "mem"))
+        if len(sides) == 2:
+            self.log.append((ins.address, ins.mnemonic, sides))
+
+    def proposals(self):
+        """Overrides that would take the other side of the comparisons this run made, latest first: an
+        operand read from an input is set to the other operand, its neighbours, or (for test) with the
+        mask's bits set or cleared; a register operand is traced to an input word holding the same value."""
+        found, sites = [], set()
+        for address, mnemonic, sides in reversed(self.log):
+            for index in (0, 1):
+                key, value, size, kind = sides[index]
+                other = sides[1 - index][1]
+                width = (1 << 8 * size) - 1
+                if mnemonic == "cmp":
+                    targets = {other, other + 1 & width, other - 1 & width}
+                elif sides[0][3] == "reg" and sides[1][3] == "reg" and sides[0][1] == sides[1][1]:
+                    targets = {0, 1, width}  # test r, r: zero, positive and negative
+                else:
+                    targets = {value | other, value & ~other & width}
+                targets.discard(value)
+                keys = [key] if key is not None else []
+                if kind == "reg" and size == 4:
+                    keys = [k for k, v in self.sources.items() if v == value][:4]
+                for k in keys:
+                    for target in sorted(targets):
+                        site = (address, index, k, target)
+                        if site not in sites:
+                            sites.add(site)
+                            found.append({k + i: b for i, b in enumerate(target.to_bytes(size if key is not None else 4, "little"))})
+        return found
 
     def call_site_words(self, ins):
         """The stack words a call without a readable signature passes, and how many bytes the callee pops.
@@ -420,7 +490,7 @@ class Runner:
         callee = str(call["callee"])
         self.call_counts[callee] += 1
         slot = (zlib.crc32(callee.encode()) % 0x100000) * 64 + self.call_counts[callee] % 64
-        result = word(self.seed, 0xF0000000 + 4 * slot, self.constants)
+        result = self.input(0xF0000000 + 4 * slot, word(self.seed, 0xF0000000 + 4 * slot, self.constants))
         self.setreg("eax", result)
         if sig and sig.floating:
             status = self.uc.reg_read(x86.UC_X86_REG_FPSW)
@@ -454,13 +524,16 @@ class Runner:
             self.stop(["fault", "stack", self.reg("esp") & -PAGE])
             return
         self.steps += 1
-        self.executed.add(address)
+        self.executed[address] = self.executed.get(address, 0) + 1
         if self.steps > self.limits.instructions:
             self.stop(["limit", "instructions"])
             return
         ins = self.instructions.get(address)
         if ins is None:
             self.stop(["fault", "instruction", address & -PAGE])
+            return
+        if ins.mnemonic in ("cmp", "test") and len(self.log) < 512:
+            self.compared(ins)
             return
         if ins.mnemonic not in ("call", "jmp"):
             return
@@ -474,14 +547,17 @@ class Runner:
             return
         self.boundary(ins, destination, ins.mnemonic == "jmp")
 
-    def run(self, seed):
+    def run(self, seed, overrides=None):
         self.seed = seed
+        self.overrides = overrides or {}
+        self.sources = {}  # input key -> value of the register-like inputs: registers, arguments, call results
+        self.log = []
         self.uc = Uc(UC_ARCH_X86, UC_MODE_32)
         self.mapped = set()
         self.generated = 0
         self.calls = []
         self.writes = set()
-        self.executed = set()
+        self.executed = {}
         self.call_counts = Counter()
         self.protected = []
         self.steps = 0
@@ -535,6 +611,12 @@ class Runner:
         cls = owner(self.symbol) if self.layouts and (sig is None or sig.thiscall) else None
         if cls in (self.layouts.ids if self.layouts else ()):
             self.setreg("ecx", self.layouts.pointer(seed, 0xE0000000 + 0x100, cls) or TYPED + self.layouts.ids[cls] * SPAN)
+        for index, name in enumerate(REGISTERS):
+            if name not in ("esp", "eip"):
+                self.setreg(name, self.input(0xE0000000 + 4 * index, self.reg(name)))
+        self.apply(ENTRY_SP + 4, ENTRY_SP + 4 + 4 * 128)
+        for index in range(sig.words if sig else 16):
+            self.sources[ENTRY_SP + 4 + 4 * index] = self.u32(ENTRY_SP + 4 + 4 * index)
         self.uc.reg_write(x86.UC_X86_REG_EFLAGS, 0x202)
         self.uc.reg_write(x86.UC_X86_REG_FPCW, 0x37F)
         self.uc.reg_write(x86.UC_X86_REG_FPSW, 0)
@@ -589,6 +671,11 @@ class Runner:
             ]
             record["x87_depth"] = len(record["x87"])
         return record
+
+
+def bucket(count):
+    """A hit count's class, as coverage-guided fuzzers count loop iterations: 1, 2, 3, 4-7, 8-15, ..."""
+    return count if count < 4 else count.bit_length() + 1
 
 
 def shape(ins):
@@ -652,6 +739,7 @@ def check(
     seed=0,
     limits=None,
     layouts=None,
+    guided=True,
 ):
     if cases < 1 or seed < 0:
         raise ValueError("cases must be positive and seed nonnegative")
@@ -696,11 +784,35 @@ def check(
     targets = differing(runners)
     reaching = exercised = inconclusive = 0
     missed = Counter()
-    for case in range(seed, seed + cases):
-        records = [runner.run(case) for runner in runners]
+    covered = set()
+    queue = deque()
+    tried = set()
+    seeds = iter(range(seed, seed + 10 * cases + 1))
+    guided_cases = 0
+    for number in range(cases):
+        # half the cases are seeds; the rest take the other side of comparisons in cases that reached new
+        # code or ran a loop a new number of times, and more seeds when there is nothing left to flip
+        if guided and number >= cases // 2 and queue:
+            case, overrides = queue.popleft()
+            guided_cases += 1
+        else:
+            case, overrides = next(seeds), {}
+        records = [runner.run(case, overrides) for runner in runners]
+        if guided:
+            new = {(index, address, bucket(count)) for index, runner in enumerate(runners)
+                   for address, count in runner.executed.items()} - covered
+            if new:
+                covered |= new
+                for runner in runners:
+                    for proposal in runner.proposals()[:24]:
+                        candidate = {**overrides, **proposal}
+                        identity = (case, tuple(sorted(candidate.items())))
+                        if identity not in tried:
+                            tried.add(identity)
+                            queue.append((case, candidate))
         for index, record in enumerate(records):
             outcomes[index].update([record["outcome"][0]])
-        if any(runner.executed & target for runner, target in zip(runners, targets)):
+        if any(runner.executed.keys() & target for runner, target in zip(runners, targets)):
             reaching += 1
             if all(record["outcome"][0] != "limit" for record in records):
                 exercised += 1
@@ -726,6 +838,7 @@ def check(
                 ]
                 first = {
                     "seed": case,
+                    "overrides": {hex(at): byte for at, byte in sorted(overrides.items())},
                     "categories": sorted(categories),
                     "before": records[0],
                     "after": records[1],
@@ -746,6 +859,7 @@ def check(
         "cases_exercising_difference": exercised,
         "cases_missing_difference": dict(missed),
         "cases_inconclusive": inconclusive,
+        "guided_cases": guided_cases,
         "cases": cases,
         "agree": cases - differ,
         "differ": differ,

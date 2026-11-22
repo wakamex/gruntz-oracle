@@ -21,6 +21,7 @@ def main(argv=None):
     command.add_argument("--seed", type=int, default=0)
     command.add_argument("--instructions", type=int, default=20000)
     command.add_argument("--pages", type=int, default=128)
+    command.add_argument("--unguided", action="store_true", help="seeds only, without comparison-guided cases")
     command.add_argument("--layouts", type=Path, help="JSON record layouts of the unit, to lay out memory by type")
     args = parser.parse_args(argv)
     try:
@@ -35,6 +36,7 @@ def main(argv=None):
             seed=args.seed,
             limits=Limits(args.instructions, args.pages),
             layouts=json.loads(args.layouts.read_text()) if args.layouts else None,
+            guided=not args.unguided,
         )
     except (ValueError, OSError, KeyError) as error:
         print(json.dumps({"error": str(error)}))

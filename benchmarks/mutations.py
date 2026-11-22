@@ -98,23 +98,35 @@ def build(root, output, concord):
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
 
 
-def run_check(command, root, before, after, symbol, unit, cases):
+def layouts(concord, root, unit):
+    """The unit's record layouts as concord gives them to the oracle, or None without a concord checkout."""
+    if concord is None:
+        return None
+    sys.path.insert(0, str(concord / 'src'))
+    from concord.gruntz import Gruntz
+
+    return Gruntz(root).layouts(unit)
+
+
+def run_check(command, root, before, after, symbol, unit, cases, layout=None):
     start = time.monotonic()
+    extra = ['--layouts', str(layout)] if layout else []
     result = subprocess.run([*shlex.split(command), 'check', str(before), str(after),
-                             '--symbol', symbol, '--unit', unit, '--cases', str(cases)],
+                             '--symbol', symbol, '--unit', unit, '--cases', str(cases), *extra],
                             cwd=root, capture_output=True, text=True, check=False)
     try:
         report = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
         raise RuntimeError(f'oracle output ({result.returncode}): {result.stdout}\n{result.stderr}') from exc
-    if result.returncode not in (0, 1):
+    verdicts = {0: 'agree', 1: 'differ', 3: 'under-exercised'}
+    if result.returncode not in verdicts:
         raise RuntimeError(f'oracle error: {report}\n{result.stderr}')
-    if report.get('verdict') != ('agree' if result.returncode == 0 else 'differ'):
+    if report.get('verdict') != verdicts[result.returncode]:
         raise RuntimeError(f'verdict and exit status disagree: {report}')
     return report, time.monotonic() - start
 
 
-def measure(root, output, command, cases):
+def measure(root, output, command, cases, concord=None):
     rows = []
     oracle_root = Path(__file__).resolve().parents[1]
     engine_hashes = {str(path.relative_to(oracle_root)): sha(path)
@@ -124,7 +136,7 @@ def measure(root, output, command, cases):
             if sha(mutation[key]) != mutation[f'{key}_sha256']:
                 raise ValueError(f'changed input: {mutation[key]}')
         report, seconds = run_check(command, root, mutation['original'], mutation['mutation'],
-                                    mutation['symbol'], mutation['unit'], cases)
+                                    mutation['symbol'], mutation['unit'], cases, layouts(concord, root, mutation['unit']))
         row = {'name': mutation['name'], 'unit': mutation['unit'], 'symbol': mutation['symbol'],
                'preserving': mutation['preserving'], 'report': report, 'seconds': seconds}
         rows.append(row)
@@ -147,7 +159,8 @@ def measure(root, output, command, cases):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--gruntz', type=Path, required=True)
-    parser.add_argument('--concord', type=Path, help='concord checkout, required when compiling')
+    parser.add_argument('--concord', type=Path,
+                        help='concord checkout, required when compiling; when measuring, the source of record layouts')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--oracle', default='gruntz-oracle')
     parser.add_argument('--cases', type=int, default=5000)
@@ -162,7 +175,8 @@ def main():
             parser.error('--concord is required when compiling')
         build(args.gruntz.resolve(), args.output, args.concord.resolve())
     if not args.build_only:
-        return measure(args.gruntz.resolve(), args.output, args.oracle, args.cases)
+        return measure(args.gruntz.resolve(), args.output, args.oracle, args.cases,
+                       args.concord.resolve() if args.concord else None)
     return 0
 
 
