@@ -56,6 +56,20 @@ def split_arguments(text):
 
 
 @cache
+def void_result(name):
+    """Whether a decorated function name says it returns nothing, so no register holds a result; readable
+    even where the arguments are not, such as a class passed by value."""
+    if not name.startswith("?"):
+        return False
+    result = subprocess.run(["llvm-undname", name], capture_output=True, text=True, check=False)
+    lines = result.stdout.strip().splitlines()
+    if result.returncode or len(lines) < 2:
+        return False
+    match = re.search(r"__(cdecl|stdcall|thiscall|fastcall) ", lines[1])
+    return bool(match) and bool(re.search(r"\bvoid\s*$", lines[1][: match.start()]))
+
+
+@cache
 def signature(name):
     name = name.removeprefix("__imp_")
     if name in C_SIGNATURES:
@@ -99,7 +113,7 @@ def signature(name):
             pointers.append(words)
             named = re.fullmatch(r"(?:const |volatile )*(?:class|struct|union) ([\w:<>, ]+?) *[*&]", arg.strip())
             if named:
-                records.append((words, named[1].split("::")[-1]))
+                records.append((words, named[1].strip()))
             primitive = re.sub(r"\b(const|volatile|signed|unsigned)\b", "", arg)
             primitive = primitive.replace("*", "").replace("&", "").strip()
             widths = {

@@ -90,6 +90,20 @@ class EngineTests(unittest.TestCase):
         beyond = self.obj("movl $2, 8(%esp)\nmovl $0, %eax\nret", symbol="?f@@YAHH@Z")
         self.assertEqual(check(before, beyond, "?f@@YAHH@Z", cases=4)["verdict"], "differ")
 
+    def test_void_result_registers_are_not_compared(self):
+        before = self.obj("movl $1, %eax\nret", symbol="?f@@YAXH@Z")
+        after = self.obj("movl $2, %eax\nret", symbol="?f@@YAXH@Z")
+        self.assertEqual(check(before, after, "?f@@YAXH@Z", cases=4)["verdict"], "agree")
+
+    def test_compiler_constants_keep_their_bytes(self):
+        # the same constant under two compiler-chosen names reads the same; a changed one does not
+        def build(name, value):
+            return self.obj(f'movl "{name}", %eax\nret',
+                            f'.data\n"{name}":\n.long {value}')
+        before, renamed, changed = build("$T100", 7), build("$T200", 7), build("$T200", 8)
+        self.assertEqual(self.compare(before, renamed)["verdict"], "agree")
+        self.assertEqual(self.compare(before, changed)["verdict"], "differ")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")

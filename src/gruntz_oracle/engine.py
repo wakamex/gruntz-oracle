@@ -27,8 +27,9 @@ from unicorn import (
 )
 from unicorn import x86_const as x86
 
-from .coff import Link, Object
-from .signature import signature
+from .coff import Fragment, Link, Object, stable
+from .retail import image
+from .signature import signature, void_result
 
 PAGE = 4096
 ENTRY_SP = 0x68010000
@@ -570,6 +571,13 @@ class Runner:
                 self.uc.mem_write(base, data)
                 self.protect(base, len(data))
                 continue
+            if not stable(frag.name):
+                # compiler-generated data (a floating-point constant or other temporary the compiler keeps in
+                # writable data) is part of the program, not an input: it starts with its own bytes
+                for page in range(base & -PAGE, (base + len(data) - 1 & -PAGE) + PAGE, PAGE):
+                    self.map_page(page)
+                self.uc.mem_write(base, data)
+                continue
             for page in range(base & -PAGE, (base + len(data) - 1 & -PAGE) + PAGE, PAGE):
                 self.lazy.setdefault(page, [])
             for offset in frag.relocated:
@@ -658,7 +666,10 @@ class Runner:
             # edx is scratch under Microsoft's conventions unless the result fills edx:eax; with no
             # readable signature it is compared, so an unknown result type cannot hide a difference
             own = signature(self.symbol)
-            kept = ("eax", "edx") if own is None or own.wide else ("eax",)
+            if void_result(self.symbol):
+                kept = ()
+            else:
+                kept = ("eax", "edx") if own is None or own.wide else ("eax",)
             record["registers"] = {
                 r: self.reg(r) for r in (*kept, "esp", "ebx", "esi", "edi", "ebp")
             }
@@ -671,6 +682,11 @@ class Runner:
             ]
             record["x87_depth"] = len(record["x87"])
         return record
+
+
+def kinds_of(link, key):
+    address = link.addresses[key]
+    return "external" if 0x50000000 <= address < 0x60000000 else "defined"
 
 
 def bucket(count):
@@ -740,6 +756,7 @@ def check(
     limits=None,
     layouts=None,
     guided=True,
+    retail=None,
 ):
     if cases < 1 or seed < 0:
         raise ValueError("cases must be positive and seed nonnegative")
@@ -764,6 +781,20 @@ def check(
                                 )
     limits = limits or Limits()
     loads = [link.load(obj) for obj in objects]
+    if retail is not None:
+        # a compiler-generated datum an object only references, under a name no other object defines, is
+        # read from the original executable when its bytes hold no pointers
+        source = image(Path(retail))
+        for obj, (loaded, _) in zip(objects, loads):
+            defined = {base for base, _, _ in loaded}
+            for name, key in link.local[id(obj)].items():
+                base = link.addresses[key]
+                if stable(name) or base in defined or kinds_of(link, key) != "external" or source is None:
+                    continue
+                data = source.bytes(name)
+                if data:
+                    loaded.append((base, data, Fragment(name, 0, 0, data, False, True)))
+                    defined.add(base)
     shared = []
     for index, (loaded, entries) in enumerate(loads):
         # A function or datum only one object defines (an inline copy one build emitted, or a body the
