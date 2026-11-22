@@ -121,6 +121,12 @@ class EngineTests(unittest.TestCase):
         padded = self.obj("1:\njmp 1b\nnop\nnop\nint3")
         self.assertEqual(self.compare(obj, padded)["differing_instructions"], [0, 0])
 
+    def test_caller_cleanup_after_other_work(self):
+        # an unknown cdecl callee: the caller's add esp may come after an instruction that reads the stack
+        before = self.obj("pushl $1\ncall _outside\naddl $4, %esp\nleal 4(%esp), %eax\nmovl $0, %eax\nret")
+        after = self.obj("pushl $1\ncall _outside\nleal 8(%esp), %eax\naddl $4, %esp\nmovl $0, %eax\nret")
+        self.assertEqual(self.compare(before, after)["verdict"], "agree")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")

@@ -402,7 +402,15 @@ class Runner:
         the callee pops what the caller pushed (stdcall, thiscall). The pushes are counted back from the
         call over instructions that neither move esp nor transfer control, since MSVC sets ecx or loads
         an operand between an argument's push and the call."""
+        # the cleanup may follow other work the scheduler placed first, such as a lea reading the arguments
         after = self.instructions.get(ins.address + ins.size)
+        while (
+            after
+            and after.mnemonic not in STOPS | {"push"}
+            and not (after.group(1) or after.group(3))
+            and "esp" not in after.op_str.split(",")[0]
+        ):
+            after = self.instructions.get(after.address + after.size)
         if (
             after
             and after.mnemonic == "add"
