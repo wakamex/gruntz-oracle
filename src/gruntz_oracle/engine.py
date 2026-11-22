@@ -66,7 +66,7 @@ def word(seed, address, constants=()):
         # mostly zero with an occasional small value, so a pointer chain can reach a run of clear cells
         if mix((seed << 32) ^ (address & -PAGE) ^ 0x5BD1E995) % 2 == 0:
             return 0x70000000 + ((value >> 8) % 256) * PAGE
-        return 0 if value % 4 else (1, 2, 3)[value % 3]
+        return sparse(seed, address)
     if lane == 1 and constants:
         return constants[value % len(constants)] & MASK
     selector = value % 8
@@ -75,6 +75,88 @@ def word(seed, address, constants=()):
     if selector < 6:
         return (0, 1, 2, 3, 4, 7, 15, 31, 63, 127, 255, MASK)[(value >> 8) % 12]
     return (value >> 16) & MASK
+
+
+def sparse(seed, address):
+    """A data word of mostly empty memory: zero, or now and then a small value."""
+    value = mix((seed << 32) ^ address)
+    return 0 if value % 4 else (1, 2, 3)[value % 3]
+
+
+# Memory laid out by type: each record type, and each array of pointers to one, has its own span of the
+# arena, so the type of any address follows from the address alone and generated memory does not depend on
+# the order a build touches it. A pointer to a type points at one of its span's slots, chosen from the
+# pointer's own address, so two builds reach the same objects.
+TYPED, TYPED_END = 0x80000000, 0xE0000000
+SPAN, SLOT = 0x40000, 0x10000
+
+
+class Layouts:
+    """The record layouts of the unit: for each record, its size and pointer fields with their targets."""
+
+    def __init__(self, records):
+        self.records = {
+            name: (row["size"], tuple((offset, target) for offset, target in row["pointers"]))
+            for name, row in records.items()
+            if 0 < row["size"] <= SLOT
+        }
+        kinds = set(self.records)
+        for _, pointers in self.records.values():
+            kinds.update(target for _, target in pointers if target.lstrip("*") in self.records)
+        kinds = sorted(kinds)[: (TYPED_END - TYPED) // SPAN]
+        self.ids = {kind: index for index, kind in enumerate(kinds)}
+        self.kinds = kinds
+
+    def layout(self, kind):
+        """The element size and pointer fields of one slot type: a record, or an array of pointers."""
+        if kind.startswith("*"):
+            return 4, ((0, kind[1:]),)
+        return self.records[kind]
+
+    def pointer(self, seed, address, kind):
+        """The generated value of a pointer stored at `address` whose target has type `kind`."""
+        value = mix((seed << 32) ^ address ^ 0x7F4A7C15)
+        if seed % 8 not in (2, 3) and value % 8 == 0:
+            return 0
+        if kind not in self.ids:
+            return 0x70000000 + ((value >> 8) % 256) * PAGE
+        size, _ = self.layout(kind)
+        per_slot = SLOT // size
+        return TYPED + self.ids[kind] * SPAN + ((value >> 8) % (SPAN // SLOT)) * per_slot * size
+
+    def page(self, seed, page, constants):
+        """The bytes of one page of the typed arena: scalar words as generated data, pointer fields typed."""
+        kind = self.kinds[(page - TYPED) // SPAN] if (page - TYPED) // SPAN < len(self.kinds) else None
+        if seed % 8 in (2, 3):
+            body = bytearray(b"".join(struct.pack("<I", sparse(seed, at)) for at in range(page, page + PAGE, 4)))
+        else:
+            body = bytearray(page_bytes(seed, page, constants))
+        if kind is None:
+            return bytes(body)
+        size, pointers = self.layout(kind)
+        start = TYPED + self.ids[kind] * SPAN
+        first = (page - start) // size
+        for element in range(first, (page + PAGE - 1 - start) // size + 1):
+            for offset, target in pointers:
+                at = start + element * size + offset
+                if page - 3 <= at < page + PAGE:
+                    data = struct.pack("<I", self.pointer(seed, at, target))
+                    for k in range(4):
+                        if page <= at + k < page + PAGE:
+                            body[at + k - page] = data[k]
+        return bytes(body)
+
+
+def owner(symbol):
+    """The class a member function's decorated name belongs to, as libclang spells it, or None."""
+    if not symbol.startswith("?") or "?$" in symbol:
+        return None
+    if symbol.startswith("??"):
+        rest = symbol[4:] if symbol[2] == "_" else symbol[3:]
+        scopes = rest.split("@@")[0].split("@")
+    else:
+        scopes = symbol[1:].split("@@")[0].split("@")[1:]
+    return "::".join(reversed(scopes)) if scopes and all(scopes) else None
 
 
 @lru_cache(maxsize=2048)
@@ -96,8 +178,9 @@ class Limits:
 
 
 class Runner:
-    def __init__(self, link, obj, symbol, constants, limits, loaded):
+    def __init__(self, link, obj, symbol, constants, limits, loaded, layouts=None):
         self.link = link
+        self.layouts = layouts
         self.loaded, self.entries = loaded
         if symbol not in self.entries:
             raise ValueError(f"{obj.path}: missing function {symbol}")
@@ -131,7 +214,9 @@ class Runner:
     def map_page(self, page, *, generated=False):
         if page not in self.mapped:
             self.uc.mem_map(page, PAGE)
-            if generated:
+            if generated and self.layouts and TYPED <= page < TYPED_END:
+                self.uc.mem_write(page, self.layouts.page(self.seed, page, self.constants))
+            elif generated:
                 self.uc.mem_write(page, page_bytes(self.seed, page, self.constants))
             self.mapped.add(page)
 
@@ -430,13 +515,18 @@ class Runner:
         )
         sig = signature(self.symbol)
         if sig:
+            records = dict(sig.records) if self.layouts else {}
             for index in sig.pointers:
-                self.uc.mem_write(
-                    ENTRY_SP + 4 + index * 4,
-                    struct.pack(
-                        "<I", 0x70000000 + (mix(seed + index + 1) % 256) * PAGE
-                    ),
-                )
+                at = ENTRY_SP + 4 + index * 4
+                if index in records and records[index] in self.layouts.ids:
+                    value = self.layouts.pointer(seed, at, records[index])
+                else:
+                    value = 0x70000000 + (mix(seed + index + 1) % 256) * PAGE
+                self.uc.mem_write(at, struct.pack("<I", value))
+        # a member function's object is laid out by its class when the unit's layouts know it
+        cls = owner(self.symbol) if self.layouts and (sig is None or sig.thiscall) else None
+        if cls in (self.layouts.ids if self.layouts else ()):
+            self.setreg("ecx", self.layouts.pointer(seed, 0xE0000000 + 0x100, cls) or TYPED + self.layouts.ids[cls] * SPAN)
         self.uc.reg_write(x86.UC_X86_REG_EFLAGS, 0x202)
         self.uc.reg_write(x86.UC_X86_REG_FPCW, 0x37F)
         self.uc.reg_write(x86.UC_X86_REG_FPSW, 0)
@@ -553,6 +643,7 @@ def check(
     *,
     seed=0,
     limits=None,
+    layouts=None,
 ):
     if cases < 1 or seed < 0:
         raise ValueError("cases must be positive and seed nonnegative")
@@ -588,7 +679,7 @@ def check(
             {**other_entries, **entries},
         ))
     runners = [
-        Runner(link, obj, symbol, sorted(constants), limits, shared[index])
+        Runner(link, obj, symbol, sorted(constants), limits, shared[index], Layouts(layouts) if layouts else None)
         for index, obj in enumerate(objects)
     ]
     differ = 0

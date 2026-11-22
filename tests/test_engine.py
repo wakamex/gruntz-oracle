@@ -1,13 +1,23 @@
 """Synthetic assembly assembled as COFF by LLVM's real assembler."""
 
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-from gruntz_oracle.engine import Limits, check, page_bytes
+from gruntz_oracle.engine import (
+    PAGE,
+    SPAN,
+    TYPED,
+    Layouts,
+    Limits,
+    check,
+    owner,
+    page_bytes,
+)
 from gruntz_oracle.signature import signature
 
 
@@ -149,6 +159,33 @@ class GenerationTests(unittest.TestCase):
         page_bytes(13, 0x70001000)
         self.assertEqual(first, page_bytes(13, 0x70000000))
         self.assertNotEqual(first, page_bytes(14, 0x70000000))
+
+    def test_typed_memory_follows_pointer_fields(self):
+        layouts = Layouts({
+            "Map": {"size": 12, "pointers": [[8, "*Cell"]]},
+            "Cell": {"size": 28, "pointers": [[24, "Node"]]},
+            "Node": {"size": 8, "pointers": []},
+        })
+        seed = 2  # an empty-memory lane, whose typed pointers are never null
+
+        def at(address):  # a word of typed memory, which may cross a page
+            page = address & -PAGE
+            both = layouts.page(seed, page, ()) + layouts.page(seed, page + PAGE, ())
+            return struct.unpack_from("<I", both, address - page)[0]
+
+        start = layouts.pointer(seed, 0x1000, "Map")
+        rows = at(start + 8)
+        self.assertEqual((rows - TYPED) // SPAN, layouts.ids["*Cell"])
+        row = at(rows)
+        self.assertEqual((row - TYPED) // SPAN, layouts.ids["Cell"])
+        self.assertEqual((row - TYPED) % SPAN % 28, 0)  # at an element boundary
+        self.assertEqual((at(row + 24) - TYPED) // SPAN, layouts.ids["Node"])
+
+    def test_member_function_owner(self):
+        self.assertEqual(owner("?LineIsClear@CMapMgr@@QAEHHHHH@Z"), "CMapMgr")
+        self.assertEqual(owner("??_GCMapMgr@@UAEPAXI@Z"), "CMapMgr")
+        self.assertEqual(owner("?A@In@Out@@QAEXXZ"), "Out::In")
+        self.assertIsNone(owner("?f@@YAHH@Z"))
 
     def test_demangled_widths(self):
         self.assertEqual(signature("?SetNames@CGameInfo@@QAEHPAD0H@Z").words, 3)

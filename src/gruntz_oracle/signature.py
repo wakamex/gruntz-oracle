@@ -15,6 +15,7 @@ class Signature:
     pointees: tuple[tuple[int, int], ...] = ()
     wide: bool = False  # the result fills edx:eax, so edx is part of it
     thiscall: bool = False  # ecx carries this; for any other convention ecx is scratch at the call
+    records: tuple[tuple[int, str], ...] = ()  # stack word and record name of each pointer-to-record argument
 
 
 C_SIGNATURES = {
@@ -89,12 +90,16 @@ def signature(name):
     words = 0
     pointers = []
     pointees = []
+    records = []
     for arg in args:
         if arg == "...":
             return None
         pointer = "*" in arg or "&" in arg
         if pointer:
             pointers.append(words)
+            named = re.fullmatch(r"(?:const |volatile )*(?:class|struct|union) ([\w:<>, ]+?) *[*&]", arg.strip())
+            if named:
+                records.append((words, named[1].split("::")[-1]))
             primitive = re.sub(r"\b(const|volatile|signed|unsigned)\b", "", arg)
             primitive = primitive.replace("*", "").replace("&", "").strip()
             widths = {
@@ -122,4 +127,5 @@ def signature(name):
         tuple(pointees),
         wide,
         match[1] == "thiscall",
+        tuple(records),
     )

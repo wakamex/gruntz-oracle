@@ -21,6 +21,7 @@ def main(argv=None):
     command.add_argument("--seed", type=int, default=0)
     command.add_argument("--instructions", type=int, default=20000)
     command.add_argument("--pages", type=int, default=128)
+    command.add_argument("--layouts", type=Path, help="JSON record layouts of the unit, to lay out memory by type")
     args = parser.parse_args(argv)
     try:
         if args.instructions < 1 or args.pages < 1:
@@ -33,6 +34,7 @@ def main(argv=None):
             args.cases,
             seed=args.seed,
             limits=Limits(args.instructions, args.pages),
+            layouts=json.loads(args.layouts.read_text()) if args.layouts else None,
         )
     except (ValueError, OSError, KeyError) as error:
         print(json.dumps({"error": str(error)}))
