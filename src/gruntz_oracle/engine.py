@@ -55,6 +55,16 @@ def word(seed, address, constants=()):
     lane = seed % 8
     if lane == 0:
         return (0, 1, 2, 3, MASK)[value % 5]
+    if lane in (2, 3):
+        # mostly empty memory: arguments, registers and call results are small, and memory reads as zero
+        # except an occasional arena pointer, so loops over clear cells or empty lists run to their bounds
+        if address >= 0xE0000000 or ENTRY_SP <= address < ENTRY_SP + 0x400:
+            return (0, 1, 2, 3, MASK)[value % 5]
+        # each page is either a page of pointers (arrays of rows, objects' pointer fields) or sparse data,
+        # mostly zero with an occasional small value, so a pointer chain can reach a run of clear cells
+        if mix((seed << 32) ^ (address & -PAGE) ^ 0x5BD1E995) % 2 == 0:
+            return 0x70000000 + ((value >> 8) % 256) * PAGE
+        return 0 if value % 4 else (1, 2, 3)[value % 3]
     if lane == 1 and constants:
         return constants[value % len(constants)] & MASK
     selector = value % 8
