@@ -31,11 +31,12 @@ class EngineTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.counter = 0
 
-    def obj(self, body, extra=""):
+    def obj(self, body, extra="", symbol="_entry"):
         self.counter += 1
         source = self.root / f"{self.counter}.s"
+        name = f'"{symbol}"'
         source.write_text(
-            ".text\n.globl _entry\n.def _entry; .scl 2; .type 32; .endef\n_entry:\n"
+            f".text\n.globl {name}\n.def {name}; .scl 2; .type 32; .endef\n{name}:\n"
             + body
             + "\n"
             + extra
@@ -80,6 +81,14 @@ class EngineTests(unittest.TestCase):
         result = self.compare(before, after, limits=Limits(instructions=101))
         self.assertEqual(result["verdict"], "under-exercised")
         self.assertEqual(result["cases_inconclusive"], 4)
+
+    def test_parameter_slots_are_scratch(self):
+        # ?f@@YAHH@Z takes one int: a store into its slot is dead at return, a store past it is not
+        before = self.obj("movl $1, 4(%esp)\nmovl $0, %eax\nret", symbol="?f@@YAHH@Z")
+        after = self.obj("movl $2, 4(%esp)\nmovl $0, %eax\nret", symbol="?f@@YAHH@Z")
+        self.assertEqual(check(before, after, "?f@@YAHH@Z", cases=4)["verdict"], "agree")
+        beyond = self.obj("movl $2, 8(%esp)\nmovl $0, %eax\nret", symbol="?f@@YAHH@Z")
+        self.assertEqual(check(before, beyond, "?f@@YAHH@Z", cases=4)["verdict"], "differ")
 
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")

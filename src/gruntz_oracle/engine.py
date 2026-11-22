@@ -295,7 +295,8 @@ class Runner:
         return True
 
     def write_hook(self, uc, access, address, size, value, _):
-        if STACK <= address and address + size <= ENTRY_SP + 4:
+        # the frame, and the function's own parameters, which it may reuse as scratch, are dead at return
+        if STACK <= address and address + size <= self.frame_end:
             return
         if any(start <= address < end for start, end in self.protected):
             return  # the store faults before it writes; the fault is the outcome compared
@@ -520,6 +521,7 @@ class Runner:
             ),
         )
         sig = signature(self.symbol)
+        self.frame_end = ENTRY_SP + 4 + 4 * (sig.words if sig else 0)
         if sig:
             records = dict(sig.records) if self.layouts else {}
             for index in sig.pointers:
