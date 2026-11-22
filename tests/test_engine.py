@@ -55,6 +55,25 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(self.compare(before, same)["verdict"], "agree")
         self.assertEqual(self.compare(before, after)["differ"], 4)
 
+    def test_difference_never_reached_is_under_exercised(self):
+        # the differing instruction sits after a loop no case leaves within the instruction limit
+        before = self.obj("1:\njmp 1b\nmovl $7, %eax\nret")
+        after = self.obj("1:\njmp 1b\nmovl $8, %eax\nret")
+        result = self.compare(before, after)
+        self.assertEqual(result["verdict"], "under-exercised")
+        self.assertEqual(result["cases_exercising_difference"], 0)
+
+    def test_identical_code_agrees_without_coverage(self):
+        obj = self.obj("1:\njmp 1b")
+        self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
+
+    def test_reached_equivalent_difference_agrees(self):
+        before = self.obj("movl $7, %eax\nret")
+        after = self.obj("xorl %eax, %eax\naddl $7, %eax\nret")
+        result = self.compare(before, after)
+        self.assertEqual(result["verdict"], "agree")
+        self.assertEqual(result["cases_exercising_difference"], 4)
+
     def test_followed_helper_and_inline(self):
         before = self.obj(
             "call _helper\nret",

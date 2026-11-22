@@ -3,8 +3,10 @@
 import bisect
 import hashlib
 import struct
+import zlib
 from collections import Counter
 from dataclasses import asdict, dataclass
+from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
 
@@ -321,7 +323,12 @@ class Runner:
             # one), since the frame address itself differs between correct builds
             call["ecx"] = {"stack": self.token(self.u32(ecx))} if STACK <= ecx < ENTRY_SP + 4 else self.token(ecx)
         self.calls.append(call)
-        result = word(self.seed, 0xF0000000 + 4 * (len(self.calls) - 1), self.constants)
+        # keyed by the callee and how many times it has been called, so a call added or removed elsewhere does
+        # not shift the results of the others
+        callee = str(call["callee"])
+        self.call_counts[callee] += 1
+        slot = (zlib.crc32(callee.encode()) % 0x100000) * 64 + self.call_counts[callee] % 64
+        result = word(self.seed, 0xF0000000 + 4 * slot, self.constants)
         self.setreg("eax", result)
         if sig and sig.floating:
             status = self.uc.reg_read(x86.UC_X86_REG_FPSW)
@@ -355,6 +362,7 @@ class Runner:
             self.stop(["fault", "stack", self.reg("esp") & -PAGE])
             return
         self.steps += 1
+        self.executed.add(address)
         if self.steps > self.limits.instructions:
             self.stop(["limit", "instructions"])
             return
@@ -381,6 +389,8 @@ class Runner:
         self.generated = 0
         self.calls = []
         self.writes = set()
+        self.executed = set()
+        self.call_counts = Counter()
         self.protected = []
         self.steps = 0
         self.outcome = None
@@ -483,6 +493,57 @@ class Runner:
         return record
 
 
+def shape(ins):
+    """An instruction with branch targets left out, for aligning two builds' code."""
+    if ins.group(1) or ins.group(2) or ins.mnemonic.startswith("j"):
+        return ins.mnemonic
+    return f"{ins.mnemonic} {ins.op_str}"
+
+
+def reachable(runner, code):
+    """The code fragments a run can follow from the function's entry: direct calls and jumps into code the
+    objects define, which the oracle executes rather than stubbing."""
+    starts = sorted(code)
+
+    def fragment(address):
+        index = bisect.bisect_right(starts, address) - 1
+        if index >= 0 and address < starts[index] + len(code[starts[index]]):
+            return starts[index]
+        return None
+
+    seen, todo = set(), [fragment(runner.entry)]
+    while todo:
+        base = todo.pop()
+        if base is None or base in seen:
+            continue
+        seen.add(base)
+        for address in range(base, base + len(code[base])):
+            ins = runner.instructions.get(address)
+            if ins and (ins.group(1) or ins.group(2)) and ins.operands and ins.operands[0].type == X86_OP_IMM:
+                todo.append(fragment(ins.operands[0].imm & MASK))
+    return seen
+
+
+def differing(runners):
+    """For each runner, the addresses of its instructions that differ from the other build's code at the same
+    fragment: every function both builds define is aligned instruction by instruction."""
+    found = [set(), set()]
+    codes = [{base: data for base, data, frag in r.loaded if frag.code} for r in runners]
+    md = Cs(CS_ARCH_X86, CS_MODE_32)
+    md.detail = True
+    followed = set.union(*(reachable(r, code) for r, code in zip(runners, codes)))
+    for base in codes[0].keys() & codes[1].keys() & followed:
+        if codes[0][base] == codes[1][base]:
+            continue
+        sides = [list(md.disasm(codes[i][base], base)) for i in (0, 1)]
+        shapes = [[shape(i) for i in side] for side in sides]
+        for tag, i1, i2, j1, j2 in SequenceMatcher(None, *shapes, autojunk=False).get_opcodes():
+            if tag != "equal":
+                found[0].update(i.address for i in sides[0][i1:i2])
+                found[1].update(i.address for i in sides[1][j1:j2])
+    return found
+
+
 def check(
     before: Path,
     after: Path,
@@ -533,10 +594,24 @@ def check(
     differ = 0
     first = None
     outcomes = [Counter(), Counter()]
+    targets = differing(runners)
+    reaching = exercised = 0
+    missed = Counter()
     for case in range(seed, seed + cases):
         records = [runner.run(case) for runner in runners]
         for index, record in enumerate(records):
             outcomes[index].update([record["outcome"][0]])
+        if any(runner.executed & target for runner, target in zip(runners, targets)):
+            reaching += 1
+            if all(record["outcome"][0] != "limit" for record in records):
+                exercised += 1
+        else:  # how a case that missed the difference ended, for finding what keeps inputs away from it
+            outcome = records[0]["outcome"]
+            if outcome[0] == "fault":
+                kind = "fault-null" if outcome[-1] == 0 else f"fault-{outcome[1] if outcome[1] in ('memory', 'fetch', 'stack') else 'other'}"
+            else:
+                kind = outcome[0] if outcome[0] != "limit" else f"limit-{outcome[1]}"
+            missed[kind] += 1
         if records[0] != records[1]:
             differ += 1
             if first is None:
@@ -551,10 +626,21 @@ def check(
                     "before": records[0],
                     "after": records[1],
                 }
+    # agreement means something only where a case ran the code that differs and both builds finished
+    if differ:
+        verdict = "differ"
+    elif (targets[0] or targets[1]) and not exercised:
+        verdict = "under-exercised"
+    else:
+        verdict = "agree"
     return {
         "symbol": symbol,
         "unit": unit,
-        "verdict": "differ" if differ else "agree",
+        "verdict": verdict,
+        "differing_instructions": [len(targets[0]), len(targets[1])],
+        "cases_reaching_difference": reaching,
+        "cases_exercising_difference": exercised,
+        "cases_missing_difference": dict(missed),
         "cases": cases,
         "agree": cases - differ,
         "differ": differ,

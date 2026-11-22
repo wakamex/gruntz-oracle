@@ -1,4 +1,5 @@
-"""Command-line behaviour comparison."""
+"""Command-line behaviour comparison: exits 0 when the builds agree, 1 when they differ, 2 on an error and 3
+when no case ran the code that differs to completion (under-exercised)."""
 
 import argparse
 import json
@@ -37,7 +38,7 @@ def main(argv=None):
         print(json.dumps({"error": str(error)}))
         return 2
     print(json.dumps(report, separators=(",", ":")))
-    return int(report["verdict"] == "differ")
+    return {"agree": 0, "differ": 1, "under-exercised": 3}[report["verdict"]]
 
 
 if __name__ == "__main__":
