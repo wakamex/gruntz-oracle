@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from gruntz_oracle.coff import Fragment
 from gruntz_oracle.engine import (
     PAGE,
     SPAN,
@@ -15,6 +16,7 @@ from gruntz_oracle.engine import (
     Layouts,
     Limits,
     check,
+    followed,
     owner,
     page_bytes,
 )
@@ -234,6 +236,14 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual((row - TYPED) // SPAN, layouts.ids["Cell"])
         self.assertEqual((row - TYPED) % SPAN % 28, 0)  # at an element boundary
         self.assertEqual((at(row + 24) - TYPED) // SPAN, layouts.ids["Node"])
+
+    def test_only_referenced_fragments_are_loaded(self):
+        def item(base, targets):
+            return (base, b"\0" * 16, Fragment(hex(base), 1, 0, b"\0" * 16, False, False, (), tuple(targets)))
+
+        entry, callee, table, unrelated = item(0x100, [0x208]), item(0x200, [0x300]), item(0x300, []), item(0x400, [])
+        kept = followed([entry, callee, table, unrelated], 0x104)
+        self.assertEqual([base for base, _, _ in kept], [0x100, 0x200, 0x300])
 
     def test_member_function_owner(self):
         self.assertEqual(owner("?LineIsClear@CMapMgr@@QAEHHHHH@Z"), "CMapMgr")

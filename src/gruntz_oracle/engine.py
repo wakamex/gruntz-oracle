@@ -701,6 +701,32 @@ class Runner:
         return record
 
 
+def followed(loaded, entry):
+    """The fragments the function can reach through relocations and branches, transitively: the code it can
+    run and the data it can name. Others are left out, so an access through a generated value that happens to
+    land where an unrelated global was placed reads generated memory, as it would in both builds."""
+    if entry is None:
+        return loaded
+    items = sorted(loaded, key=lambda item: item[0])
+    starts = [base for base, _, _ in items]
+
+    def owner(address):
+        index = bisect.bisect_right(starts, address) - 1
+        if index >= 0 and address < starts[index] + max(len(items[index][1]), 1):
+            return index
+        return None
+
+    seen, todo = set(), [owner(entry)]
+    while todo:
+        index = todo.pop()
+        if index is None or index in seen:
+            continue
+        seen.add(index)
+        todo.extend(owner(target) for target in items[index][2].targets)
+    # data read from the original executable has no relocations and is kept with whatever names it
+    return [item for index, item in enumerate(items) if index in seen or not item[2].targets and item[2].section == 0]
+
+
 def kinds_of(link, key):
     address = link.addresses[key]
     return "external" if 0x50000000 <= address < 0x60000000 else "defined"
@@ -823,6 +849,7 @@ def check(
             [*loaded, *(item for item in other_loaded if item[0] not in bases)],
             {**other_entries, **entries},
         ))
+    shared = [(followed(loaded, entries.get(symbol)), entries) for loaded, entries in shared]
     runners = [
         Runner(link, obj, symbol, sorted(constants), limits, shared[index], Layouts(layouts) if layouts else None)
         for index, obj in enumerate(objects)

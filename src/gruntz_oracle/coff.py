@@ -36,6 +36,7 @@ class Fragment:
     code: bool
     readonly: bool
     relocated: tuple[int, ...] = ()
+    targets: tuple[int, ...] = ()  # the addresses its relocations and branches to other fragments refer to
 
 
 class Object:
@@ -179,9 +180,13 @@ class Link:
                     key = root(kept[0])
                 else:
                     body = bytearray(frag.data)
+                    fields = []
                     for offset, _, _ in obj.sections[frag.section].relocs:
                         if frag.offset <= offset < frag.offset + len(body):
                             body[offset - frag.offset : offset - frag.offset + 4] = bytes(4)
+                            fields.append(offset - frag.offset)
+                    # where the relocations are is part of the content: a pointer and four zero bytes differ
+                    body += b"".join(struct.pack("<I", field) for field in sorted(fields))
                     digest = hashlib.sha256(bytes(body)).hexdigest()[:16]
                     seen[digest] = seen.get(digest, -1) + 1
                     key = f"$content_{'code' if frag.code else 'data'}_{digest}_{seen[digest]}"
@@ -234,6 +239,7 @@ class Link:
             base = self.address(obj, frag.name)
             body = bytearray(frag.data)
             reloc_fields = set()
+            targets = set()
             for offset, index, kind in obj.sections[frag.section].relocs:
                 if not frag.offset <= offset < frag.offset + len(body):
                     continue
@@ -244,6 +250,7 @@ class Link:
                     raise ValueError(f"{frag.name}: unsupported relocation {kind}")
                 addend = struct.unpack_from("<i", body, rel)[0]
                 value = target(obj.symbols[index], addend)
+                targets.add(value & 0xFFFFFFFF)
                 if kind == 20:
                     value -= base + rel + 4
                 struct.pack_into("<I", body, rel, value & 0xFFFFFFFF)
@@ -262,6 +269,7 @@ class Link:
                     old_dest = ins.operands[0].imm & 0xFFFFFFFF
                     try:
                         dest = address(frag.section, old_dest)
+                        targets.add(dest)
                     except ValueError:
                         raise ValueError(
                             f"{frag.name}: unrelocated branch outside section"
@@ -276,6 +284,7 @@ class Link:
                             f"{frag.name}: short branch crosses allocated functions"
                         ) from None
             frag.relocated = tuple(sorted(reloc_fields))
+            frag.targets = tuple(sorted(targets))
             return base, bytes(body), frag
 
         loaded = []
