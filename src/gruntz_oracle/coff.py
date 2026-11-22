@@ -189,9 +189,17 @@ class Link:
                 sizes[key] = max(sizes.get(key, 0), len(frag.data))
                 for name in names:
                     local[name] = key
+        # a symbol one object only references resolves to the other object's definition when there is one, so
+        # a string literal or helper retail keeps elsewhere and our build defines lands at one address
+        defined_keys = {}
+        for obj in objects:
+            for name, key in self.local[id(obj)].items():
+                defined_keys.setdefault(name, key)
+        for obj in objects:
+            local = self.local[id(obj)]
             for sym in obj.symbols.values():
                 if sym.section == 0 and sym.storage == 2 and sym.name not in local:
-                    local[sym.name] = root(sym.name)
+                    local[sym.name] = defined_keys.get(sym.name, root(sym.name))
                     kinds.setdefault(local[sym.name], "external")
         counters = {"code": 0x10000000, "data": 0x30000000, "external": 0x50000000}
         ends = {"code": 0x30000000, "data": 0x50000000, "external": 0x60000000}

@@ -1,5 +1,6 @@
 """Deterministic generated-input execution of linked i386 functions."""
 
+import bisect
 import hashlib
 import struct
 from collections import Counter
@@ -107,8 +108,7 @@ class Runner:
         self.previous = {i.address + i.size: i for i in self.instructions.values()}
         # unnamed code (exception handlers and unwind funclets) is laid out differently by each build, so a
         # pointer into it is compared as a token, not an address
-        self.anonymous_code = [(base, base + len(data)) for base, data, frag in self.loaded
-                               if frag.code and str(link.names.get(base, "")).startswith("$content_code")]
+        self.bases = sorted(link.names)
 
     def reg(self, name):
         return self.uc.reg_read(REGISTERS[name])
@@ -177,12 +177,18 @@ class Runner:
             self.stop(["fault", "memory", address & -PAGE])
             return False
         for page in range(address & -PAGE, (address + size - 1 & -PAGE) + PAGE, PAGE):
-            if page not in self.mapped:
-                if self.generated >= self.limits.pages:
-                    self.stop(["limit", "pages"])
-                    return False
+            if page in self.mapped:
+                continue
+            if page in self.lazy:  # a writable data fragment's page: seeded bytes with its relocated words
                 self.map_page(page, generated=True)
-                self.generated += 1
+                for at, word_bytes in self.lazy[page]:
+                    self.uc.mem_write(at, word_bytes)
+                continue
+            if self.generated >= self.limits.pages:
+                self.stop(["limit", "pages"])
+                return False
+            self.map_page(page, generated=True)
+            self.generated += 1
         return True
 
     def write_hook(self, uc, access, address, size, value, _):
@@ -243,7 +249,12 @@ class Runner:
         return count, 4 * count
 
     def token(self, value):
-        return "unnamed-code" if any(lo <= value < hi for lo, hi in self.anonymous_code) else value
+        """A pointer into unnamed code (an exception stub or funclet, anywhere in its allocated slot) as a token."""
+        index = bisect.bisect_right(self.bases, value) - 1
+        unnamed = index >= 0 and 0x10000000 <= value < 0x30000000
+        if unnamed and str(self.link.names[self.bases[index]]).startswith("$content_code"):
+            return "unnamed-code"
+        return value
 
     def arguments(self, values, sig):
         widths = dict(sig.pointees) if sig else {}
@@ -298,7 +309,7 @@ class Runner:
             ecx = self.reg("ecx")
             # this in the caller's frame: compare the object's first word (its vtable for a class with
             # one), since the frame address itself differs between correct builds
-            call["ecx"] = {"stack": self.u32(ecx)} if STACK <= ecx < ENTRY_SP + 4 else ecx
+            call["ecx"] = {"stack": self.token(self.u32(ecx))} if STACK <= ecx < ENTRY_SP + 4 else self.token(ecx)
         self.calls.append(call)
         result = word(self.seed, 0xF0000000 + 4 * (len(self.calls) - 1), self.constants)
         self.setreg("eax", result)
@@ -363,17 +374,18 @@ class Runner:
         self.protected = []
         self.steps = 0
         self.outcome = None
+        self.lazy = {}  # page -> relocated words of writable data fragments, written when the page is first touched
         for base, data, frag in self.loaded:
-            for page in range(
-                base & -PAGE, (base + len(data) - 1 & -PAGE) + PAGE, PAGE
-            ):
-                self.map_page(page, generated=not (frag.code or frag.readonly))
             if frag.code or frag.readonly:
+                for page in range(base & -PAGE, (base + len(data) - 1 & -PAGE) + PAGE, PAGE):
+                    self.map_page(page)
                 self.uc.mem_write(base, data)
                 self.protect(base, len(data))
-            else:
-                for offset in frag.relocated:
-                    self.uc.mem_write(base + offset, data[offset : offset + 4])
+                continue
+            for page in range(base & -PAGE, (base + len(data) - 1 & -PAGE) + PAGE, PAGE):
+                self.lazy.setdefault(page, [])
+            for offset in frag.relocated:
+                self.lazy[(base + offset) & -PAGE].append((base + offset, data[offset : offset + 4]))
         self.uc.mem_map(STACK, ENTRY_SP + PAGE - STACK)
         self.mapped.update(range(STACK, ENTRY_SP + PAGE, PAGE))
         self.map_page(STOP)
