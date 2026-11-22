@@ -28,8 +28,8 @@ from .coff import Link, Object
 from .signature import signature
 
 PAGE = 4096
-STACK = 0x68000000
-ENTRY_SP = STACK + 0x10000
+ENTRY_SP = 0x68010000
+STACK = ENTRY_SP - 0x100000  # 1 MiB below the entry stack pointer: room for frames __chkstk allocates
 STOP = 0x61000000
 GDT = 0x62000000
 TIB = GDT + 0x800
@@ -105,6 +105,10 @@ class Runner:
                 for ins in self.md.disasm(data, base):
                     self.instructions[ins.address] = ins
         self.previous = {i.address + i.size: i for i in self.instructions.values()}
+        # unnamed code (exception handlers and unwind funclets) is laid out differently by each build, so a
+        # pointer into it is compared as a token, not an address
+        self.anonymous_code = [(base, base + len(data)) for base, data, frag in self.loaded
+                               if frag.code and str(link.names.get(base, "")).startswith("$content_code")]
 
     def reg(self, name):
         return self.uc.reg_read(REGISTERS[name])
@@ -238,18 +242,21 @@ class Runner:
             cursor = previous.address
         return count, 4 * count
 
+    def token(self, value):
+        return "unnamed-code" if any(lo <= value < hi for lo, hi in self.anonymous_code) else value
+
     def arguments(self, values, sig):
         widths = dict(sig.pointees) if sig else {}
         normalized = []
         for index, value in enumerate(values):
             if not STACK <= value < ENTRY_SP + 4:
-                normalized.append(value)
+                normalized.append(self.token(value))
                 continue
             size = widths.get(index)
             if size is None:
                 # A pointer into the caller's frame whose pointee size is unknown: its address differs
                 # between correct builds, so compare the word it points at, the part both must agree on.
-                normalized.append({"stack": self.u32(value)})
+                normalized.append({"stack": self.token(self.u32(value))})
                 continue
             aliases = [
                 (other, pointer - value)
@@ -264,6 +271,18 @@ class Runner:
         return normalized
 
     def boundary(self, ins, destination, tail):
+        if self.link.names.get(destination) == "__chkstk":
+            # The runtime's stack probe: it takes the frame size in eax, no stack arguments, and returns
+            # with esp lowered by that size, which is how a large frame is allocated.
+            size, sp = self.reg("eax"), self.reg("esp")
+            self.calls.append({"callee": "__chkstk", "eax": size})
+            if tail:
+                self.setreg("esp", sp + 4 - size)
+                self.setreg("eip", self.u32(sp))
+            else:
+                self.setreg("esp", sp - size)
+                self.setreg("eip", ins.address + ins.size)
+            return
         sig = self.sigs.get(destination)
         if sig:
             words, pop = sig.words, sig.pop
@@ -355,8 +374,8 @@ class Runner:
             else:
                 for offset in frag.relocated:
                     self.uc.mem_write(base + offset, data[offset : offset + 4])
-        for page in range(STACK, ENTRY_SP + PAGE, PAGE):
-            self.map_page(page)
+        self.uc.mem_map(STACK, ENTRY_SP + PAGE - STACK)
+        self.mapped.update(range(STACK, ENTRY_SP + PAGE, PAGE))
         self.map_page(STOP)
         self.uc.mem_write(STOP, b"\x90")
         self.install_segments()
@@ -408,6 +427,10 @@ class Runner:
         except UcError as error:
             if self.outcome is None:
                 self.outcome = ["fault", str(error), self.reg("eip") & -PAGE]
+        if self.outcome is None and self.reg("eip") == 0:
+            # emu_start's end address is 0, so a jump to address 0 ends emulation quietly; in the
+            # original process it faults on the instruction fetch
+            self.outcome = ["fault", "fetch", 0]
         if self.outcome is None:
             raise ValueError("execution stopped without an outcome")
         record = {
@@ -476,9 +499,9 @@ def check(
         # A function or datum only one object defines (an inline copy one build emitted, or a body the
         # retail object keeps elsewhere) runs from that copy in both, so the two builds see the same callee.
         other_loaded, other_entries = loads[1 - index]
-        names = {frag.name for _, _, frag in loaded}
+        bases = {base for base, _, _ in loaded}
         shared.append((
-            [*loaded, *(item for item in other_loaded if item[2].name not in names)],
+            [*loaded, *(item for item in other_loaded if item[0] not in bases)],
             {**other_entries, **entries},
         ))
     runners = [

@@ -1,5 +1,7 @@
 """Read i386 COFF objects and link named fragments into a common address space."""
 
+import hashlib
+import re
 import struct
 from dataclasses import dataclass
 from pathlib import Path
@@ -126,59 +128,89 @@ class Object:
         raise ValueError(f"no allocated fragment for section {section} offset {offset}")
 
 
+# Names a build or the delinker gives data and code with no source name of its own: counters, section
+# numbers, content hashes and exception-table labels. They differ between two builds of one unit, so such a
+# fragment is identified by its contents instead.
+ANONYMOUS = re.compile(r"^(\$|\.|_\$S\d+\$S|__eh(funcinfo|handler|unwind|reg)\$|__unwindfunclet\$|\?\?_C@_)|#")
+
+
+def stable(name):
+    return not ANONYMOUS.search(name)
+
+
 class Link:
+    """One address space for two or more objects. A fragment with a source name (a function, a global) is
+    placed by that name; one without is placed by its bytes, relocation fields masked, and its order among
+    equal fragments of its object, so the same datum gets the same address in every object whatever each
+    build called it."""
+
     def __init__(self, objects):
-        self.addresses = {}
-        kinds = {}
-        aliases = {}
+        parent = {}
 
         def root(name):
-            aliases.setdefault(name, name)
-            while aliases[name] != name:
-                name = aliases[name]
+            parent.setdefault(name, name)
+            while parent[name] != name:
+                parent[name] = parent[parent[name]]
+                name = parent[name]
             return name
 
+        defined = []  # (object, fragment, the names that define it)
         for obj in objects:
             for frag in obj.fragments:
-                kinds[frag.name] = "code" if frag.code else "data"
-                for sym in obj.symbols.values():
-                    if (
-                        sym.section == frag.section
-                        and sym.value == frag.offset
-                        and sym.storage in (2, 3)
-                        and sym.name != obj.sections[frag.section].name
-                    ):
-                        kinds[sym.name] = kinds[frag.name]
-                        left, right = sorted((root(sym.name), root(frag.name)))
-                        aliases[right] = left
+                names = {frag.name} | {
+                    sym.name for sym in obj.symbols.values()
+                    if sym.section == frag.section and sym.value == frag.offset and sym.storage in (2, 3)
+                    and sym.name != obj.sections[frag.section].name
+                }
+                defined.append((obj, frag, names))
+                kept = sorted(n for n in names if stable(n))
+                for name in kept[1:]:
+                    parent[root(name)] = root(kept[0])
+        self.local = {}  # id(object) -> name -> key
+        kinds, sizes = {}, {}
+        for obj in objects:
+            local = self.local.setdefault(id(obj), {})
+            seen = {}
+            for owner, frag, names in defined:
+                if owner is not obj:
+                    continue
+                kept = sorted(n for n in names if stable(n))
+                if kept:
+                    key = root(kept[0])
+                else:
+                    body = bytearray(frag.data)
+                    for offset, _, _ in obj.sections[frag.section].relocs:
+                        if frag.offset <= offset < frag.offset + len(body):
+                            body[offset - frag.offset : offset - frag.offset + 4] = bytes(4)
+                    digest = hashlib.sha256(bytes(body)).hexdigest()[:16]
+                    seen[digest] = seen.get(digest, -1) + 1
+                    key = f"$content_{'code' if frag.code else 'data'}_{digest}_{seen[digest]}"
+                kinds[key] = "code" if frag.code else "data"
+                sizes[key] = max(sizes.get(key, 0), len(frag.data))
+                for name in names:
+                    local[name] = key
             for sym in obj.symbols.values():
-                if sym.section == 0 and sym.storage == 2:
-                    kinds.setdefault(sym.name, "external")
-        groups = {}
-        for name, kind in kinds.items():
-            canonical = root(name)
-            if kind != "external" or canonical not in groups:
-                groups[canonical] = kind
+                if sym.section == 0 and sym.storage == 2 and sym.name not in local:
+                    local[sym.name] = root(sym.name)
+                    kinds.setdefault(local[sym.name], "external")
         counters = {"code": 0x10000000, "data": 0x30000000, "external": 0x50000000}
-        allocation = {}
-        for canonical in sorted(groups):
-            kind = groups[canonical]
-            allocation[canonical] = counters[kind]
-            counters[kind] += 0x10000
-            if (
-                counters[kind]
-                >= {"code": 0x30000000, "data": 0x50000000, "external": 0x60000000}[
-                    kind
-                ]
-            ):
+        ends = {"code": 0x30000000, "data": 0x50000000, "external": 0x60000000}
+        self.addresses = {}
+        for key in sorted(kinds):
+            kind = kinds[key]
+            self.addresses[key] = counters[kind]
+            counters[kind] += max(0x10000, -(-sizes.get(key, 0) // 0x10000) * 0x10000)
+            if counters[kind] >= ends[kind]:
                 raise ValueError("object exceeds address-space allocation")
-        self.addresses = {name: allocation[root(name)] for name in kinds}
-        self.names = {address: name for name, address in allocation.items()}
+        self.names = {address: key for key, address in self.addresses.items()}
+
+    def address(self, obj, name):
+        return self.addresses[self.local[id(obj)][name]]
 
     def load(self, obj):
         def address(section, offset):
             frag = obj.fragment_at(section, offset)
-            return self.addresses[frag.name] + offset - frag.offset
+            return self.address(obj, frag.name) + offset - frag.offset
 
         def target(sym, addend):
             if sym.section == -1:
@@ -187,15 +219,13 @@ class Link:
                 if sym.name == obj.sections[sym.section].name:
                     return address(sym.section, sym.value + addend)
                 return address(sym.section, sym.value) + addend
-            return self.addresses[sym.name] + addend
+            return self.address(obj, sym.name) + addend
 
         loaded = []
         md = Cs(CS_ARCH_X86, CS_MODE_32)
         md.detail = True
         for frag in obj.fragments:
-            if len(frag.data) > 0x10000:
-                raise ValueError(f"{frag.name}: fragment exceeds 64 KiB")
-            base = self.addresses[frag.name]
+            base = self.address(obj, frag.name)
             body = bytearray(frag.data)
             reloc_fields = set()
             for offset, index, kind in obj.sections[frag.section].relocs:
