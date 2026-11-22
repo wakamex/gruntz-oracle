@@ -184,6 +184,9 @@ class Runner:
         self.loaded, self.entries = loaded
         if symbol not in self.entries:
             raise ValueError(f"{obj.path}: missing function {symbol}")
+        for start, end, reason in link.unlinked:
+            if start <= self.entries[symbol] < end:
+                raise ValueError(reason)
         self.entry = self.entries[symbol]
         self.symbol = symbol
         self.constants = tuple(constants)
@@ -265,6 +268,9 @@ class Runner:
 
     def bad_memory(self, uc, access, address, size, value, _):
         if access == UC_MEM_FETCH_UNMAPPED:
+            if any(start <= address < end for start, end, _ in self.link.unlinked):
+                self.stop(["limit", "unlinked"])  # code the linker could not place: the run is not judged
+                return False
             self.stop(["fault", "fetch", address & -PAGE])
             return False
         return self.ensure_memory(address, size)

@@ -211,6 +211,7 @@ class Link:
             if counters[kind] >= ends[kind]:
                 raise ValueError("object exceeds address-space allocation")
         self.names = {address: key for key, address in self.addresses.items()}
+        self.unlinked = []  # (start, end, reason) of fragments load could not place
 
     def address(self, obj, name):
         return self.addresses[self.local[id(obj)][name]]
@@ -229,10 +230,7 @@ class Link:
                 return address(sym.section, sym.value) + addend
             return self.address(obj, sym.name) + addend
 
-        loaded = []
-        md = Cs(CS_ARCH_X86, CS_MODE_32)
-        md.detail = True
-        for frag in obj.fragments:
+        def link_fragment(frag):
             base = self.address(obj, frag.name)
             body = bytearray(frag.data)
             reloc_fields = set()
@@ -278,7 +276,19 @@ class Link:
                             f"{frag.name}: short branch crosses allocated functions"
                         ) from None
             frag.relocated = tuple(sorted(reloc_fields))
-            loaded.append((base, bytes(body), frag))
+            return base, bytes(body), frag
+
+        loaded = []
+        md = Cs(CS_ARCH_X86, CS_MODE_32)
+        md.detail = True
+        for frag in obj.fragments:
+            try:
+                loaded.append(link_fragment(frag))
+            except ValueError as error:
+                # a fragment whose code cannot be placed on its own (a short branch into a neighbour retail
+                # shares code with) is left unloaded; a run that reaches it ends there, unjudged
+                base = self.address(obj, frag.name)
+                self.unlinked.append((base, base + len(frag.data), str(error)))
         entries = {
             s.name: address(s.section, s.value)
             for s in obj.symbols.values()
