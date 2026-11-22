@@ -743,9 +743,10 @@ def differing(runners):
     md.detail = True
     followed = set.union(*(reachable(r, code) for r, code in zip(runners, codes)))
     for base in codes[0].keys() & codes[1].keys() & followed:
-        if codes[0][base] == codes[1][base]:
+        if codes[0][base].rstrip(b"\x90\xcc") == codes[1][base].rstrip(b"\x90\xcc"):
             continue
-        sides = [list(md.disasm(codes[i][base], base)) for i in (0, 1)]
+        # alignment padding after a function (nop or int3, which one object keeps and the other trims) never runs
+        sides = [list(md.disasm(codes[i][base].rstrip(b"\x90\xcc"), base)) for i in (0, 1)]
         shapes = [[shape(i) for i in side] for side in sides]
         for tag, i1, i2, j1, j2 in SequenceMatcher(None, *shapes, autojunk=False).get_opcodes():
             if tag != "equal":

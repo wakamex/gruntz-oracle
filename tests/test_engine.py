@@ -116,6 +116,11 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(self.compare(before, renamed)["verdict"], "agree")
         self.assertEqual(self.compare(before, changed)["verdict"], "differ")
 
+    def test_trailing_padding_is_not_a_difference(self):
+        obj = self.obj("1:\njmp 1b")
+        padded = self.obj("1:\njmp 1b\nnop\nnop\nint3")
+        self.assertEqual(self.compare(obj, padded)["differing_instructions"], [0, 0])
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
