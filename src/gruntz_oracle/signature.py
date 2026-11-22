@@ -56,17 +56,30 @@ def split_arguments(text):
 
 
 @cache
-def void_result(name):
-    """Whether a decorated function name says it returns nothing, so no register holds a result; readable
-    even where the arguments are not, such as a class passed by value."""
+def result_type(name):
+    """The result type a decorated function name declares, or None; readable even where the arguments are
+    not, such as a class passed by value."""
     if not name.startswith("?"):
-        return False
+        return None
     result = subprocess.run(["llvm-undname", name], capture_output=True, text=True, check=False)
     lines = result.stdout.strip().splitlines()
     if result.returncode or len(lines) < 2:
-        return False
+        return None
     match = re.search(r"__(cdecl|stdcall|thiscall|fastcall) ", lines[1])
-    return bool(match) and bool(re.search(r"\bvoid\s*$", lines[1][: match.start()]))
+    if not match:
+        return None
+    return re.sub(r"^(public|private|protected): |\b(static|virtual) ", "", lines[1][: match.start()]).strip()
+
+
+def void_result(name):
+    """Whether the function returns nothing, so no register holds a result."""
+    return result_type(name) == "void"
+
+
+def record_result(name):
+    """Whether the function returns a class by value, through a result address the caller passes."""
+    kind = result_type(name) or ""
+    return bool(re.match(r"(const )?(class|struct|union) ", kind)) and not any(c in kind for c in "*&")
 
 
 @cache

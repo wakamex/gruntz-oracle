@@ -95,6 +95,18 @@ class EngineTests(unittest.TestCase):
         after = self.obj("movl $2, %eax\nret", symbol="?f@@YAXH@Z")
         self.assertEqual(check(before, after, "?f@@YAXH@Z", cases=4)["verdict"], "agree")
 
+    def test_class_result_compares_only_eax(self):
+        name = "?f@@YA?AVC@@XZ"
+        before = self.obj("movl $1, %eax\nmovl $1, %edx\nret", symbol=name)
+        after = self.obj("movl $1, %eax\nmovl $2, %edx\nret", symbol=name)
+        self.assertEqual(check(before, after, name, cases=4)["verdict"], "agree")
+
+    def test_handler_chain_left_in_the_frame_is_a_frame_address(self):
+        # each build registers a handler record at another frame offset, then faults before unregistering it
+        before = self.obj("subl $16, %esp\nmovl %esp, %fs:0\nmovl 0, %eax")
+        after = self.obj("subl $32, %esp\nmovl %esp, %fs:0\nmovl 0, %eax")
+        self.assertEqual(self.compare(before, after)["verdict"], "agree")
+
     def test_compiler_constants_keep_their_bytes(self):
         # the same constant under two compiler-chosen names reads the same; a changed one does not
         def build(name, value):

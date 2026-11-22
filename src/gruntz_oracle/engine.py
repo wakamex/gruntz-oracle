@@ -29,7 +29,7 @@ from unicorn import x86_const as x86
 
 from .coff import Fragment, Link, Object, stable
 from .retail import image
-from .signature import signature, void_result
+from .signature import record_result, signature, void_result
 
 PAGE = 4096
 ENTRY_SP = 0x68010000
@@ -662,12 +662,21 @@ class Runner:
                 if at & -PAGE in self.mapped
             },
         }
+        # the exception-handler chain head, left pointing into the frame or at a handler stub by a run that ended
+        # before restoring it, is compared as a frame address or a token: both differ between correct builds
+        if any(str(TIB + k) in record["writes"] for k in range(4)):
+            head = self.u32(TIB)
+            for k in range(4):
+                record["writes"].pop(str(TIB + k), None)
+            record["handler_chain"] = "frame" if STACK <= head < ENTRY_SP + 4 else self.token(head)
         if self.outcome == ["return"]:
             # edx is scratch under Microsoft's conventions unless the result fills edx:eax; with no
             # readable signature it is compared, so an unknown result type cannot hide a difference
             own = signature(self.symbol)
             if void_result(self.symbol):
                 kept = ()
+            elif record_result(self.symbol):
+                kept = ("eax",)  # a class returned by value: eax holds the caller's result address, edx is scratch
             else:
                 kept = ("eax", "edx") if own is None or own.wide else ("eax",)
             record["registers"] = {
