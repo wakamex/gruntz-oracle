@@ -213,6 +213,16 @@ class EngineTests(unittest.TestCase):
                           "addl $4, %esp\nmovl $0, %eax\nret")
         self.assertEqual(self.compare(stored, copied)["verdict"], "agree")
 
+    def test_float_copied_with_movs_is_still_a_float(self):
+        # 1/3 rounded at 80 bits or through a double, stored as a double and then copied with rep movsd
+        third = "fld1\nfld1\nfadd %st(0), %st(0)\nfadd %st(1), %st(0)\nfdivrp %st(0), %st(1)\n"
+        tail = "pushl $3\nfimull (%esp)\naddl $4, %esp\nfld1\nfsubrp %st(0), %st(1)\nfstpl 0x70000000\n"
+        copy = "pushl %esi\npushl %edi\nmovl $0x70000000, %esi\nmovl $0x70001000, %edi\nmovl $2, %ecx\nrep movsl\n" \
+               "popl %edi\npopl %esi\nmovl $0, %eax\nret"
+        kept = self.obj(third + tail + copy)
+        rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\n" + tail + copy)
+        self.assertEqual(self.compare(kept, rounded)["verdict"], "agree")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")

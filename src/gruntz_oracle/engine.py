@@ -358,12 +358,19 @@ class Runner:
             return  # the store faults before it writes; the fault is the outcome compared
         self.writes.update(range(address, address + size))
         ins = self.instructions.get(self.reg("eip"))
+        at, width = None, 0
         if ins and ins.mnemonic in ("fst", "fstp") and ins.operands[0].type == X86_OP_MEM:
             # a floating-point store, compared as a number within rounding; the operand gives its extent, since
             # the emulator may write a 10-byte value in parts
             at, width = self.address_of(ins, ins.operands[0]), ins.operands[0].size
-        else:
-            at, width = None, 0
+        elif ins and ins.mnemonic.split()[-1] in ("movsd", "movsw", "movsb"):
+            # a string copy carries a float's marking along: the source of this element is as far past esi as
+            # the destination is past edi
+            source = self.reg("esi") + address - self.reg("edi") & MASK
+            for start, extent in list(self.float_stores.items()):
+                if start <= source < start + extent:
+                    at, width = address - (source - start), extent
+                    break
         for other in [o for o in self.float_stores if address - 10 < o < address + size and o != at]:
             del self.float_stores[other]
         if at is not None and width in (4, 8, 10):
