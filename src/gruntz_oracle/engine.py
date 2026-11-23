@@ -2,6 +2,7 @@
 
 import bisect
 import hashlib
+import math
 import struct
 import zlib
 from collections import Counter, deque
@@ -44,6 +45,13 @@ REGISTERS = {
     name: getattr(x86, "UC_X86_REG_" + name.upper())
     for name in ("eax", "ebx", "ecx", "edx", "esi", "edi", "ebp", "esp", "eip")
 }
+
+
+def moves_esp(ins):
+    """Whether the instruction changes esp itself, as opposed to reading or writing memory through it."""
+    if ins.mnemonic in ("push", "pop", "pushal", "popal", "pushfd", "popfd", "leave", "enter", "call", "ret"):
+        return True
+    return bool(ins.operands) and ins.operands[0].type == X86_OP_REG and ins.reg_name(ins.operands[0].reg) == "esp"
 
 
 def mix(value):
@@ -96,6 +104,7 @@ class Layouts:
     """The record layouts of the unit: for each record, its size and pointer fields with their targets."""
 
     def __init__(self, records):
+        self.sizes = {name: row["size"] for name, row in records.items()}
         self.records = {
             name: (row["size"], tuple((offset, target) for offset, target in row["pointers"]))
             for name, row in records.items()
@@ -196,8 +205,9 @@ class Runner:
         self.md.detail = True
         self.instructions = {}
         self.ranges = []
+        self.sizes = layouts.sizes if layouts else None
         self.sigs = {
-            address: signature(name) for name, address in link.addresses.items()
+            address: self.signature(name) for name, address in link.addresses.items()
         }
         for base, data, frag in self.loaded:
             if frag.code:
@@ -208,6 +218,10 @@ class Runner:
         # unnamed code (exception handlers and unwind funclets) is laid out differently by each build, so a
         # pointer into it is compared as a token, not an address
         self.bases = sorted(link.names)
+
+    def signature(self, name):
+        """The call layout of a function, sizing classes passed by value from the unit's layouts."""
+        return signature(name, self.sizes)
 
     def reg(self, name):
         return self.uc.reg_read(REGISTERS[name])
@@ -304,6 +318,17 @@ class Runner:
         if any(start <= address < end for start, end in self.protected):
             return  # the store faults before it writes; the fault is the outcome compared
         self.writes.update(range(address, address + size))
+        ins = self.instructions.get(self.reg("eip"))
+        if ins and ins.mnemonic in ("fst", "fstp") and ins.operands[0].type == X86_OP_MEM:
+            # a floating-point store, compared as a number within rounding; the operand gives its extent, since
+            # the emulator may write a 10-byte value in parts
+            at, width = self.address_of(ins, ins.operands[0]), ins.operands[0].size
+        else:
+            at, width = None, 0
+        for other in [o for o in self.float_stores if address - 10 < o < address + size and o != at]:
+            del self.float_stores[other]
+        if at is not None and width in (4, 8, 10):
+            self.float_stores[at] = width
 
     def address_of(self, ins, op):
         mem = op.mem
@@ -408,7 +433,7 @@ class Runner:
             after
             and after.mnemonic not in STOPS | {"push"}
             and not (after.group(1) or after.group(3))
-            and "esp" not in after.op_str.split(",")[0]
+            and not moves_esp(after)
         ):
             after = self.instructions.get(after.address + after.size)
         if (
@@ -426,10 +451,30 @@ class Runner:
                 break
             if previous.mnemonic == "push":
                 count += 1
-            elif "esp" in previous.op_str.split(",")[0]:
+            elif moves_esp(previous):  # a store into the stack, such as mov [esp+4], x, does not move it
                 break
             cursor = previous.address
         return count, 4 * count
+
+    def virtual(self, ins):
+        """Whether a call without a signature has the shape of a virtual member call, whose this is in ecx: the
+        target is read through a vtable loaded from [ecx]. A COM call pushes its object instead, and in any
+        other call ecx is scratch, holding whatever each build left there."""
+        op = ins.operands[0] if ins.operands else None
+        if op is None or op.type != X86_OP_MEM or not op.mem.base:
+            return False
+        table = ins.reg_name(op.mem.base)
+        cursor = ins.address
+        while True:
+            previous = self.previous.get(cursor)
+            if previous is None or previous.mnemonic in STOPS or previous.group(1) or previous.group(3):
+                return False
+            if previous.operands and previous.operands[0].type == X86_OP_REG and previous.reg_name(previous.operands[0].reg) == table:
+                source = previous.operands[1] if len(previous.operands) == 2 else None
+                return (previous.mnemonic == "mov" and source is not None and source.type == X86_OP_MEM
+                        and source.mem.base and previous.reg_name(source.mem.base) == "ecx"
+                        and not source.mem.index and source.mem.disp == 0)
+            cursor = previous.address
 
     def token(self, value):
         """A pointer into unnamed code (an exception stub or funclet, anywhere in its allocated slot) as a token."""
@@ -488,7 +533,7 @@ class Runner:
         args_sp = sp + 4 if tail else sp
         arguments = [self.u32(args_sp + 4 * i) for i in range(words)]
         call = {"callee": self.link.names.get(destination, destination), "stack": self.arguments(arguments, sig)}
-        if sig is None or sig.thiscall:
+        if (sig.thiscall if sig else self.virtual(ins)):
             ecx = self.reg("ecx")
             # this in the caller's frame: compare the object's first word (its vtable for a class with
             # one), since the frame address itself differs between correct builds
@@ -567,6 +612,7 @@ class Runner:
         self.calls = []
         self.writes = set()
         self.executed = {}
+        self.float_stores = {}
         self.call_counts = Counter()
         self.protected = []
         self.steps = 0
@@ -612,7 +658,7 @@ class Runner:
                 for i in range(128)
             ),
         )
-        sig = signature(self.symbol)
+        sig = self.signature(self.symbol)
         self.frame_end = ENTRY_SP + 4 + 4 * (sig.words if sig else 0)
         if sig:
             records = dict(sig.records) if self.layouts else {}
@@ -680,9 +726,10 @@ class Runner:
         if self.outcome == ["return"]:
             # edx is scratch under Microsoft's conventions unless the result fills edx:eax; with no
             # readable signature it is compared, so an unknown result type cannot hide a difference
-            own = signature(self.symbol)
-            if void_result(self.symbol):
-                kept = ()
+            own = self.signature(self.symbol)
+            void = void_result(self.symbol)
+            if void or (own and own.floating):
+                kept = ()  # nothing, or a float or double on the x87 stack: eax and edx are scratch
             elif record_result(self.symbol):
                 kept = ("eax",)  # a class returned by value: eax holds the caller's result address, edx is scratch
             else:
@@ -690,14 +737,17 @@ class Runner:
             record["registers"] = {
                 r: self.reg(r) for r in (*kept, "esp", "ebx", "esi", "edi", "ebp")
             }
-            tags = self.uc.reg_read(x86.UC_X86_REG_FPTAG)
-            top = (self.uc.reg_read(x86.UC_X86_REG_FPSW) >> 11) & 7
-            record["x87"] = [
-                self.uc.reg_read(getattr(x86, f"UC_X86_REG_FP{(top + i) & 7}"))
-                for i in range(8)
-                if (tags >> (2 * ((top + i) & 7))) & 3 != 3
-            ]
-            record["x87_depth"] = len(record["x87"])
+            if not void:  # the x87 stack holds a floating result, or, with no signature, may
+                tags = self.uc.reg_read(x86.UC_X86_REG_FPTAG)
+                top = (self.uc.reg_read(x86.UC_X86_REG_FPSW) >> 11) & 7
+                stack = [
+                    extended(self.uc.reg_read(getattr(x86, f"UC_X86_REG_FP{(top + i) & 7}")))
+                    for i in range(8)
+                    if (tags >> (2 * ((top + i) & 7))) & 3 != 3
+                ]
+                record["x87"] = stack[:1] if own and own.floating else stack
+                record["x87_depth"] = len(stack)
+        record["floats"] = {str(at): size for at, size in sorted(self.float_stores.items())}
         return record
 
 
@@ -730,6 +780,51 @@ def followed(loaded, entry):
 def kinds_of(link, key):
     address = link.addresses[key]
     return "external" if 0x50000000 <= address < 0x60000000 else "defined"
+
+
+def extended(value):
+    """An x87 register's 80-bit value as a float."""
+    mantissa, exponent = value
+    sign = -1.0 if exponent & 0x8000 else 1.0
+    exponent &= 0x7FFF
+    if exponent == 0x7FFF:
+        return math.nan if mantissa & ((1 << 63) - 1) else sign * math.inf
+    try:
+        return sign * math.ldexp(mantissa, exponent - 16383 - 63)
+    except OverflowError:
+        return sign * math.inf
+
+
+def close(a, b):
+    """Floating-point results within rounding: a build that keeps a value in an 80-bit register and one that
+    rounds it to memory are both correct. Within a millionth relative, or a billionth absolute for results that
+    cancel to near zero."""
+    if math.isnan(a) or math.isnan(b):
+        return math.isnan(a) and math.isnan(b)
+    return math.isclose(a, b, rel_tol=1e-6, abs_tol=1e-9)  # absolute: cancellation leaves 0 against ~1e-17
+
+
+def stored(writes, at, size):
+    data = bytes(writes.get(str(at + k), 0) for k in range(size))
+    if size == 10:
+        mantissa, exponent = struct.unpack("<QH", data)
+        return extended((mantissa, exponent))
+    return struct.unpack("<f" if size == 4 else "<d", data)[0]
+
+
+def same(a, b):
+    """Whether two runs behaved the same, with floating-point values compared within rounding."""
+    keys = (a.keys() | b.keys()) - {"x87", "writes", "floats"}
+    if any(a.get(k) != b.get(k) for k in keys) or a["floats"] != b["floats"]:
+        return False
+    if len(a.get("x87", [])) != len(b.get("x87", [])) or not all(map(close, a.get("x87", []), b.get("x87", []))):
+        return False
+    numbers = {str(int(at) + k) for at, size in a["floats"].items() for k in range(size)}
+    if {k: v for k, v in a["writes"].items() if k not in numbers} != {k: v for k, v in b["writes"].items() if k not in numbers}:
+        return False
+    if a["writes"].keys() & numbers != b["writes"].keys() & numbers:
+        return False
+    return all(close(stored(a["writes"], int(at), size), stored(b["writes"], int(at), size)) for at, size in a["floats"].items())
 
 
 def bucket(count):
@@ -904,7 +999,7 @@ def check(
             # the two are not compared: the case shows neither agreement nor a difference
             inconclusive += 1
             continue
-        if records[0] != records[1]:
+        if not same(*records):
             differ += 1
             if first is None:
                 categories = [

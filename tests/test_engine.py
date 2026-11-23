@@ -129,6 +129,46 @@ class EngineTests(unittest.TestCase):
         after = self.obj("pushl $1\ncall _outside\nleal 8(%esp), %eax\naddl $4, %esp\nmovl $0, %eax\nret")
         self.assertEqual(self.compare(before, after)["verdict"], "agree")
 
+    def test_float_results_within_rounding(self):
+        # 1/3 kept at 80 bits against 1/3 rounded to a double: equal within rounding; 1/3 against 1/2 is not
+        name = "?f@@YANXZ"  # double f(void)
+        third = "fld1\nfld1\nfadd %st(0), %st(0)\nfadd %st(1), %st(0)\nfdivrp %st(0), %st(1)\n"
+        kept = self.obj(third + "movl $1, %eax\nret", symbol=name)
+        rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\nmovl $2, %eax\nret", symbol=name)
+        half = self.obj("fld1\nfld1\nfadd %st(0), %st(0)\nfdivrp %st(0), %st(1)\nret", symbol=name)
+        self.assertEqual(check(kept, rounded, name, cases=4)["verdict"], "agree")
+        self.assertEqual(check(kept, half, name, cases=4)["verdict"], "differ")
+
+    def test_float_stores_within_rounding(self):
+        # (1/3)*3 - 1 is 0 at 80 bits and about 5.5e-17 with 1/3 rounded to a double first
+        third = "fld1\nfld1\nfadd %st(0), %st(0)\nfadd %st(1), %st(0)\nfdivrp %st(0), %st(1)\n"
+        tail = "pushl $3\nfimull (%esp)\naddl $4, %esp\nfld1\nfsubrp %st(0), %st(1)\nfstpl 0x70000000\nret"
+        kept = self.obj(third + tail)
+        rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\n" + tail)
+        self.assertEqual(self.compare(kept, rounded)["verdict"], "agree")
+
+    def test_store_between_pushes_does_not_end_the_count(self):
+        # a callee that pops its two arguments, with a store into the frame scheduled between the pushes or
+        # before them: a count that stops at the store leaves the stack a word off
+        end = "call _outside\npopl %ecx\nmovl $0, %eax\nret"
+        before = self.obj("subl $4, %esp\npushl $1\nmovl $9, 4(%esp)\npushl $2\n" + end)
+        after = self.obj("subl $4, %esp\nmovl $9, (%esp)\npushl $1\npushl $2\n" + end)
+        self.assertEqual(self.compare(before, after)["verdict"], "agree")
+
+    def test_scratch_ecx_at_a_com_call_is_not_compared(self):
+        # a COM call: the object is pushed, the method read from its vtable, and ecx holds a leftover
+        end = "movl $0x70000000, %eax\npushl %eax\nmovl $0x70001000, %edx\ncall *0x10(%edx)\nmovl $0, %eax\nret"
+        before = self.obj("movl $1, %ecx\n" + end)
+        after = self.obj("movl $2, %ecx\n" + end)
+        result = self.compare(before, after)
+        self.assertEqual(result["outcomes"]["before"], {"return": 4})
+        self.assertEqual(result["verdict"], "agree")
+        # a virtual member call reads its vtable from [ecx] and takes this in ecx, which is compared
+        virtual = "movl (%ecx), %eax\ncall *0x10(%eax)\nmovl $0, %eax\nret"
+        one = self.obj("movl $0x70000000, %ecx\n" + virtual)
+        other = self.obj("movl $0x70002000, %ecx\n" + virtual)
+        self.assertEqual(self.compare(one, other)["verdict"], "differ")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
@@ -250,6 +290,12 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(owner("??_GCMapMgr@@UAEPAXI@Z"), "CMapMgr")
         self.assertEqual(owner("?A@In@Out@@QAEXXZ"), "Out::In")
         self.assertIsNone(owner("?f@@YAHH@Z"))
+
+    def test_class_results_and_arguments(self):
+        right = signature("?Right@CString@@QBE?AV1@H@Z")  # CString CString::Right(int) const
+        self.assertEqual((right.words, right.pop, right.pointers), (2, 8, (0,)))
+        self.assertIsNone(signature("?f@@YAXUtagRECT@@@Z"))  # a struct by value, size unknown
+        self.assertEqual(signature("?f@@YAXUtagRECT@@@Z", {"tagRECT": 16}).words, 4)
 
     def test_demangled_widths(self):
         self.assertEqual(signature("?SetNames@CGameInfo@@QAEHPAD0H@Z").words, 3)

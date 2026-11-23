@@ -82,8 +82,15 @@ def record_result(name):
     return bool(re.match(r"(const )?(class|struct|union) ", kind)) and not any(c in kind for c in "*&")
 
 
+def signature(name, sizes=None):
+    """The stack layout of a call to the decorated function. `sizes` maps record names to their sizes, for a
+    class passed by value; without it such a function has no signature."""
+    return _signature(name, tuple(sorted(sizes.items())) if sizes else ())
+
+
 @cache
-def signature(name):
+def _signature(name, sizes):
+    sizes = dict(sizes)
     name = name.removeprefix("__imp_")
     if name in C_SIGNATURES:
         return Signature(C_SIGNATURES[name], 0)
@@ -104,18 +111,16 @@ def signature(name):
     if not match or match[1] == "fastcall":
         return None
     returns = declaration[: match.start()]
-    if re.search(r"\b(class|struct|union)\b", returns) and not any(
-        c in returns for c in "*&"
-    ):
-        return None
+    # a class returned by value is built where a hidden pointer, the first stack argument, says
+    hidden = bool(re.search(r"\b(class|struct|union)\b", returns)) and not any(c in returns for c in "*&")
     open_paren = declaration.find("(", match.end())
     if open_paren < 0:
         return None
     args = split_arguments(declaration[open_paren + 1 : declaration.rfind(")")])
     if args == ["void"] or args == [""]:
         args = []
-    words = 0
-    pointers = []
+    words = 1 if hidden else 0
+    pointers = [0] if hidden else []
     pointees = []
     records = []
     for arg in args:
@@ -142,7 +147,11 @@ def signature(name):
             if arg.count("*") + arg.count("&") == 1 and primitive in widths:
                 pointees.append((words, widths[primitive]))
         elif arg.startswith(("class ", "struct ", "union ")):
-            return None
+            size = sizes.get(re.sub(r"^(class|struct|union) ", "", arg).strip())
+            if not size:
+                return None
+            words += -(-size // 4)
+            continue
         words += 2 if not pointer and ("double" in arg or "__int64" in arg) else 1
     floating = bool(re.search(r"\b(float|double)\s*$", returns))
     wide = bool(re.search(r"\b__int64\s*$", returns))
