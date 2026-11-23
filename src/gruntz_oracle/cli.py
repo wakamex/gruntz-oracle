@@ -3,6 +3,7 @@ when no case ran the code that differs to completion (under-exercised)."""
 
 import argparse
 import json
+import struct
 import sys
 from pathlib import Path
 
@@ -41,7 +42,7 @@ def main(argv=None):
             guided=not args.unguided,
             retail=args.retail,
         )
-    except (ValueError, OSError, KeyError) as error:
+    except (ValueError, OSError, KeyError, struct.error) as error:  # struct.error: a malformed or truncated object
         print(json.dumps({"error": str(error)}))
         return 2
     print(json.dumps(report, separators=(",", ":")))
