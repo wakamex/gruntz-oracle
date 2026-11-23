@@ -232,6 +232,14 @@ class EngineTests(unittest.TestCase):
         rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\n" + tail)
         self.assertEqual(self.compare(kept, rounded)["verdict"], "agree")
 
+    def test_handler_stub_pointer_is_not_differing_code(self):
+        # each build's exception handler stub is unnamed code with other contents, so it lands elsewhere; the
+        # push of its address is the same instruction in both
+        def build(value):
+            stub = f'.section .text$x,"xr"\n"__ehhandler$_entry":\nmovl ${value}, %eax\nret'
+            return self.obj('pushl $"__ehhandler$_entry"\npopl %eax\nmovl $0, %eax\nret', stub)
+        self.assertEqual(self.compare(build(1), build(2))["differing_instructions"], [0, 0])
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")

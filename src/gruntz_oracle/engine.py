@@ -923,11 +923,20 @@ def bucket(count):
     return count if count < 4 else count.bit_length() + 1
 
 
-def shape(ins):
-    """An instruction with branch targets left out, for aligning two builds' code."""
+def shape(ins, runner=None):
+    """An instruction with branch targets left out, for aligning two builds' code; a constant that points into
+    unnamed code (an exception handler stub, laid out differently by each build) is the token the runs compare."""
     if ins.group(1) or ins.group(2) or ins.mnemonic.startswith("j"):
         return ins.mnemonic
-    return f"{ins.mnemonic} {ins.op_str}"
+    parts = [ins.mnemonic]
+    for op in ins.operands:
+        if op.type == X86_OP_IMM and runner is not None and runner.token(op.imm & MASK) == "unnamed-code":
+            parts.append("unnamed-code")
+        elif op.type == X86_OP_MEM and runner is not None and runner.token(op.mem.disp & MASK) == "unnamed-code":
+            parts.append("[unnamed-code]")
+        else:
+            parts.append(ins.op_str)
+    return " ".join(parts)
 
 
 def reachable(runner, code):
@@ -975,7 +984,7 @@ def differing(runners):
             continue
         # alignment padding after a function (nop or int3, which one object keeps and the other trims) never runs
         sides = [list(md.disasm(codes[i][base].rstrip(b"\x90\xcc"), base)) for i in (0, 1)]
-        shapes = [[shape(i) for i in side] for side in sides]
+        shapes = [[shape(i, runner) for i in side] for side, runner in zip(sides, runners)]
         for tag, i1, i2, j1, j2 in SequenceMatcher(None, *shapes, autojunk=False).get_opcodes():
             if tag != "equal":
                 found[0].update(i.address for i in sides[0][i1:i2])
