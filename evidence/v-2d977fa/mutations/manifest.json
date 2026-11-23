@@ -1,0 +1,194 @@
+[
+  {
+    "name": "constant",
+    "unit": "namerecord",
+    "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+    "preserving": false,
+    "old": "m_body.m_version = 1;",
+    "new": "m_body.m_version = 2;",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/constant.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "ebde43cc50aa508a57f6f9850da30359b49092b8eb0195a760050b58acbd7572",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "comparison",
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "preserving": false,
+    "old": "if (b->m_score > score)",
+    "new": "if (b->m_score < score)",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/comparison.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "603ca552cab86fc469ec42e327c2243fe42a64da8b346f3cf076a11ccd5e1019",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "dropped-store",
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "preserving": false,
+    "old": "    b->m_score = score;\n",
+    "new": "",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/dropped-store.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "a4c4cfa8ff0419800d571f8095649dae97b8a5ded78a7ddb791aec31bbcc094a",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "independent-stores",
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "preserving": true,
+    "old": "    b->m_score = score;\n    b->m_timeMs = timeMs;",
+    "new": "    b->m_timeMs = timeMs;\n    b->m_score = score;",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/independent-stores.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "e5ad461e63ed0e1be0f43c75f27d5674e46c98b6a25302e0e63c4c18b575edf8",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "renamed-local",
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "preserving": true,
+    "old": "b",
+    "new": "record",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/renamed-local.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "f105918ba80dfda7c4747075a6942f3e53d0915d2ef00f161862cd9788fdd2f0",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "named-temporary",
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "preserving": true,
+    "old": "    b->m_score = score;",
+    "new": "    i32 newScore = score;\n    b->m_score = newScore;",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/namerecord/named-temporary.obj",
+    "original_sha256": "98f0f1dcbea7697768c36b549664e537ca052265dee68007d9848cc757ac141d",
+    "mutation_sha256": "3c22f71a6329ff4e484dbabceca05f8b4001421fa1918451950eaaa3badd4455",
+    "source_sha256": "adaf61fcb3227b3bc6b0f7bd57f4e2cb86130d5315c8bba9bd90a7abc2a32cd0",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "swapped-arguments",
+    "unit": "chainforward",
+    "symbol": "?SaveBackBufferShot@@YAHPAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+    "preserving": false,
+    "old": "SaveScreenshot(leaf, reg, owner, width, height, name, saveFlag)",
+    "new": "SaveScreenshot(leaf, reg, owner, height, width, name, saveFlag)",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/chainforward/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/chainforward/swapped-arguments.obj",
+    "original_sha256": "db7c05ce526b513d213d171442f582498220927c80103835a1e36a8651eee73a",
+    "mutation_sha256": "f6e0cd16412b39d5371fa3b9747df23eebff310ef097691386e25dba6f029749",
+    "source_sha256": "71ba3a3e280d35a3f25ad9505ded9f99f007f195db3b09775b45e574b3292ccf",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  },
+  {
+    "name": "loop-bound",
+    "unit": "brickz",
+    "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+    "preserving": false,
+    "old": "for (i32 x = x0; x < x1; x++)",
+    "new": "for (i32 x = x0; x <= x1; x++)",
+    "original": "/code/gruntz-oracle/evidence/mutations-5000/objects/brickz/baseline.obj",
+    "mutation": "/code/gruntz-oracle/evidence/mutations-5000/objects/brickz/loop-bound.obj",
+    "original_sha256": "7f97face659336a0ac3039bd81d32a219347f33a10be205a663ec789ac83ee1d",
+    "mutation_sha256": "1acd262767a430b7fed5ba5058711d3f98c3e9e341d740c56d7ae75ccc838b24",
+    "source_sha256": "ff48400a4576e7a912cf7cae9c2afeaf2874667b575329d8dc84253c432bb3a5",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/GX",
+      "/GR"
+    ],
+    "shortcuts": [
+      "objdiff_scores"
+    ]
+  }
+]

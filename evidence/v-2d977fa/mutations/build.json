@@ -1,0 +1,7 @@
+{
+  "target_head": "8c3a113ca03e9ebf086b91f1663924c0f82f1a57",
+  "toolchain_definition_sha256": "185d67e603694d0960bfaaa8474ea20afece816f4c94af53a4e2dfc0153ba784",
+  "toolchain_definition": "{ pkgs }:\npkgs.runCommand \"gruntz-toolchain-vc50\" {\n  src = pkgs.fetchurl {\n    name = \"gruntz-toolchain-vc50.tar.xz\";\n    url = \"https://github.com/sushi-shi/gruntz-decomp/releases/download/toolchain-vc50-sp3-r3/gruntz-toolchain-vc50.tar.xz\";\n    sha256 = \"sha256-sZgl957g2+6wlrAPxIa1OcaDqlcG8PXsXVOKWc5KeZ8=\";\n  };\n  nativeBuildInputs = [ pkgs.gnutar pkgs.xz ];\n} ''\n  mkdir -p \"$out\"\n  tar xf \"$src\" -C \"$out\" --strip-components=1\n''\n",
+  "units_manifest_sha256": "d92aff0d3b5bba1a929f4135c50c3e09f2d5c3a915e4b897b481ffa59879474c",
+  "compile_workers": 4
+}

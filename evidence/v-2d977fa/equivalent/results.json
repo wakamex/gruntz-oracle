@@ -1,0 +1,4490 @@
+[
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "??0CActionOptionsMenuBar@@QAE@XZ",
+    "seconds": 27.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      14,
+      14
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 4,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?LoadAssets@CActionOptionsMenuBar@@QAEHXZ",
+    "seconds": 9.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      12
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 204,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?Init@CActionOptionsMenuBar@@QAEHW4ActionOptionButtonState@@0HHHH@Z",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      11,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 167,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?Refresh@CActionOptionsMenuBar@@QAEHXZ",
+    "seconds": 12.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      49,
+      38
+    ],
+    "cases_exercising_difference": 442,
+    "cases_inconclusive": 0,
+    "guided_cases": 249,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?Render@CActionOptionsMenuBar@@QAEHXZ",
+    "seconds": 12.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 162,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?UpdateHoverState@CActionOptionsMenuBar@@QAEHHH@Z",
+    "seconds": 9.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 96,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?HitTestButtons@CActionOptionsMenuBar@@QAE?AW4ActionOptionHit@@HH@Z",
+    "seconds": 7.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      47,
+      45
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?Serialize@CActionOptionsMenuBar@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 19.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      66,
+      54
+    ],
+    "cases_exercising_difference": 375,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?Deserialize@CActionOptionsMenuBar@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 13.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      21,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 114,
+    "first_difference": null,
+    "unit": "actionoptionsmenubar",
+    "symbol": "?WorldToViewport@CLevelPlane@@QAEXPAJ0@Z",
+    "seconds": 11.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      14
+    ],
+    "cases_exercising_difference": 293,
+    "cases_inconclusive": 207,
+    "guided_cases": 215,
+    "first_difference": null,
+    "unit": "bitarray",
+    "symbol": "?SetBit@zBitVec@@QAEPAV1@I@Z",
+    "seconds": 197.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      19,
+      14
+    ],
+    "cases_exercising_difference": 360,
+    "cases_inconclusive": 140,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "bitarray",
+    "symbol": "?Or@zBitVec@@QAEPAV1@PAV1@@Z",
+    "seconds": 110.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      12,
+      11
+    ],
+    "cases_exercising_difference": 298,
+    "cases_inconclusive": 202,
+    "guided_cases": 208,
+    "first_difference": null,
+    "unit": "bitarray",
+    "symbol": "?EnsureSize@zBitVec@@QAEHH@Z",
+    "seconds": 191.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      10
+    ],
+    "cases_exercising_difference": 72,
+    "cases_inconclusive": 0,
+    "guided_cases": 72,
+    "first_difference": null,
+    "unit": "brickz",
+    "symbol": "?FindPathWithEndpointOverrides@CMapMgr@@QAEHHHHHPAVCPtrList@@HHH@Z",
+    "seconds": 11.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 218,
+    "cases_inconclusive": 282,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "brickz",
+    "symbol": "?UpdateDiagonals@CMapMgr@@QAEHPAVCGruntzMgr@@@Z",
+    "seconds": 88.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 499,
+    "cases_inconclusive": 1,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "brickz",
+    "symbol": "?LineIsClear@CMapMgr@@QAEHHHHH@Z",
+    "seconds": 8.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      21,
+      19
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "brickzcellflags",
+    "symbol": "?ComputeCellFlags@CMapMgr@@QAEXHHH@Z",
+    "seconds": 28.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "brickzcellflags",
+    "symbol": "?SetCell@CLevelPlane@@QAEXHHH@Z",
+    "seconds": 8.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "brickzcellflags",
+    "symbol": "?FindNearestEnemy@CTriggerMgr@@QAEPAVCGrunt@@PAV2@@Z",
+    "seconds": 20.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      44,
+      44
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 180,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "?HandleTextInputKey@CChatBox@@QAEXHH@Z",
+    "seconds": 32.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 6,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "??1zPTree@@MAE@XZ",
+    "seconds": 8.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "??1CButeMgr@@QAE@XZ",
+    "seconds": 8.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 6,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "??1?$zSymTab@V?$zSymTab@VCSymTabItem@CButeMgr@@@@@@UAE@XZ",
+    "seconds": 7.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "?GetInputText@CGameText@@QAE?AVCString@@XZ",
+    "seconds": 5.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      14,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "?Draw@CChatBox@@QAEHPAVCRenderBuffer@@@Z",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 407,
+    "cases_inconclusive": 0,
+    "guided_cases": 150,
+    "first_difference": null,
+    "unit": "chatboxowner",
+    "symbol": "?HitTest@CChatBox@@QAEHHH@Z",
+    "seconds": 9.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "??_GCObject@@UAEPAXI@Z",
+    "seconds": 25.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?Init@CGameWorld@@UAEHPAUHWND__@@HHW4ColorDepth@@H@Z",
+    "seconds": 12.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?Cleanup@CGameWorld@@UAEXXZ",
+    "seconds": 30.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 49,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?SetDimensions@CGameWorld@@QAEHHHW4ColorDepth@@@Z",
+    "seconds": 10.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      23,
+      23
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?SaveSnapshot@CGameWorld@@QAEHP6AHPAV1@PAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAX@ZPAD63@Z",
+    "seconds": 11.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "??0CFileMemBase@@QAE@XZ",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "??1CFileMemBase@@UAE@XZ",
+    "seconds": 6.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "??1CFileMem@@UAE@XZ",
+    "seconds": 7.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      16,
+      16
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 225,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?LoadSnapshot@CGameWorld@@QAEHP6AHPAV1@PAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAX@ZPAD3@Z",
+    "seconds": 11.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 35,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?DispatchSerializationCallback@CGameWorld@@QAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAX@Z",
+    "seconds": 7.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 399,
+    "cases_inconclusive": 0,
+    "guided_cases": 56,
+    "first_difference": null,
+    "unit": "ddrawsurfacemgr",
+    "symbol": "?LoadRecordFile@@YGHPBDPAUCSnapshotHeader@@PAXIH@Z",
+    "seconds": 7.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 36,
+    "first_difference": null,
+    "unit": "ddrawworkerhost",
+    "symbol": "??1CLevelPlane@@UAE@XZ",
+    "seconds": 18.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "ddrawworkerhost",
+    "symbol": "??_GCObject@@UAEPAXI@Z",
+    "seconds": 7.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?IsReady@CImageSetRegistry@@UAEHXZ",
+    "seconds": 16.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 102,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?InsertFrameByKey@CImageSetRegistry@@UAEPAVCImage@@PAUCRezItm@@PBDHH@Z",
+    "seconds": 7.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "??_GCObject@@UAEPAXI@Z",
+    "seconds": 7.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 102,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?LoadFrameByKey@CImageSetRegistry@@UAEPAVCImage@@PADPBDHH@Z",
+    "seconds": 6.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 99,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?CreateDescriptorFrameByKey@CImageSetRegistry@@UAEPAVCImage@@PAUPidHeader@@W4FileImageFormat@@PBDHI@Z",
+    "seconds": 8.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 94,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?CreateBlankFrameByKey@CImageSetRegistry@@UAEPAVCImage@@HHPBDHH@Z",
+    "seconds": 8.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?LoadFrameForImageSet@CImageSetRegistry@@UAEPAVCImage@@PADPAVCImageSet@@HH@Z",
+    "seconds": 7.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?InsertFrameForImageSet@CImageSetRegistry@@UAEPAVCImage@@PAUCRezItm@@PAVCImageSet@@HH@Z",
+    "seconds": 6.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?CreateDescriptorFrameForImageSet@CImageSetRegistry@@UAEPAVCImage@@PAUPidHeader@@W4FileImageFormat@@PAVCImageSet@@HI@Z",
+    "seconds": 7.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?CreateBlankFrameForImageSet@CImageSetRegistry@@UAEPAVCImage@@HHPAVCImageSet@@HH@Z",
+    "seconds": 7.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 159,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?LoadImageSetsFromTree@CImageSetRegistry@@UAEHPAVCRezDir@@PBD1@Z",
+    "seconds": 10.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 274,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?ReloadImageSetsFromTree@CImageSetRegistry@@UAEHPAVCRezDir@@PBD1@Z",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 460,
+    "cases_inconclusive": 0,
+    "guided_cases": 3,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?RemoveImageSet@CImageSetRegistry@@UAEXPAVCImageSet@@@Z",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 131,
+    "cases_inconclusive": 369,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?ClearImageSets@CImageSetRegistry@@UAEXXZ",
+    "seconds": 331.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 101,
+    "cases_inconclusive": 399,
+    "guided_cases": 131,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?RemoveWithPrefix@CImageSetRegistry@@QAEHPBD0@Z",
+    "seconds": 377.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      7
+    ],
+    "cases_exercising_difference": 131,
+    "cases_inconclusive": 369,
+    "guided_cases": 26,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?GetMemoryUsageByPrefix@CImageSetRegistry@@QAEHPBDH@Z",
+    "seconds": 313.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 432,
+    "cases_inconclusive": 68,
+    "guided_cases": 222,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?HasWithPrefix@CImageSetRegistry@@QAEHPBD@Z",
+    "seconds": 76.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 129,
+    "cases_inconclusive": 334,
+    "guided_cases": 28,
+    "first_difference": null,
+    "unit": "ddrawworkerregistry",
+    "symbol": "?FindFrameIdentity@CImageSetRegistry@@QAEHPAVCImage@@PADPAH@Z",
+    "seconds": 297.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      1
+    ],
+    "cases_exercising_difference": 262,
+    "cases_inconclusive": 0,
+    "guided_cases": 15,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?Add@dprintfExcludeRegions@@QAEXII@Z",
+    "seconds": 10.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?Scan@dprintfExcludeRegions@@QAEXPAD@Z",
+    "seconds": 5.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 14,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintfmonoincline@@YAXXZ",
+    "seconds": 4.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 6,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintfmonoclrscr@@YAXXZ",
+    "seconds": 50.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 123,
+    "cases_inconclusive": 0,
+    "guided_cases": 236,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintf@@YAXPADZZ",
+    "seconds": 16.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 123,
+    "cases_inconclusive": 0,
+    "guided_cases": 236,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintf@@YAXHHPADZZ",
+    "seconds": 15.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 456,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintf@@YAXIPADZZ",
+    "seconds": 15.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 456,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "?dprintf@@YAXIHHPADZZ",
+    "seconds": 15.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      21,
+      18
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "debugprintf",
+    "symbol": "??0dprintfinittype@@QAE@XZ",
+    "seconds": 7.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "??0CBattlezDlg@@QAE@PAVCGruntzMgr@@PAVCWnd@@@Z",
+    "seconds": 38.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "??1CBattlezDlg@@UAE@XZ",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      49,
+      49
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?DoDataExchange@CBattlezDlg@@UAEXPAVCDataExchange@@@Z",
+    "seconds": 18.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 23,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?BattlezMapComboEditProc@@YGHPAUHWND__@@IIJ@Z",
+    "seconds": 10.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 21,
+    "cases_inconclusive": 0,
+    "guided_cases": 120,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?SetMaxGruntzSelection@CBattlezDlg@@QAEHHH@Z",
+    "seconds": 8.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 458,
+    "cases_inconclusive": 0,
+    "guided_cases": 113,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?UpdatePlayerSlotEnabled@CBattlezDlg@@QAEXH@Z",
+    "seconds": 8.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 196,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?PaintPlayerColorControls@CBattlezDlg@@QAEXXZ",
+    "seconds": 18.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "??_GCObject@@UAEPAXI@Z",
+    "seconds": 10.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      7
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 57,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnDrawItem@CBattlezDlg@@QAEXHPAUtagDRAWITEMSTRUCT@@@Z",
+    "seconds": 9.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnPlayerColor0@CBattlezDlg@@QAEXXZ",
+    "seconds": 10.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 40,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnPlayerColor1@CBattlezDlg@@QAEXXZ",
+    "seconds": 10.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 40,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnPlayerColor2@CBattlezDlg@@QAEXXZ",
+    "seconds": 9.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 40,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnPlayerColor3@CBattlezDlg@@QAEXXZ",
+    "seconds": 9.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 451,
+    "cases_inconclusive": 0,
+    "guided_cases": 57,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?ShowCustomDlg@CBattlezDlg@@QAEXXZ",
+    "seconds": 9.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "??1CBattlezDlgCustom@@UAE@XZ",
+    "seconds": 8.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 195,
+    "cases_inconclusive": 0,
+    "guided_cases": 19,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?OnWorldSelectionChange@CBattlezDlg@@QAEXXZ",
+    "seconds": 9.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 91,
+    "first_difference": null,
+    "unit": "dialogs",
+    "symbol": "?ReadPlayerName@CBattlezDlg@@QAEXH@Z",
+    "seconds": 10.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?BuildVolumeTable@SoundDevice@@SAXXZ",
+    "seconds": 62.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 40,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundBuffer@@QAE@PAUIDirectSoundBuffer@@PAVSoundDevice@@@Z",
+    "seconds": 14.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Restore@SoundBuffer@@QAEHXZ",
+    "seconds": 7.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 347,
+    "cases_inconclusive": 0,
+    "guided_cases": 23,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?StopAndRewind@SoundBuffer@@QAEHXZ",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 351,
+    "cases_inconclusive": 0,
+    "guided_cases": 30,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?IsPlaying@SoundBuffer@@QAEHXZ",
+    "seconds": 10.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 350,
+    "cases_inconclusive": 0,
+    "guided_cases": 32,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?IsLooping@SoundBuffer@@QAEHXZ",
+    "seconds": 9.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 23,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?IsInHardware@SoundBuffer@@QAEHXZ",
+    "seconds": 8.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 344,
+    "cases_inconclusive": 0,
+    "guided_cases": 18,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetLooping@SoundBuffer@@QAEXH@Z",
+    "seconds": 8.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 83,
+    "cases_inconclusive": 0,
+    "guided_cases": 45,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetVolume@SoundBuffer@@QAEHH@Z",
+    "seconds": 9.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 345,
+    "cases_inconclusive": 0,
+    "guided_cases": 15,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?GetVolume@SoundBuffer@@QAEHXZ",
+    "seconds": 9.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      12
+    ],
+    "cases_exercising_difference": 355,
+    "cases_inconclusive": 145,
+    "guided_cases": 203,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?RampVolumeTo@SoundBuffer@@QAEHHHH@Z",
+    "seconds": 92.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 86,
+    "cases_inconclusive": 0,
+    "guided_cases": 33,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetPan@SoundBuffer@@QAEHH@Z",
+    "seconds": 6.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 351,
+    "cases_inconclusive": 0,
+    "guided_cases": 29,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?GetPan@SoundBuffer@@QAEHXZ",
+    "seconds": 7.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 39,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetFrequency@SoundBuffer@@QAEHI@Z",
+    "seconds": 9.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 353,
+    "cases_inconclusive": 0,
+    "guided_cases": 93,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetFrequencyOffsetPercent@SoundBuffer@@QAEHH@Z",
+    "seconds": 10.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?UpdateDuration@SoundBuffer@@QAEXXZ",
+    "seconds": 8.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 347,
+    "cases_inconclusive": 0,
+    "guided_cases": 61,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Unlock@SoundBuffer@@QAEHPAEI0I@Z",
+    "seconds": 11.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 348,
+    "cases_inconclusive": 0,
+    "guided_cases": 33,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?GetCurrentPosition@SoundBuffer@@QAEHPAK0@Z",
+    "seconds": 8.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 349,
+    "cases_inconclusive": 0,
+    "guided_cases": 25,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetCurrentPosition@SoundBuffer@@QAEHI@Z",
+    "seconds": 10.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 346,
+    "cases_inconclusive": 0,
+    "guided_cases": 35,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?GetFormat@SoundBuffer@@QAEHPAUtWAVEFORMATEX@@IPAK@Z",
+    "seconds": 8.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundSample@@QAE@PAUIDirectSoundBuffer@@PAVSoundDevice@@@Z",
+    "seconds": 20.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 496,
+    "cases_inconclusive": 4,
+    "guided_cases": 29,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??1SoundSample@@UAE@XZ",
+    "seconds": 11.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      12,
+      12
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 109,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?CreateInstance@SoundSample@@QAEPAVSoundBuffer@@H@Z",
+    "seconds": 14.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 300,
+    "cases_inconclusive": 0,
+    "guided_cases": 15,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?DestroyInstance@SoundSample@@QAEXPAVSoundBuffer@@@Z",
+    "seconds": 11.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      24,
+      24
+    ],
+    "cases_exercising_difference": 360,
+    "cases_inconclusive": 0,
+    "guided_cases": 113,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?AcquireInstance@SoundSample@@QAEPAVSoundBuffer@@XZ",
+    "seconds": 11.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 115,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?LoadFromFile@SoundBuffer@@QAEHPAU_iobuf@@IH@Z",
+    "seconds": 9.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      15
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 68,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?LockConvert@SoundBuffer@@QAEHPAEIH@Z",
+    "seconds": 9.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      43,
+      43
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 172,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?AcquireAndPlay@SoundSample@@QAEHHHHH@Z",
+    "seconds": 15.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 499,
+    "cases_inconclusive": 1,
+    "guided_cases": 143,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?StopAllInstances@SoundSample@@QAEXXZ",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      7
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundBufferInstance@@QAE@PAUIDirectSoundBuffer@@PAVSoundDevice@@PAVSoundBuffer@@@Z",
+    "seconds": 17.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 40,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundBufferInstance@@QAE@PAUIDirectSoundBuffer@@PAVSoundDevice@@@Z",
+    "seconds": 12.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 348,
+    "cases_inconclusive": 0,
+    "guided_cases": 26,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Play@SoundBuffer@@QAEHXZ",
+    "seconds": 11.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      15
+    ],
+    "cases_exercising_difference": 398,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ApplyAndPlay@SoundBuffer@@QAEHHHHH@Z",
+    "seconds": 13.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 59,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Lock@SoundBuffer@@QAEHIIPAPAEPAK01I@Z",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundDevice@@QAE@XZ",
+    "seconds": 57.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      8
+    ],
+    "cases_exercising_difference": 458,
+    "cases_inconclusive": 42,
+    "guided_cases": 234,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??1SoundDevice@@UAE@XZ",
+    "seconds": 46.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Initialize@SoundDevice@@QAEHPAUHWND__@@II@Z",
+    "seconds": 7.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 28,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetCooperativeLevel@SoundDevice@@QAEHPAUHWND__@@I@Z",
+    "seconds": 9.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 373,
+    "cases_inconclusive": 0,
+    "guided_cases": 14,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Compact@SoundDevice@@QAEHXZ",
+    "seconds": 7.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      7
+    ],
+    "cases_exercising_difference": 373,
+    "cases_inconclusive": 42,
+    "guided_cases": 234,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Shutdown@SoundDevice@@QAEXXZ",
+    "seconds": 43.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      31,
+      31
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 137,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?CreateSample@SoundDevice@@QAEPAVSoundSample@@PAUtWAVEFORMATEX@@II@Z",
+    "seconds": 9.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      73,
+      69
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 89,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?LoadSampleFile@SoundDevice@@QAEPAVSoundSample@@PADII@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      68,
+      64
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 28,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?LoadSample@SoundDevice@@QAEPAVSoundSample@@PAURiffWaveHeader@@II@Z",
+    "seconds": 9.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      40,
+      37
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 122,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ReloadFile@SoundDevice@@QAEHPAVSoundBuffer@@PADI@Z",
+    "seconds": 11.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      35,
+      32
+    ],
+    "cases_exercising_difference": 290,
+    "cases_inconclusive": 0,
+    "guided_cases": 148,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ReloadRiff@SoundDevice@@QAEHPAVSoundBuffer@@PAURiffWaveHeader@@I@Z",
+    "seconds": 10.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      36,
+      33
+    ],
+    "cases_exercising_difference": 310,
+    "cases_inconclusive": 0,
+    "guided_cases": 112,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ReloadResource@SoundDevice@@QAEHPAVSoundBuffer@@PBDI@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 102,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?StopAllBuffers@SoundDevice@@QAEXXZ",
+    "seconds": 7.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 392,
+    "cases_inconclusive": 29,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?TickVolumeRamps@SoundDevice@@QAEHH@Z",
+    "seconds": 24.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 159,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ClearVolumeRamps@SoundDevice@@QAEHXZ",
+    "seconds": 9.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      6
+    ],
+    "cases_exercising_difference": 275,
+    "cases_inconclusive": 225,
+    "guided_cases": 113,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?RemoveMatching@SoundTaskList@@QAEXPAVSoundBuffer@@I@Z",
+    "seconds": 71.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 10,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "??0SoundVolumeRamp@@QAE@HHHPAVSoundBuffer@@HH@Z",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 106,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?Tick@SoundVolumeRamp@@UAEHH@Z",
+    "seconds": 11.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?ParseWaveChunks@@YAHPAURiffWaveHeader@@PAPAUtWAVEFORMATEX@@PAPAEPAI@Z",
+    "seconds": 6.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      12,
+      12
+    ],
+    "cases_exercising_difference": 351,
+    "cases_inconclusive": 0,
+    "guided_cases": 59,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?SetPrimaryFormat@SoundDevice@@QAEHPAUtWAVEFORMATEX@@@Z",
+    "seconds": 7.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      11,
+      11
+    ],
+    "cases_exercising_difference": 354,
+    "cases_inconclusive": 0,
+    "guided_cases": 49,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?StartPrimaryBuffer@SoundDevice@@QAEHXZ",
+    "seconds": 9.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 351,
+    "cases_inconclusive": 0,
+    "guided_cases": 26,
+    "first_difference": null,
+    "unit": "directsoundmgr",
+    "symbol": "?CreatePrimaryBuffer@SoundDevice@@QAEHXZ",
+    "seconds": 6.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 14,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??1CFader@@UAE@XZ",
+    "seconds": 20.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      5
+    ],
+    "cases_exercising_difference": 82,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "?RunFadeStepped@CFader@@QAEXHHH@Z",
+    "seconds": 73.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "?RunFade@CFader@@QAEXIHH@Z",
+    "seconds": 59.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CShapeFaderConfig@@QAE@XZ",
+    "seconds": 10.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CLightFaderConfig@@QAE@XZ",
+    "seconds": 9.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CSineFaderConfig@@QAE@XZ",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CRadialFaderConfig@@QAE@XZ",
+    "seconds": 9.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CFlatFaderConfig@@QAE@XZ",
+    "seconds": 7.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fader",
+    "symbol": "??0CMeshFaderConfig@@QAE@XZ",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "??0CFaderShape@@QAE@XZ",
+    "seconds": 20.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 15,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "??1CFaderShape@@UAE@XZ",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      18,
+      18
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 63,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "?ApplyInit@CFaderShape@@QAEHPAVCFaderConfig@@@Z",
+    "seconds": 11.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      189,
+      176
+    ],
+    "cases_exercising_difference": 484,
+    "cases_inconclusive": 16,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "?RenderFrame@CFaderShape@@UAEXH@Z",
+    "seconds": 19.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      102,
+      95
+    ],
+    "cases_exercising_difference": 439,
+    "cases_inconclusive": 61,
+    "guided_cases": 125,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "?RenderWarpTile@CFaderShape@@QAEXHH@Z",
+    "seconds": 24.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      44,
+      43
+    ],
+    "cases_exercising_difference": 463,
+    "cases_inconclusive": 37,
+    "guided_cases": 108,
+    "first_difference": null,
+    "unit": "fadershape",
+    "symbol": "?RenderTile@CFaderShape@@QAEXHH@Z",
+    "seconds": 21.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 109,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?Init@CFecFile@@QAEHXZ",
+    "seconds": 16.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      22,
+      21
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 26,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?ReadArchive@CFecFile@@QAEHPBD@Z",
+    "seconds": 9.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 57,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?Lookup@CFecFile@@QAEHI@Z",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 19,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?CreateArchive@CFecFile@@QAEHPBD@Z",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      22,
+      22
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 42,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?AddFile@CFecFile@@QAEHPBDPAHPAX@Z",
+    "seconds": 14.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 124,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?ExtractArchive@CFecFile@@QAEHPBDPAHPAX@Z",
+    "seconds": 24.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 135,
+    "first_difference": null,
+    "unit": "feccrypt",
+    "symbol": "?FecEncode@CFecFile@@QAEXPBDPAD@Z",
+    "seconds": 10.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      11,
+      11
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 170,
+    "first_difference": null,
+    "unit": "gameassetnamespaces",
+    "symbol": "?LoadGameAssetNamespaces@CState@@UAEHPAVCGruntzMgr@@HH@Z",
+    "seconds": 34.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      74,
+      67
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 166,
+    "first_difference": null,
+    "unit": "gruntreticlescan",
+    "symbol": "?StepDefenderBehavior@CGrunt@@QAEHXZ",
+    "seconds": 27.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 9,
+    "first_difference": null,
+    "unit": "gruntreticlescan",
+    "symbol": "?Push@?$FreeNodePool@UCoord@@@@QAEXPAX@Z",
+    "seconds": 7.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      16,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 64,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "??0CGruntStartingPoint@@QAE@PAUCGameObject@@@Z",
+    "seconds": 26.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "??_GCUserBase@@UAEPAXI@Z",
+    "seconds": 10.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 437,
+    "cases_inconclusive": 0,
+    "guided_cases": 27,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "?SerializeDispatch@CGruntStartingPoint@@UAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAUCGameObject@@@Z",
+    "seconds": 5.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 64,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "?FireActivation@CGruntStartingPoint@@UAEXH@Z",
+    "seconds": 6.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 108,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "?RegisterGruntStartingPointActions@@YAXXZ",
+    "seconds": 6.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "gruntstartingpoint",
+    "symbol": "??0?$zDArray@P8CUserLogic@@AEHXZ@@QAE@HH@Z",
+    "seconds": 6.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      7
+    ],
+    "cases_exercising_difference": 496,
+    "cases_inconclusive": 4,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "imagepolyclip",
+    "symbol": "?PolyIsConvexCW@@YAHPAUClipVtx@@H@Z",
+    "seconds": 21.3
+  },
+  {
+    "verdict": "differ",
+    "differ": 25,
+    "differing_instructions": [
+      338,
+      238
+    ],
+    "cases_exercising_difference": 453,
+    "cases_inconclusive": 47,
+    "guided_cases": 250,
+    "first_difference": {
+      "seed": 28,
+      "overrides": {},
+      "detail": {
+        "writes": [
+          [
+            "806027320",
+            104,
+            99
+          ]
+        ]
+      }
+    },
+    "unit": "imagepolyclip",
+    "symbol": "?ImageRotateBlit@@YAXHHPAHPAVCDDSurface@@1MMHH@Z",
+    "seconds": 54.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      74,
+      62
+    ],
+    "cases_exercising_difference": 362,
+    "cases_inconclusive": 138,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "imagepolyclip",
+    "symbol": "?ImagePolyClipRect@@YAHPAUClipVtx@@HHHHH@Z",
+    "seconds": 81.0
+  },
+  {
+    "verdict": "differ",
+    "differ": 3,
+    "differing_instructions": [
+      212,
+      154
+    ],
+    "cases_exercising_difference": 368,
+    "cases_inconclusive": 132,
+    "guided_cases": 250,
+    "first_difference": {
+      "seed": 215,
+      "overrides": {},
+      "detail": {
+        "floats": [
+          [
+            "805961784",
+            4,
+            null
+          ],
+          [
+            "805961812",
+            4,
+            null
+          ],
+          [
+            "805961896",
+            4,
+            null
+          ],
+          [
+            "805961924",
+            4,
+            null
+          ],
+          [
+            "805962008",
+            4,
+            null
+          ],
+          [
+            "805962036",
+            4,
+            null
+          ]
+        ],
+        "writes": [
+          [
+            "806027360",
+            0,
+            182
+          ],
+          [
+            "806027361",
+            0,
+            13
+          ],
+          [
+            "806027362",
+            0,
+            146
+          ],
+          [
+            "806027363",
+            0,
+            91
+          ]
+        ]
+      }
+    },
+    "unit": "imagepolyclip",
+    "symbol": "?RotateRasterize@@YAHPAUClipVtx@@HPAVCDDSurface@@1HHHHHH@Z",
+    "seconds": 188.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      42,
+      40
+    ],
+    "cases_exercising_difference": 470,
+    "cases_inconclusive": 30,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "imagepolyclip",
+    "symbol": "?WarpTextureBlit@@YAHPAUClipVtx@@HPAVCDDSurface@@1HH@Z",
+    "seconds": 33.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      12,
+      12
+    ],
+    "cases_exercising_difference": 327,
+    "cases_inconclusive": 173,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "imagepolyclip",
+    "symbol": "?FillPolygon@@YAHPAUClipVtx@@HPAVCDDSurface@@F@Z",
+    "seconds": 83.5
+  },
+  {
+    "verdict": "differ",
+    "differ": 110,
+    "differing_instructions": [
+      166,
+      125
+    ],
+    "cases_exercising_difference": 465,
+    "cases_inconclusive": 35,
+    "guided_cases": 250,
+    "first_difference": {
+      "seed": 1,
+      "overrides": {},
+      "detail": {
+        "writes": [
+          [
+            "805961729",
+            144,
+            80
+          ],
+          [
+            "805961730",
+            2,
+            3
+          ],
+          [
+            "805961756",
+            82,
+            106
+          ]
+        ]
+      }
+    },
+    "unit": "imagepolyclip",
+    "symbol": "?ProjectWallQuad@@YAHPAVCDDSurface@@HHHHHFUtagRECT@@@Z",
+    "seconds": 33.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 401,
+    "cases_inconclusive": 0,
+    "guided_cases": 22,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?AllocSurface@CMinimap@@QAEHXZ",
+    "seconds": 30.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      29,
+      24
+    ],
+    "cases_exercising_difference": 486,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?Refresh@CMinimap@@QAEHHH@Z",
+    "seconds": 14.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      33,
+      33
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 45,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?Draw@CMinimap@@QAEHPAVCRenderBuffer@@PAUtagRECT@@@Z",
+    "seconds": 12.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      18,
+      18
+    ],
+    "cases_exercising_difference": 341,
+    "cases_inconclusive": 159,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?DrawBorderRaw@CMinimap@@QAEXPAUtagRECT@@PADH@Z",
+    "seconds": 92.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      15
+    ],
+    "cases_exercising_difference": 363,
+    "cases_inconclusive": 137,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?DrawBorder@CMinimap@@QAEXPAUtagRECT@@PAVCRenderBuffer@@H@Z",
+    "seconds": 91.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      795,
+      789
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 156,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?SetAreaPalette@CMinimap@@QAEHW4LevelArea@@@Z",
+    "seconds": 20.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      97,
+      93
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildRockyRoadzPalette@CMinimap@@QAEHXZ",
+    "seconds": 24.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 213,
+    "cases_inconclusive": 92,
+    "guided_cases": 208,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?FillSpan@CMinimap@@QAEXIIG@Z",
+    "seconds": 92.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      100,
+      102
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildGruntziclezPalette@CMinimap@@QAEHXZ",
+    "seconds": 23.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      97,
+      95
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildTropiczPalette@CMinimap@@QAEHXZ",
+    "seconds": 23.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      105,
+      105
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildHighOnSweetzPalette@CMinimap@@QAEHXZ",
+    "seconds": 23.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      90,
+      92
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildHighRollerzPalette@CMinimap@@QAEHXZ",
+    "seconds": 23.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      88,
+      91
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildHoneyPalette@CMinimap@@QAEHXZ",
+    "seconds": 23.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      117,
+      113
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildMiniatureMasterzPalette@CMinimap@@QAEHXZ",
+    "seconds": 24.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      105,
+      102
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 13,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BuildSpacePalette@CMinimap@@QAEHXZ",
+    "seconds": 24.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      11,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 55,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?BeginMinimapPan@CMinimap@@QAEHHHH@Z",
+    "seconds": 6.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      7
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 55,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?IssueMinimapCommand@CMinimap@@QAEHHHH@Z",
+    "seconds": 6.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      6
+    ],
+    "cases_exercising_difference": 395,
+    "cases_inconclusive": 0,
+    "guided_cases": 53,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?ContinueMinimapPan@CMinimap@@QAEHHHH@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 71,
+    "first_difference": null,
+    "unit": "lightfxrender",
+    "symbol": "?ScreenPointToCell@CMinimap@@QAEHHHPAHH@Z",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      209,
+      171
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "movinglogic",
+    "symbol": "?AdvanceMotion@CMovingLogic@@UAEXXZ",
+    "seconds": 25.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      156,
+      132
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 244,
+    "first_difference": null,
+    "unit": "movinglogic",
+    "symbol": "?Step@CMotionState@@QAEXN@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 21,
+    "first_difference": null,
+    "unit": "movinglogic",
+    "symbol": "?ArrivalVelX@CMotionState@@QAENN@Z",
+    "seconds": 5.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 20,
+    "first_difference": null,
+    "unit": "movinglogic",
+    "symbol": "?ArrivalVelY@CMotionState@@QAENN@Z",
+    "seconds": 5.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      22,
+      22
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 19,
+    "first_difference": null,
+    "unit": "movinglogic",
+    "symbol": "?SerializeDispatch@CMovingLogic@@UAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAUCGameObject@@@Z",
+    "seconds": 6.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 241,
+    "first_difference": null,
+    "unit": "namerecord",
+    "symbol": "?SetNames@CGameInfo@@QAEHPAD0H@Z",
+    "seconds": 12.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 499,
+    "cases_inconclusive": 0,
+    "guided_cases": 70,
+    "first_difference": null,
+    "unit": "namerecord",
+    "symbol": "?CopyBody@CGameInfo@@QAEHPAD@Z",
+    "seconds": 4.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 89,
+    "first_difference": null,
+    "unit": "namerecord",
+    "symbol": "?UpdateBestScore@CGameInfo@@QAEHHHH@Z",
+    "seconds": 4.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      2
+    ],
+    "cases_exercising_difference": 265,
+    "cases_inconclusive": 0,
+    "guided_cases": 82,
+    "first_difference": null,
+    "unit": "namerecord",
+    "symbol": "?CopyIfLarger@CGameInfo@@QAEHPAUCGameInfoTime@@H@Z",
+    "seconds": 4.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      66,
+      43
+    ],
+    "cases_exercising_difference": 467,
+    "cases_inconclusive": 0,
+    "guided_cases": 118,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "??0CPathHazard@@QAE@PAUCGameObject@@@Z",
+    "seconds": 39.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "??_GCUserBase@@UAEPAXI@Z",
+    "seconds": 8.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 107,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?FireActivation@CPathHazard@@UAEXH@Z",
+    "seconds": 7.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      14,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 211,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?RegisterPathHazardActions@@YAXXZ",
+    "seconds": 9.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      24,
+      18
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 179,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?UpdateMovement@CPathHazard@@UAEHXZ",
+    "seconds": 12.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      30,
+      22
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 208,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?UpdateMovement@CRainCloud@@UAEHXZ",
+    "seconds": 15.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 95,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?UpdateWaypointPause@CPathHazard@@UAEHXZ",
+    "seconds": 13.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      7
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 46,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?OnGruntContact@CRainCloud@@UAEHHH@Z",
+    "seconds": 10.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      41,
+      21
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 17,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?StartWaypointMovement@CPathHazard@@UAEHXZ",
+    "seconds": 11.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      74,
+      51
+    ],
+    "cases_exercising_difference": 467,
+    "cases_inconclusive": 0,
+    "guided_cases": 119,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "??0CRainCloud@@QAE@PAUCGameObject@@@Z",
+    "seconds": 24.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      74,
+      51
+    ],
+    "cases_exercising_difference": 482,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "??0CUFO@@QAE@PAUCGameObject@@@Z",
+    "seconds": 27.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      30,
+      30
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 114,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?SerializeDispatch@CUFO@@UAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAUCGameObject@@@Z",
+    "seconds": 10.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      31,
+      31
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 129,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?SerializeDispatch@CRainCloud@@UAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAUCGameObject@@@Z",
+    "seconds": 9.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      28,
+      28
+    ],
+    "cases_exercising_difference": 41,
+    "cases_inconclusive": 0,
+    "guided_cases": 82,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "?SerializeDispatch@CPathHazard@@UAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@PAUCGameObject@@@Z",
+    "seconds": 8.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "pathhazard",
+    "symbol": "??0?$zDArray@P8CUserLogic@@AEHXZ@@QAE@HH@Z",
+    "seconds": 10.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 7,
+    "first_difference": null,
+    "unit": "rezlist",
+    "symbol": "?InsertFirst@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "seconds": 19.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 33,
+    "first_difference": null,
+    "unit": "rezlist",
+    "symbol": "?InsertAfter@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+    "seconds": 10.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 42,
+    "first_difference": null,
+    "unit": "rezlist",
+    "symbol": "?InsertBefore@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@0@Z",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 17,
+    "first_difference": null,
+    "unit": "rezlist",
+    "symbol": "?Delete@CVirtBaseList@@QAEXPAVCVirtBaseListItem@@@Z",
+    "seconds": 10.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 234,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?InitializeSaveDirectory@CSaveGame@@QAEHPBD@Z",
+    "seconds": 185.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 10,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Init@CSaveGame@@QAEXXZ",
+    "seconds": 24.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 456,
+    "cases_inconclusive": 0,
+    "guided_cases": 183,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Load@CSaveGame@@QAEHXZ",
+    "seconds": 159.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 209,
+    "cases_inconclusive": 42,
+    "guided_cases": 202,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Save@CSaveGame@@QAEHPADH@Z",
+    "seconds": 146.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 268,
+    "cases_inconclusive": 41,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?ComputeAll@CSaveGame@@QAEHXZ",
+    "seconds": 201.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Verify@CSaveGame@@QAEHXZ",
+    "seconds": 162.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      6
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 41,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?InitializeNamedSlot@CSaveGame@@QAEHPAUSaveSlot@@PBDPAVCGruntzMgr@@@Z",
+    "seconds": 9.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 459,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?CopySlot@CSaveGame@@QAEHPAUSaveSlot@@PBU2@@Z",
+    "seconds": 7.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 66,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?VerifySlot@CSaveGame@@QAEHPAUSaveSlot@@@Z",
+    "seconds": 6.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 459,
+    "cases_inconclusive": 0,
+    "guided_cases": 24,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Register@CSaveGame@@QAEHPAUSaveSlot@@@Z",
+    "seconds": 6.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 457,
+    "cases_inconclusive": 0,
+    "guided_cases": 196,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?Encode@CSaveGame@@QAEHPAE@Z",
+    "seconds": 23.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?StoreSlot@CSaveGame@@QAEHHPBUSaveSlot@@@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 461,
+    "cases_inconclusive": 0,
+    "guided_cases": 16,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?CloseTempFile@CSaveGame@@QAEHPAUSaveSlot@@@Z",
+    "seconds": 7.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 187,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "savegame",
+    "symbol": "?TempFileExists@@YAHPAUSaveSlot@@@Z",
+    "seconds": 6.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      15
+    ],
+    "cases_exercising_difference": 91,
+    "cases_inconclusive": 0,
+    "guided_cases": 154,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?SaveGameDialogProc@@YGHPAUHWND__@@IIJ@Z",
+    "seconds": 26.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      33,
+      33
+    ],
+    "cases_exercising_difference": 109,
+    "cases_inconclusive": 0,
+    "guided_cases": 203,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?LevelPreviewDlgProc@@YGHPAUHWND__@@IIJ@Z",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 14,
+    "cases_inconclusive": 0,
+    "guided_cases": 72,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?DeleteSaveDialogProc@@YGHPAUHWND__@@IIJ@Z",
+    "seconds": 6.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 428,
+    "cases_inconclusive": 0,
+    "guided_cases": 112,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?FillSaveDialog@@YAXPAUHWND__@@PAVCSaveGame@@@Z",
+    "seconds": 17.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 104,
+    "cases_inconclusive": 0,
+    "guided_cases": 150,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?DrawSaveGameMenu@@YAHPAUHWND__@@HPAVCSaveGame@@@Z",
+    "seconds": 9.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      19,
+      19
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "savegamedialogs",
+    "symbol": "?BuildLevelTitleString@@YAXPAUHWND__@@PAVCSaveGame@@PAUSaveSlot@@@Z",
+    "seconds": 8.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      16,
+      16
+    ],
+    "cases_exercising_difference": 243,
+    "cases_inconclusive": 0,
+    "guided_cases": 130,
+    "first_difference": null,
+    "unit": "savescreenshot",
+    "symbol": "?SaveScreenshot@@YAHPAVCDDSurface@@PAVCRegMgr@@PAVCGruntzMgr@@HHPADH@Z",
+    "seconds": 26.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 50,
+    "cases_inconclusive": 0,
+    "guided_cases": 60,
+    "first_difference": null,
+    "unit": "serializesyncmarker",
+    "symbol": "?SerializeSyncMarker@@YAHPAVCFileMemBase@@HPBDH@Z",
+    "seconds": 31.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 8,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?LoadTimerSprite@CLevelTimer@@QAEHHH@Z",
+    "seconds": 35.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      17,
+      15
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 176,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?Tick@CLevelTimer@@QAEHH@Z",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 36,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?Draw@CLevelTimer@@QAEHPAVCRenderBuffer@@H@Z",
+    "seconds": 10.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 392,
+    "cases_inconclusive": 0,
+    "guided_cases": 77,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?AddTime@CLevelTimer@@QAEXHH@Z",
+    "seconds": 9.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      45,
+      45
+    ],
+    "cases_exercising_difference": 51,
+    "cases_inconclusive": 0,
+    "guided_cases": 82,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?SerializeDispatch@CLevelTimer@@QAEHPAVCFileMemBase@@W4SerialMode@@W4LogicTypeId@@H@Z",
+    "seconds": 9.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      41,
+      41
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 149,
+    "first_difference": null,
+    "unit": "spriteloaders",
+    "symbol": "?Serialize@CLevelTimer@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 18.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      168,
+      151
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "terraintileloader",
+    "symbol": "?HandleToolAnimationCue@CTriggerMgr@@QAEHHHHHW4PickupType@@W4AnimationEventCode@@@Z",
+    "seconds": 37.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "??0CTileTriggerSwitchLogic@@QAE@XZ",
+    "seconds": 30.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 59,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?BuildSmall@CTileTriggerSwitchLogic@@UAEHPAVCTileTriggerContainer@@W4TrigLogicId@@HHHPBUtagRECT@@HHH@Z",
+    "seconds": 10.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      15,
+      15
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 42,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SwitchDown@CTileTriggerSwitchLogic@@UAEHXZ",
+    "seconds": 13.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      20,
+      18
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 42,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SwitchUp@CTileTriggerSwitchLogic@@UAEHXZ",
+    "seconds": 13.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "??0CTileTriggerLogic@@QAE@XZ",
+    "seconds": 12.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      22,
+      21
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?PlayMovementSound@CTileTriggerLogic@@QAEXW4TileCollisionKind@@@Z",
+    "seconds": 7.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      179,
+      174
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?Tick@CTileTriggerLogic@@UAEHXZ",
+    "seconds": 17.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SetCellHeight@CGruntzMgr@@QAEXHHH@Z",
+    "seconds": 11.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 493,
+    "cases_inconclusive": 7,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?AreMultiSwitchLinksActive@CTileTriggerSwitchLogic@@QAEHXZ",
+    "seconds": 53.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      22,
+      19
+    ],
+    "cases_exercising_difference": 409,
+    "cases_inconclusive": 91,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SwitchDown@CTileExclusiveTriggerSwitchLogic@@EAEHXZ",
+    "seconds": 100.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      26,
+      26
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 177,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?BreakRock@CGiantRockLogic@@QAEHXZ",
+    "seconds": 12.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      28,
+      28
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 64,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?UncoverPickup@CTileTriggerLogic@@QAEHW4TileCollisionKind@@@Z",
+    "seconds": 9.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?StartTimedSequence@CTileTriggerLogic@@QAEXXZ",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 394,
+    "cases_inconclusive": 0,
+    "guided_cases": 10,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?Tick@CTileSecretTriggerLogic@@EAEHXZ",
+    "seconds": 9.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 139,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?UpdateTimedSequence@CTileTriggerLogic@@QAEHH@Z",
+    "seconds": 7.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      8,
+      8
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 69,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?BuildSmall@CCheckpointTriggerSwitchLogic@@UAEHPAVCTileTriggerContainer@@W4TrigLogicId@@HHHPBUtagRECT@@HHH@Z",
+    "seconds": 8.8
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SwitchDown@CCheckpointTriggerSwitchLogic@@EAEHXZ",
+    "seconds": 10.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      10,
+      10
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SwitchUp@CCheckpointTriggerSwitchLogic@@EAEHXZ",
+    "seconds": 12.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      4,
+      4
+    ],
+    "cases_exercising_difference": 493,
+    "cases_inconclusive": 7,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?AreCheckpointSwitchLinksActive@CTileTriggerSwitchLogic@@QAEHXZ",
+    "seconds": 50.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      7,
+      7
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 20,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SetBrickTile@CBrickStack@@QAEHW4BrickTileId@@@Z",
+    "seconds": 11.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      24,
+      24
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 250,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?BreakTopBrick@CBrickStack@@QAEHPAVCGrunt@@@Z",
+    "seconds": 8.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 194,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?AddTopBrick@CBrickStack@@QAEHW4PickupType@@W4PlayerSlot@@@Z",
+    "seconds": 12.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SaveState@CTileTriggerSwitchLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 11.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 32,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?LoadState@CTileTriggerSwitchLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 10.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?Serialize@CTileTriggerLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 11.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 32,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?Deserialize@CTileTriggerLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 10.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SaveRockFields@CGiantRockLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 8.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      3,
+      3
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 31,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?LoadRockFields@CGiantRockLogic@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 8.3
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 17,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?SerializeFields@CBrickStack@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      9,
+      9
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 17,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?DeserializeFields@CBrickStack@@QAEHPAVCFileMemBase@@@Z",
+    "seconds": 8.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 6,
+    "first_difference": null,
+    "unit": "tileswitchlogic",
+    "symbol": "?PlayCueIfElapsed@SoundCueRegistry@@QAEHPBD@Z",
+    "seconds": 7.6
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      13,
+      13
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 20,
+    "first_difference": null,
+    "unit": "userlogic",
+    "symbol": "?BuildLogicTypeTable@CUserLogic@@QAEXPAUCGameObject@@@Z",
+    "seconds": 21.7
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      1
+    ],
+    "cases_exercising_difference": 286,
+    "cases_inconclusive": 0,
+    "guided_cases": 38,
+    "first_difference": null,
+    "unit": "userlogic",
+    "symbol": "?FinalizeStep@CUserLogic@@UAEXPAD@Z",
+    "seconds": 7.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      2,
+      2
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 67,
+    "first_difference": null,
+    "unit": "videooptions",
+    "symbol": "?VideoOptionsDlgProc@@YGHPAUHWND__@@IIJ@Z",
+    "seconds": 21.5
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 456,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "videooptions",
+    "symbol": "?SaveVideoCheckboxes@@YAXPAUHWND__@@@Z",
+    "seconds": 6.0
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      5,
+      5
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 99,
+    "first_difference": null,
+    "unit": "wormholeacts",
+    "symbol": "?FireActivation@CExitTrigger@@UAEXH@Z",
+    "seconds": 25.9
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      6,
+      4
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 131,
+    "first_difference": null,
+    "unit": "wormholeacts",
+    "symbol": "?RegisterActs@CExitTrigger@@SAXXZ",
+    "seconds": 6.4
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      38,
+      32
+    ],
+    "cases_exercising_difference": 488,
+    "cases_inconclusive": 12,
+    "guided_cases": 104,
+    "first_difference": null,
+    "unit": "wormholeacts",
+    "symbol": "?AdvanceAnim@CExitTrigger@@QAEHXZ",
+    "seconds": 18.1
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "wormholeacts",
+    "symbol": "?GetName@GruntzPlayer@@QAE?AVCString@@XZ",
+    "seconds": 5.2
+  },
+  {
+    "verdict": "agree",
+    "differ": 0,
+    "differing_instructions": [
+      1,
+      1
+    ],
+    "cases_exercising_difference": 500,
+    "cases_inconclusive": 0,
+    "guided_cases": 0,
+    "first_difference": null,
+    "unit": "wormholeacts",
+    "symbol": "??0?$zDArray@P8CUserLogic@@AEHXZ@@QAE@HH@Z",
+    "seconds": 6.3
+  }
+]

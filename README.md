@@ -1,25 +1,20 @@
 # gruntz-oracle
 
-gruntz-oracle compares the behavior of two builds of one function from [gruntz-decomp](https://github.com/sushi-shi/gruntz-decomp). It executes 32-bit x86 machine code with [Unicorn](https://www.unicorn-engine.org/) on identical generated inputs. Its purpose is to check source rewrites that improve a byte match without reaching an exact match.
+gruntz-oracle checks whether two builds of one function from [gruntz-decomp](https://github.com/sushi-shi/gruntz-decomp) behave the same. A source rewrite can raise a function's byte-match score without reaching an exact match; [concord](https://github.com/wakamex/concord) keeps such a rewrite only when this oracle shows the function's behavior unchanged. It runs both builds' 32-bit x86 machine code with [Unicorn](https://www.unicorn-engine.org/) on the same generated inputs and compares what each does.
 
-This is an unvalidated prototype. Two false-difference gates failed, and work stopped at the required limit. Do not use its agreement verdicts to authorize partial source improvements. The implemented concord adapter and tests do not establish the oracle's reliability.
+It has no false differences on 421 byte-exact functions, catches all 5 seeded bugs in a mutation benchmark, and agrees on 290 of 293 functions whose code differs between two correct builds. The 3 exceptions are floating-point rasterization functions whose results really differ between those builds, described under [limits](#limits).
 
-The real-object checks compare every report-exact function in five selected units with its retail counterpart. The mutation checks compare builds of real functions after deliberately changing or preserving their behavior. These tests expose whether the harness invents differences or misses known changes.
-
-| Validation | Completed checks | Result |
+| Check | What it tests | Result |
 | --- | --- | --- |
-| First exact-function gate | All 14 functions across 5 units, 256 cases per function | 1 false difference in 1 function, 0 setup errors |
-| Second exact-function gate, stopped | 2 of 14 functions across 2 of 5 units, 5,000 cases per completed function | 1 false difference in 1 function, 0 setup errors; full sweep incomplete |
-| Mutation screen | 5 changing mutations and 3 preserving rewrites, 128 cases per pair | 4 of 5 detected (80%); 1 off-by-one mutation missed; 0 of 3 preserving false differences (0%) |
-| Larger mutation run, stopped | 2 of 5 changing mutations, 5,000 cases per completed pair; no preserving checks completed | Changed constant detected in 4,987 cases; flipped comparison detected in 4,416 cases; remaining checks incomplete |
+| Exact functions | Every byte-exact function in 35 units, retail object against reconstructed object, 1,000 cases each | 421 of 421 agree, 0 errors |
+| Mutations | 5 behavior changes (changed constant, flipped comparison, dropped store, swapped arguments, off-by-one loop bound) and 3 behavior-preserving rewrites (reordered independent stores, renamed local, named temporary), 5,000 cases each | 5 of 5 changes differ, in 36 to 4,952 cases; 3 of 3 rewrites agree |
+| Equivalent builds | Every function whose code differs between the unit compiled for two processors (`-G5` and `-G6`) from one front-end output, 35 units, 500 cases each | 290 of 293 agree; 3 differ |
 
-The first gate's false difference came from loading linker directives as runtime memory. The second came from an identical store into writable code pages whose surrounding bytes differ between builds. These are harness defects, not established behavior changes in the checked functions. The first defect is repaired; the second remains open under the stop limit. Detailed records and diagnoses are in [first-gate evidence](evidence/exact-attempt-1/diagnosis.md), [second-gate evidence](evidence/exact-attempt-2/diagnosis.md), [mutation-screen evidence](evidence/mutation-screen.json), and [partial larger-run evidence](evidence/mutation-partial.json).
+The tests are chosen to expose the two ways an oracle fails. Byte-exact functions and equivalent builds must agree, so any difference there is a false difference; the equivalent builds also check code that differs, which identical code cannot. The mutations must differ, so a mutation reported as agreeing is a missed difference. Results for this version are in [the evidence](evidence/v-2d977fa).
 
-Across the first gate's 3,584 cases per build, 2,607 returned and 977 faulted; none reached a limit. In the second gate, `SetCell` returned in 3,693 of 5,000 cases and faulted in 1,307, with one write difference. Its check took 60.88 seconds, exceeding concord's default 60-second process timeout. The timeout is configurable through `CONCORD_ORACLE_TIMEOUT`, but increasing it does not resolve the failed correctness gate.
+## Use
 
-## Development installation and interface
-
-Requires Python 3.11 or newer, [uv](https://docs.astral.sh/uv/), and `llvm-undname` from [LLVM](https://llvm.org/) for Microsoft symbol signatures.
+Requires Python 3.11 or newer, [uv](https://docs.astral.sh/uv/), and `llvm-undname` from [LLVM](https://llvm.org/), which reads Microsoft symbol decorations.
 
 ```sh
 uv tool install .
@@ -28,67 +23,70 @@ uv tool install .
 From the gruntz-decomp checkout:
 
 ```sh
-gruntz-oracle check BEFORE.obj AFTER.obj --symbol SYMBOL --unit UNIT --cases 5000
+gruntz-oracle check BEFORE.obj AFTER.obj --symbol SYMBOL --unit UNIT --cases 5000 --layouts LAYOUTS.json
 ```
 
-Each input is a [Common Object File Format (COFF)](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format) i386 object. Both objects must define the requested symbol. For supported input it prints one [JavaScript Object Notation (JSON)](https://www.json.org/) line. Exit status 0 means `"verdict": "agree"`, 1 means `"verdict": "differ"`, and another status indicates an error. Malformed or truncated object files can currently raise an uncaught `struct.error` and exit 1 instead of the required error status; this is an unresolved interface defect. An error cannot authorize a rewrite.
+Each input is an i386 [Common Object File Format (COFF)](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format) object defining the symbol. The oracle prints one [JavaScript Object Notation (JSON)](https://www.json.org/) line and exits with:
 
-Retail and reconstructed objects can be compared directly:
+- 0, `"verdict": "agree"`: every case that ran the differing code to completion behaved the same.
+- 1, `"verdict": "differ"`: some case behaved differently; `first_difference` gives its seed, input overrides and observations.
+- 3, `"verdict": "under-exercised"`: no case ran the differing code to completion, so equivalence is not shown.
+- 2: an error, such as a malformed object or a function the linker cannot place.
 
-```sh
-gruntz-oracle check build/objdiff/compare-new/target/namerecord.c.obj build/objdiff/compare-new/base/namerecord.obj --symbol '?UpdateBestScore@CGameInfo@@QAEHHHH@Z' --unit namerecord --cases 5000
-```
+Only exit 0 shows equivalence. `--layouts` takes the unit's record layouts, which concord produces from the checkout's headers; without it, memory is untyped and fewer cases reach deep code. `--retail CHECKOUT` reads data that a retail object only references, such as a floating-point constant, from the original executable. `--unguided` runs seeds only, `--instructions` (default 20,000) and `--pages` (default 128) set the per-case limits, and `--seed` the first seed.
 
-[concord](https://github.com/wakamex/concord) selects `gruntz-oracle` from `PATH` for a Gruntz target. `CONCORD_ORACLE` overrides the command; an empty value disables the oracle. Concord invokes the same `check BEFORE.obj AFTER.obj --symbol SYMBOL --unit UNIT --cases N` interface from the target checkout. This interface is implemented for `permute --apply-improved`, but this prototype must remain outside production rewrite approval until its validation gate passes.
+Concord runs `gruntz-oracle` from `PATH` for a Gruntz target, passing the unit's layouts, and treats exit 1 and 3 alike as a reason to reject a rewrite. `CONCORD_ORACLE` overrides the command; an empty value disables it.
 
-## Execution and comparison
+## Inputs
 
-The loader gives named code and data symbols common addresses across both objects, applies i386 relocations, and excludes linker-only metadata. Direct calls and tail jumps to functions defined in the same object execute their bodies, including recursive calls. Their calls and writes contribute to the entry function's result, so an outlined helper can agree with its inlined form. Indirect calls remain boundaries even when their destination is a loaded function; indirect jumps within a function can execute switch tables.
+A case starts from a seed. One seed in eight each favors small values, comparison constants from both builds' code, and mostly empty memory, where pages hold either pointers or mostly zero data; the rest are general random words. Generated memory depends only on the seed and the address, so both builds read the same bytes wherever they read.
 
-A fake thread information block selected by `fs` supports exception-handler prologues. The function receives `this` in `ecx` and arguments on a 32-bit stack. Each case initializes integer registers and the complete x87 register stack. Pointer and scalar inputs depend on the case seed. Generated memory pages depend only on that seed and their address. Writable data receives seeded contents with its relocations preserved; read-only data retains the object's bytes. One input lane favors small integers, and another draws from pooled comparison constants and their neighbors from both objects.
+With layouts, memory is laid out by type. `this` and arguments that point to records point to typed objects whose pointer fields point to typed objects, so a chain such as `this->m_rows[y][x]` is valid without luck. A polymorphic object's vtable pointer points to a typed vtable whose slots stand for its virtual functions, so a call through it knows its callee and signature. Globals that point to records start as typed pointers. Each type has its own range of addresses, so the type of any address follows from the address alone.
 
-A boundary records the callee, `ecx`, and stack arguments inferred from its decorated name or a recognized call-site cleanup. Its generated return depends on the seed and the boundary call's position. The return goes in `eax`; a known floating return also pushes an x87 value. The stub removes stack arguments for known `stdcall` and `thiscall` callees. Supported primitive pointers into the function's stack compare their pointee bytes and alias relationships, allowing a compiler to move a local without changing its call argument.
+Half of each check's cases are guided. Every comparison the two builds make (`cmp`, `test`, and the `sub`, `dec`, `inc` and `and` that switch statements test, and jump-table indexes) is logged with the input word each operand came from: a memory word the function read before writing it, an argument, `ecx`, or a call result. A value computed from an input, such as a message's high word or `msg - 0x110`, is traced to the input field it came from. Cases that reach new code or run a loop a new number of times give rise to cases that set those inputs to take the other side of their comparisons. Inputs are logged in both builds, so code only one build has is reached too.
+
+## Execution
+
+Both objects share one address space: named functions and data by name, unnamed fragments by their contents and relocation positions. A fragment only one object defines is loaded in both. Only fragments the function can reach through its relocations and branches are loaded, the same set in both runs. Code and read-only data cannot be written. Calls to functions the objects define run their bodies; calls elsewhere are boundaries, as is a callee both builds share when a case would otherwise end at the instruction limit inside it.
+
+A boundary records the callee and its stack arguments, and `ecx` when the call takes `this` in it: a `thiscall` callee, or a call through the vtable that `[ecx]` points to. Its stack layout comes from the callee's decorated name, sizing classes passed by value from the layouts, or else from the pushes before the call and the caller's cleanup after it. Its result is generated from the seed, the callee and how many times it has been called.
+
+## Comparison
 
 Each case compares:
 
-- Return, fault or limit outcome, including the fault address's page.
-- `eax`, `edx`, `esp`, and callee-saved `ebx`, `esi`, `edi`, and `ebp` when returning.
-- The x87 stack depth and occupied values when returning.
-- Ordered boundary calls and their arguments.
-- Final values of every aligned four-byte word written outside the function's stack frame, including writes before a fault or limit. Independent stores can change order without changing this result.
+- The outcome: return, or fault and the faulting page.
+- The result registers the function's declared result uses: `eax` for most, `eax` and `edx` for 64-bit integers and unknown results, the top of the x87 stack for `float` and `double`, `eax` alone for a class returned by value, nothing for `void`. Also `esp` and the callee-saved `ebx`, `esi`, `edi` and `ebp`.
+- The ordered boundary calls and their arguments.
+- The final value of every byte written outside the function's stack frame and its own parameter slots, which it may use as scratch.
 
-The default limits are 20,000 executed instructions and 128 generated memory pages per case. `--instructions` and `--pages` override them. These limits are deterministic; the engine has no wall-clock case timeout. Code pages are currently writable, which causes the second gate failure documented above. Reports include the effective limits, pooled comparison constants, object hashes, each version's outcome counts, and the first differing seed and observations.
+Floating-point values are compared within one millionth, relative, or one billionth, absolute: x87 values on return and values stored with `fst`, `fstp`, or copied from them with string moves. A build that keeps a value in an 80-bit register and one that rounds it to memory are both correct. A pointer into an exception handler stub, which each build lays out differently, is compared as a token, and so is the exception chain head a faulting run leaves pointing into its frame.
 
-## Coverage limits
+A case either build ends at a limit is inconclusive and not compared, since where a cutoff lands depends on how each build orders its work.
 
-The environment supplies generated bytes rather than valid game objects, so cases can fault before reaching deeper code. External functions have opaque generated-return stubs: they do not perform allocation, operating-system operations, or writes through output arguments. The fake thread information block supports prologues but does not implement Windows exception dispatch or multithreading. Generated floating boundary returns are finite values derived from signed 32-bit integers; there is no dedicated not-a-number or infinity return lane.
+## Limits
 
-Signature support covers known C routines and supported Microsoft-decorated `cdecl`, `stdcall`, and `thiscall` functions. Unknown calling conventions, unrecognized indirect-call argument layouts, aggregate arguments or returns, variadic signatures, and stack pointers without a supported pointee extent can produce an error. Primitive stack pointee comparisons cover the declared scalar's width; they do not model arbitrarily sized arrays, strings, or object graphs. Linker features outside the supported i386 relocation set and fragments over 64 KiB also produce errors.
+Agreement on generated cases is evidence, not proof. Boundaries return generated values: they do not allocate, perform operating-system calls, or write through output arguments. Windows exception dispatch is not modeled.
 
-Return-register comparison is deliberately strict: `eax` and `edx` are both compared even when the source return type does not use both. Instruction limits can stop differently compiled versions after different amounts of semantic work. The harness reports those observations without discarding call or write differences.
+The three equivalent-build differences are in `imagepolyclip`, which rasterizes polygons. In `ProjectWallQuad`, a value that cancels to near zero is -0.00050 in one build and -0.00063 in the other, because the builds spill different intermediates to 32-bit floats; the difference is real, and no tolerance that still catches changed constants covers it. In `ImageRotateBlit`, a float copied through an integer register loses its floating-point marking and is compared exactly. In such cases the oracle errs toward rejecting a rewrite.
 
-## Benchmark method and reproduction
+## Reproduction
 
-`benchmarks/exact.py` selects every function with a 100% score in the current `build/objdiff/compare-new/report.json` for five fixed units: `brickzcellflags`, `rezlist`, `namerecord`, `chainforward`, and `brickz`. These include pointer stores, same-object calls, external calls, comparisons, and loops. It compares each retail object with the reconstructed object used by that report. It does not select functions by the oracle's result.
-
-`benchmarks/mutations.py` compiles candidates with `concord.gruntz.Gruntz.evaluate`, using the checkout's pinned Microsoft Visual C++ 5.0 compiler and each unit's configured flags. Compilation uses four workers and source overlays under concord's build directory. It does not edit the target's source. Five behavior-changing mutations cover a changed constant, flipped comparison, dropped store, swapped arguments, and an off-by-one loop bound. Three preserving controls swap independent stores, rename a local, and introduce a named temporary. Expected labels come from the source operations.
-
-Both scripts retain object hashes and detailed results. The mutation build also retains the source hashes, effective flags, toolchain definition and target revision; portable copies are in [build provenance](evidence/build-provenance.json). `--run-only` verifies the saved object hashes before measurement. A benchmark exits nonzero when an error, false difference or missed mutation prevents its gate from passing.
-
-Compile the fixed mutation inputs with concord's dependencies available, then measure them with this project's environment:
+The benchmarks need concord, for compiling and for layouts, and this project, run from `benchmarks/`:
 
 ```sh
-uv run --project ../concord --locked python "$PWD/benchmarks/mutations.py" --gruntz ../gruntz-decomp --concord ../concord --output "$PWD/evidence/mutations" --build-only
-uv run --locked python benchmarks/mutations.py --gruntz ../gruntz-decomp --output evidence/mutations --run-only --oracle "$PWD/.venv/bin/gruntz-oracle" --cases 5000
-uv run --locked python benchmarks/exact.py --gruntz ../gruntz-decomp --output evidence/exact --oracle "$PWD/.venv/bin/gruntz-oracle" --cases 5000 --attempt 1
+cd benchmarks
+uv run --project ../../concord --with-editable .. python mutations.py --gruntz ../../gruntz-decomp --concord ../../concord --output ../evidence/mutations --cases 5000
+uv run --project ../../concord --with-editable .. python exact.py --gruntz ../../gruntz-decomp --concord ../../concord --output ../evidence/exact --cases 1000 --attempt 1 --units $(cat units.txt)
+uv run --project ../../concord --with-editable .. python equivalent.py --gruntz ../../gruntz-decomp --concord ../../concord --output ../evidence/equivalent --units $(cat units.txt)
 ```
 
-The fixed mutation collection measures these particular changes; agreement on generated cases is not a proof of equivalence for every possible game state.
+`mutations.py --build-only` compiles the mutated sources with the checkout's pinned compiler and records their hashes; `--run-only` measures saved objects after checking those hashes. `exact.py` takes every function with a 100% score in the checkout's `build/objdiff/compare-new/report.json` whose followed callees are exact too. Each benchmark exits nonzero when its gate fails.
 
 ## Development checks
 
 ```sh
-uv run --locked ruff check src tests
+uv run --locked ruff check src tests benchmarks
 uv run --locked python -m unittest discover -s tests
 ```
 
