@@ -531,24 +531,18 @@ class Runner:
         return count, 4 * count
 
     def virtual(self, ins):
-        """Whether a call without a signature has the shape of a virtual member call, whose this is in ecx: the
-        target is read through a vtable loaded from [ecx]. A COM call pushes its object instead, and in any
-        other call ecx is scratch, holding whatever each build left there."""
+        """Whether a call without a signature is a virtual member call, whose this is in ecx: the call reads its
+        target through a vtable pointer equal to the word at [ecx]. Judged by values, so builds that load the
+        vtable through different registers agree; a COM call pushes its object instead, and in any other call
+        ecx is scratch, holding whatever each build left there."""
         op = ins.operands[0] if ins.operands else None
         if op is None or op.type != X86_OP_MEM or not op.mem.base:
             return False
-        table = ins.reg_name(op.mem.base)
-        cursor = ins.address
-        while True:
-            previous = self.previous.get(cursor)
-            if previous is None or previous.mnemonic in STOPS or previous.group(1) or previous.group(3):
-                return False
-            if previous.operands and previous.operands[0].type == X86_OP_REG and previous.reg_name(previous.operands[0].reg) == table:
-                source = previous.operands[1] if len(previous.operands) == 2 else None
-                return (previous.mnemonic == "mov" and source is not None and source.type == X86_OP_MEM
-                        and source.mem.base and previous.reg_name(source.mem.base) == "ecx"
-                        and not source.mem.index and source.mem.disp == 0)
-            cursor = previous.address
+        table = self.uc.reg_read(getattr(x86, "UC_X86_REG_" + ins.reg_name(op.mem.base).upper()))
+        ecx = self.reg("ecx")
+        if ecx < PAGE or not all(page in self.mapped for page in (ecx & -PAGE, ecx + 3 & -PAGE)):
+            return False  # reading an unmapped [ecx] would generate memory one build never touched
+        return struct.unpack("<I", self.uc.mem_read(ecx, 4))[0] == table
 
     def token(self, value):
         """A pointer into unnamed code (an exception stub or funclet, anywhere in its allocated slot) as a token."""
@@ -901,16 +895,20 @@ def stored(writes, at, size):
 def same(a, b):
     """Whether two runs behaved the same, with floating-point values compared within rounding."""
     keys = (a.keys() | b.keys()) - {"x87", "writes", "floats"}
-    if any(a.get(k) != b.get(k) for k in keys) or a["floats"] != b["floats"]:
+    if any(a.get(k) != b.get(k) for k in keys):
         return False
     if len(a.get("x87", [])) != len(b.get("x87", [])) or not all(map(close, a.get("x87", []), b.get("x87", []))):
         return False
-    numbers = {str(int(at) + k) for at, size in a["floats"].items() for k in range(size)}
+    # a value either build stored with fst is a number in both, though the other may have copied it with mov
+    floats = {**b["floats"], **a["floats"]}
+    if any(floats[at] != size for at, size in b["floats"].items()):
+        return False  # stored with different widths
+    numbers = {str(int(at) + k) for at, size in floats.items() for k in range(size)}
     if {k: v for k, v in a["writes"].items() if k not in numbers} != {k: v for k, v in b["writes"].items() if k not in numbers}:
         return False
     if a["writes"].keys() & numbers != b["writes"].keys() & numbers:
         return False
-    return all(close(stored(a["writes"], int(at), size), stored(b["writes"], int(at), size)) for at, size in a["floats"].items())
+    return all(close(stored(a["writes"], int(at), size), stored(b["writes"], int(at), size)) for at, size in floats.items())
 
 
 def bucket(count):

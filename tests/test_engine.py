@@ -199,6 +199,20 @@ class EngineTests(unittest.TestCase):
         self.assertGreater(typed.get("return", 0), plain.get("return", 0))
         self.assertGreaterEqual(typed.get("return", 0), 48)
 
+    def test_virtual_call_through_another_register(self):
+        # the same virtual call, its vtable loaded from [ecx] through eax in one build and through a copy of
+        # ecx in edx in the other: this is compared in both
+        before = self.obj("movl $0x70000000, %ecx\nmovl (%ecx), %eax\nmovl %eax, %edx\ncall *4(%eax)\nmovl $0, %eax\nret")
+        after = self.obj("movl $0x70000000, %ecx\nmovl %ecx, %edx\nmovl (%edx), %edx\ncall *4(%edx)\nmovl $0, %eax\nret")
+        self.assertEqual(self.compare(before, after)["verdict"], "agree")
+
+    def test_float_copied_with_mov_is_still_a_float(self):
+        third = "fld1\nfld1\nfadd %st(0), %st(0)\nfadd %st(1), %st(0)\nfdivrp %st(0), %st(1)\n"
+        stored = self.obj(third + "fstps 0x70000000\nmovl $0, %eax\nret")
+        copied = self.obj("subl $4, %esp\n" + third + "fstps (%esp)\nmovl (%esp), %eax\nmovl %eax, 0x70000000\n"
+                          "addl $4, %esp\nmovl $0, %eax\nret")
+        self.assertEqual(self.compare(stored, copied)["verdict"], "agree")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
