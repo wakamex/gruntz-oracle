@@ -169,6 +169,36 @@ class EngineTests(unittest.TestCase):
         other = self.obj("movl $0x70002000, %ecx\n" + virtual)
         self.assertEqual(self.compare(one, other)["verdict"], "differ")
 
+    def test_shared_callee_that_runs_too_long_becomes_a_boundary(self):
+        # the same endless helper in both builds; the difference after its call is reached once it is stubbed
+        helper = '.globl "?helper@@YAHXZ"\n.def "?helper@@YAHXZ"; .scl 2; .type 32; .endef\n"?helper@@YAHXZ":\n1:\njmp 1b'
+        before = self.obj('call "?helper@@YAHXZ"\nmovl $7, %eax\nret', helper)
+        after = self.obj('call "?helper@@YAHXZ"\nmovl $8, %eax\nret', helper)
+        self.assertEqual(self.compare(before, after)["verdict"], "differ")
+
+    def test_virtual_call_uses_the_slot_signature(self):
+        # this->Begin() through the vtable after saving esi: the push is a save, not an argument, which only
+        # the slot's signature can tell
+        name = "?Run@C@@QAEXXZ"
+        layouts = {"C": {"size": 8, "pointers": [[0, "?vtable:C"]], "vtable": ["??_GC@@UAEPAXI@Z", "?Begin@C@@UAEXXZ"]}}
+        body = "pushl %esi\nmovl (%ecx), %eax\ncall *4(%eax)\npopl %esi\nret"
+        obj = self.obj(body, symbol=name)
+        result = check(obj, obj, name, cases=8, layouts=layouts)
+        self.assertEqual(result["outcomes"]["before"], {"return": 8})
+        record = check(obj, self.obj("nop\n" + body, symbol=name), name, cases=1, layouts=layouts)
+        self.assertEqual(record["verdict"], "agree")
+
+    def test_typed_global_points_to_its_record(self):
+        # an external global declared as S*: dereferenced through a typed pointer, it does not fault
+        body = 'movl "?g_p@@3PAUS@@A", %eax\nmovl 4(%eax), %eax\nret'
+        layouts = {"S": {"size": 8, "pointers": []},
+                   "$globals": {"size": 0, "pointers": [], "globals": {"?g_p@@3PAUS@@A": "S"}}}
+        obj = self.obj(body)
+        typed = check(obj, obj, "_entry", cases=64, layouts=layouts)["outcomes"]["before"]
+        plain = check(obj, obj, "_entry", cases=64)["outcomes"]["before"]
+        self.assertGreater(typed.get("return", 0), plain.get("return", 0))
+        self.assertGreaterEqual(typed.get("return", 0), 48)
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")
@@ -284,6 +314,11 @@ class GenerationTests(unittest.TestCase):
         entry, callee, table, unrelated = item(0x100, [0x208]), item(0x200, [0x300]), item(0x300, []), item(0x400, [])
         kept = followed([entry, callee, table, unrelated], 0x104)
         self.assertEqual([base for base, _, _ in kept], [0x100, 0x200, 0x300])
+
+    def test_vtable_pointer_is_never_null(self):
+        layouts = Layouts({"Shape": {"size": 8, "pointers": [[0, "?vtable"]]}})
+        for seed in range(64):
+            self.assertNotEqual(layouts.pointer(seed, 0x1000, "?vtable"), 0)
 
     def test_member_function_owner(self):
         self.assertEqual(owner("?LineIsClear@CMapMgr@@QAEHHHHH@Z"), "CMapMgr")

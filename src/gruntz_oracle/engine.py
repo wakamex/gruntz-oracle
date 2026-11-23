@@ -98,6 +98,9 @@ def sparse(seed, address):
 # pointer's own address, so two builds reach the same objects.
 TYPED, TYPED_END = 0x80000000, 0xE0000000
 SPAN, SLOT = 0x40000, 0x10000
+# A virtual function's stand-in address, never mapped: a typed vtable's entries point here, so a call through
+# one is a boundary that knows the function it reached.
+METHODS = 0xE1000000
 
 
 class Layouts:
@@ -105,6 +108,8 @@ class Layouts:
 
     def __init__(self, records):
         self.sizes = {name: row["size"] for name, row in records.items()}
+        self.vtables = {name: tuple(row["vtable"]) for name, row in records.items() if row.get("vtable")}
+        self.globals = records.get("$globals", {}).get("globals", {})  # decorated name -> pointee type
         self.records = {
             name: (row["size"], tuple((offset, target) for offset, target in row["pointers"]))
             for name, row in records.items()
@@ -113,9 +118,16 @@ class Layouts:
         kinds = set(self.records)
         for _, pointers in self.records.values():
             kinds.update(target for _, target in pointers if target.lstrip("*") in self.records)
+        kinds.update("#" + name for name in self.vtables)  # each polymorphic class's vtable
         kinds = sorted(kinds)[: (TYPED_END - TYPED) // SPAN]
         self.ids = {kind: index for index, kind in enumerate(kinds)}
         self.kinds = kinds
+        # the stand-in address of each virtual function, by vtable and slot
+        self.methods = {
+            METHODS + 0x400 * self.ids["#" + name] + 4 * slot: decorated
+            for name, table in self.vtables.items() if "#" + name in self.ids
+            for slot, decorated in enumerate(table[:256])
+        }
 
     def layout(self, kind):
         """The element size and pointer fields of one slot type: a record, or an array of pointers."""
@@ -126,6 +138,13 @@ class Layouts:
     def pointer(self, seed, address, kind):
         """The generated value of a pointer stored at `address` whose target has type `kind`."""
         value = mix((seed << 32) ^ address ^ 0x7F4A7C15)
+        if kind.startswith("?vtable"):
+            # a polymorphic object's vtable pointer is never null: the class's typed vtable when its functions
+            # are known, else generated memory
+            table = "#" + kind.partition(":")[2]
+            if table in self.ids:
+                return TYPED + self.ids[table] * SPAN
+            return 0x70000000 + ((value >> 8) % 256) * PAGE
         if seed % 8 not in (2, 3) and value % 8 == 0:
             return 0
         if kind not in self.ids:
@@ -142,6 +161,13 @@ class Layouts:
         else:
             body = bytearray(page_bytes(seed, page, constants))
         if kind is None:
+            return bytes(body)
+        if kind.startswith("#"):  # a vtable: each slot holds its function's stand-in address
+            start = TYPED + self.ids[kind] * SPAN
+            for slot in range(len(self.vtables[kind[1:]][:256])):
+                at = start + 4 * slot
+                if page <= at < page + PAGE:
+                    body[at - page : at - page + 4] = struct.pack("<I", METHODS + 0x400 * self.ids[kind] + 4 * slot)
             return bytes(body)
         size, pointers = self.layout(kind)
         start = TYPED + self.ids[kind] * SPAN
@@ -209,6 +235,16 @@ class Runner:
         self.sigs = {
             address: self.signature(name) for name, address in link.addresses.items()
         }
+        self.methods = layouts.methods if layouts else {}
+        # a global that points to a record starts as a typed pointer, wherever the objects placed it
+        local = link.local[id(obj)]
+        self.typed_globals = {
+            link.addresses[local[name]]: kind
+            for name, kind in (layouts.globals.items() if layouts else ())
+            if name in local and kind in layouts.ids
+        }
+        for address, name in self.methods.items():
+            self.sigs[address] = self.signature(name)
         for base, data, frag in self.loaded:
             if frag.code:
                 self.ranges.append((base, base + len(data)))
@@ -236,6 +272,9 @@ class Runner:
                 self.uc.mem_write(page, self.layouts.page(self.seed, page, self.constants))
             elif generated:
                 self.uc.mem_write(page, page_bytes(self.seed, page, self.constants))
+            for at, kind in self.typed_globals.items() if generated else ():
+                if page <= at <= page + PAGE - 4:
+                    self.uc.mem_write(at, struct.pack("<I", self.layouts.pointer(self.seed, at, kind)))
             self.mapped.add(page)
 
     def protect(self, base, size):
@@ -371,9 +410,14 @@ class Runner:
                 self.uc.mem_write(at, bytes((byte,)))
 
     def compared(self, ins):
-        """Log a cmp or test: each operand's value, size and the input it came from, if one can be named."""
+        """Log a comparison: each operand's value, size and the input it came from, if one can be named. A sub,
+        dec, inc or and that sets the flags a branch tests (MSVC's switch tests are sub and dec) is logged as
+        a cmp or test of its operands before it runs: dec x compares x with 1, inc x with -1."""
+        operands = list(ins.operands)
+        if operands and operands[0].type == X86_OP_REG and ins.reg_name(operands[0].reg) in ("esp", "ebp"):
+            return  # frame arithmetic, not a comparison
         sides = []
-        for op in ins.operands:
+        for op in operands:
             size = op.size or 4
             if op.type == X86_OP_IMM:
                 sides.append((None, op.imm & ((1 << 8 * size) - 1), size, "imm"))
@@ -390,8 +434,31 @@ class Runner:
                 generated = not (STACK <= at < ENTRY_SP + 4) and not any(lo <= at < hi for lo, hi in self.protected)
                 fresh = not any(at + k in self.writes for k in range(size))
                 sides.append((at if generated and fresh else None, value, size, "mem"))
+        if ins.mnemonic in ("dec", "inc") and len(sides) == 1:
+            size = sides[0][2]
+            sides.append((None, 1 if ins.mnemonic == "dec" else (1 << 8 * size) - 1, size, "imm"))
         if len(sides) == 2:
-            self.log.append((ins.address, ins.mnemonic, sides))
+            kind = "test" if ins.mnemonic in ("test", "and") else "cmp"
+            self.log.append((ins.address, kind, sides))
+
+    def traced(self, value):
+        """Inputs a register's value was computed from, each with the word that would give the register another
+        value: an input word, or an 8- or 16-bit field of one (after a shift or mask, such as a message's high
+        word), equal to the value or off by a small constant (msg - 0x110 in a switch); closest first, with each
+        input's best whole-word and best field reading."""
+        found = []
+        for k, v in self.sources.items():
+            best = {}
+            for shift, mask in ((0, MASK), (16, 0xFFFF), (0, 0xFFFF), (24, 0xFF), (16, 0xFF), (8, 0xFF), (0, 0xFF)):
+                field = (v >> shift) & mask
+                offset = (field - value + 0x80000000 & MASK) - 0x80000000  # signed: msg - 0x110 may wrap
+                whole = mask == MASK
+                if abs(offset) <= 0x10000 and (whole not in best or abs(offset) < best[whole][0]):
+                    best[whole] = (abs(offset), lambda t, v=v, s=shift, m=mask, d=offset:
+                                   v & ~(m << s) & MASK | ((t + d) & m) << s)
+            found.extend((distance, not whole, k, word_for) for whole, (distance, word_for) in best.items())
+        found.sort(key=lambda row: row[:2])
+        return [(k, 4, word_for) for _, _, k, word_for in found[:8]]
 
     def proposals(self):
         """Overrides that would take the other side of the comparisons this run made, latest first: an
@@ -403,22 +470,29 @@ class Runner:
                 key, value, size, kind = sides[index]
                 other = sides[1 - index][1]
                 width = (1 << 8 * size) - 1
-                if mnemonic == "cmp":
+                if mnemonic == "switch":
+                    targets = set(range(16)) if index == 0 else set()  # a jump table's index: its first cases
+                elif mnemonic == "cmp":
                     targets = {other, other + 1 & width, other - 1 & width}
                 elif sides[0][3] == "reg" and sides[1][3] == "reg" and sides[0][1] == sides[1][1]:
                     targets = {0, 1, width}  # test r, r: zero, positive and negative
                 else:
                     targets = {value | other, value & ~other & width}
                 targets.discard(value)
-                keys = [key] if key is not None else []
-                if kind == "reg" and size == 4:
-                    keys = [k for k, v in self.sources.items() if v == value][:4]
-                for k in keys:
+                # each change: (input key, its byte width, the word that gives the operand a target value)
+                if key is not None:
+                    changes = [(key, size, lambda target: target)]
+                elif kind == "reg":
+                    changes = self.traced(value)
+                else:
+                    changes = []
+                for k, width_bytes, word_for in changes:
                     for target in sorted(targets):
                         site = (address, index, k, target)
                         if site not in sites:
                             sites.add(site)
-                            found.append({k + i: b for i, b in enumerate(target.to_bytes(size if key is not None else 4, "little"))})
+                            new = word_for(target) & ((1 << 8 * width_bytes) - 1)
+                            found.append({k + i: b for i, b in enumerate(new.to_bytes(width_bytes, "little"))})
         return found
 
     def call_site_words(self, ins):
@@ -532,7 +606,8 @@ class Runner:
         sp = self.reg("esp")
         args_sp = sp + 4 if tail else sp
         arguments = [self.u32(args_sp + 4 * i) for i in range(words)]
-        call = {"callee": self.link.names.get(destination, destination), "stack": self.arguments(arguments, sig)}
+        callee = self.link.names.get(destination) or self.methods.get(destination, destination)
+        call = {"callee": callee, "stack": self.arguments(arguments, sig)}
         if (sig.thiscall if sig else self.virtual(ins)):
             ecx = self.reg("ecx")
             # this in the caller's frame: compare the object's first word (its vtable for a class with
@@ -586,23 +661,30 @@ class Runner:
         if ins is None:
             self.stop(["fault", "instruction", address & -PAGE])
             return
-        if ins.mnemonic in ("cmp", "test") and len(self.log) < 512:
+        if ins.mnemonic in ("cmp", "test", "sub", "dec", "inc", "and") and len(self.log) < 512:
             self.compared(ins)
             return
         if ins.mnemonic not in ("call", "jmp"):
             return
+        op = ins.operands[0]
+        if ins.mnemonic == "jmp" and op.type == X86_OP_MEM and op.mem.index and op.mem.scale == 4 and len(self.log) < 512:
+            # a switch's jump table: its index is compared with every case
+            index = self.uc.reg_read(getattr(x86, "UC_X86_REG_" + ins.reg_name(op.mem.index).upper()))
+            self.log.append((ins.address, "switch", [(None, index, 4, "reg"), (None, 0, 4, "imm")]))
         destination = self.operand(ins, ins.operands[0])
         direct = ins.operands[0].type == X86_OP_IMM
         inside = any(lo <= destination < hi for lo, hi in self.ranges)
         same_function = any(
             lo <= address < hi and lo <= destination < hi for lo, hi in self.ranges
         )
-        if (direct and inside) or (ins.mnemonic == "jmp" and same_function):
+        if ((direct and inside and destination not in self.stubbed)
+                or (ins.mnemonic == "jmp" and same_function)):
             return
         self.boundary(ins, destination, ins.mnemonic == "jmp")
 
-    def run(self, seed, overrides=None):
+    def run(self, seed, overrides=None, stubbed=frozenset()):
         self.seed = seed
+        self.stubbed = stubbed  # entries of callees run as boundaries, like functions outside the objects
         self.overrides = overrides or {}
         self.sources = {}  # input key -> value of the register-like inputs: registers, arguments, call results
         self.log = []
@@ -676,6 +758,10 @@ class Runner:
         for index, name in enumerate(REGISTERS):
             if name not in ("esp", "eip"):
                 self.setreg(name, self.input(0xE0000000 + 4 * index, self.reg(name)))
+                if name != "ecx":
+                    # under Microsoft's conventions only ecx (this) carries an input; the others are scratch or
+                    # saved, so a compared value is not traced to them
+                    del self.sources[0xE0000000 + 4 * index]
         self.apply(ENTRY_SP + 4, ENTRY_SP + 4 + 4 * 128)
         for index in range(sig.words if sig else 16):
             self.sources[ENTRY_SP + 4 + 4 * index] = self.u32(ENTRY_SP + 4 + 4 * index)
@@ -863,6 +949,14 @@ def reachable(runner, code):
     return seen
 
 
+def shared_code(runners, symbol):
+    """The entries of the functions, other than the one checked, whose code is the same in both builds."""
+    codes = [{base: data for base, data, frag in r.loaded if frag.code} for r in runners]
+    own = {r.entries.get(symbol) for r in runners}
+    return frozenset(base for base in codes[0].keys() & codes[1].keys()
+                     if base not in own and codes[0][base].rstrip(b"\x90\xcc") == codes[1][base].rstrip(b"\x90\xcc"))
+
+
 def differing(runners):
     """For each runner, the addresses of its instructions that differ from the other build's code at the same
     fragment: every function both builds define is aligned instruction by instruction."""
@@ -953,6 +1047,7 @@ def check(
     first = None
     outcomes = [Counter(), Counter()]
     targets = differing(runners)
+    same_callees = shared_code(runners, symbol)
     reaching = exercised = inconclusive = 0
     missed = Counter()
     covered = set()
@@ -969,6 +1064,10 @@ def check(
         else:
             case, overrides = next(seeds), {}
         records = [runner.run(case, overrides) for runner in runners]
+        if any(record["outcome"][0] == "limit" for record in records) and same_callees:
+            # a callee whose code both builds share, such as a long decoding loop, can use up the limit without
+            # showing anything about the difference: the case runs again with such callees as boundaries
+            records = [runner.run(case, overrides, same_callees) for runner in runners]
         if guided:
             new = {(index, address, bucket(count)) for index, runner in enumerate(runners)
                    for address, count in runner.executed.items()} - covered
