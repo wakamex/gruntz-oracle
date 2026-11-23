@@ -85,7 +85,8 @@ def build(root, output, concord):
             original = output / 'objects' / unit / 'baseline.obj'
             mutation = output / 'objects' / unit / f'{name}.obj'
             manifest.append({'name': name, 'unit': unit, 'symbol': symbol, 'preserving': preserving,
-                                 'old': old, 'new': new, 'original': str(original), 'mutation': str(mutation),
+                                 'old': old, 'new': new,
+                                 'original': str(original.relative_to(output)), 'mutation': str(mutation.relative_to(output)),
                                  'original_sha256': sha(original), 'mutation_sha256': sha(mutation),
                                  'source_sha256': hashlib.sha256(source).hexdigest(),
                                  'flags': config['flags'][units[unit]['flags']], 'shortcuts': target.using})
@@ -133,6 +134,8 @@ def measure(root, output, command, cases, concord=None):
                      for path in sorted((oracle_root / 'src').rglob('*.py'))}
     for mutation in json.loads((output / 'manifest.json').read_text()):
         for key in ('original', 'mutation'):
+            # paths are relative to the output directory; older manifests hold absolute ones, which this keeps
+            mutation[key] = str(output / mutation[key])
             if sha(mutation[key]) != mutation[f'{key}_sha256']:
                 raise ValueError(f'changed input: {mutation[key]}')
         report, seconds = run_check(command, root, mutation['original'], mutation['mutation'],
