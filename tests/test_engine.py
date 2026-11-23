@@ -223,6 +223,15 @@ class EngineTests(unittest.TestCase):
         rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\n" + tail + copy)
         self.assertEqual(self.compare(kept, rounded)["verdict"], "agree")
 
+    def test_store_next_to_a_float_keeps_its_marking(self):
+        # an integer store into the next word leaves the float before it a float
+        third = "fld1\nfld1\nfadd %st(0), %st(0)\nfadd %st(1), %st(0)\nfdivrp %st(0), %st(1)\n"
+        tail = "pushl $3\nfimull (%esp)\naddl $4, %esp\nfld1\nfsubrp %st(0), %st(1)\nfstps 0x70000000\n" \
+               "movl $5, 0x70000004\nmovl $0, %eax\nret"
+        kept = self.obj(third + tail)
+        rounded = self.obj("subl $8, %esp\n" + third + "fstpl (%esp)\nfldl (%esp)\naddl $8, %esp\n" + tail)
+        self.assertEqual(self.compare(kept, rounded)["verdict"], "agree")
+
     def test_identical_code_agrees_without_coverage(self):
         obj = self.obj("1:\njmp 1b")
         self.assertEqual(self.compare(obj, obj)["verdict"], "agree")

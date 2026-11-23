@@ -371,8 +371,8 @@ class Runner:
                 if start <= source < start + extent:
                     at, width = address - (source - start), extent
                     break
-        for other in [o for o in self.float_stores if address - 10 < o < address + size and o != at]:
-            del self.float_stores[other]
+        for other in [o for o, extent in self.float_stores.items() if o < address + size and address < o + extent and o != at]:
+            del self.float_stores[other]  # a value this write overlaps is no longer that float
         if at is not None and width in (4, 8, 10):
             self.float_stores[at] = width
 
