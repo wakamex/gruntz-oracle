@@ -1036,7 +1036,9 @@ def check(
             [*loaded, *(item for item in other_loaded if item[0] not in bases)],
             {**other_entries, **entries},
         ))
-    shared = [(followed(loaded, entries.get(symbol)), entries) for loaded, entries in shared]
+    # each build keeps the fragments either reaches, so both runs see the same memory at every address
+    reached = {base for loaded, entries in shared for base, _, _ in followed(loaded, entries.get(symbol))}
+    shared = [([item for item in loaded if item[0] in reached], entries) for loaded, entries in shared]
     runners = [
         Runner(link, obj, symbol, sorted(constants), limits, shared[index], Layouts(layouts) if layouts else None)
         for index, obj in enumerate(objects)
